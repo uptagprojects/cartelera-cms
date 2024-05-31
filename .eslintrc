@@ -1,0 +1,22 @@
+{
+    "extends": [ "eslint-config-codely/typescript", "hexagonal-architecture" ],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "parserOptions": {
+          "project": ["./tsconfig.json"]
+        }
+      },
+      {
+        "files": ["{src,tests}/contexts/{cma,cda,backoffice,shared}/**/*.ts"],
+        "rules": {
+          "hexagonal-architecture/enforce": ["error"]
+        }
+      }, {
+        "files": ["tests/**/*.ts"],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  }
