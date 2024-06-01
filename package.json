@@ -1,12 +1,19 @@
 {
   "name": "cartelera",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "repository": {
+    "url": "https://github.com/uptagprojects/cartelera"
+  },
+  "engines": {
+    "node": ">=20.8.0",
+    "npm": ">=10.1.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run test:cms:features && npm run test:backoffice:features && npm run test:e2e:headless",
     "test:unit": "npm run test:contexts && npm run test:component:headless",
     "lint": "next lint",
     "format": "prettier --write src/**/*.ts{,x}",
@@ -16,7 +23,8 @@
     "test:component:headless": "cypress run --component",
     "test:cms:features": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p cms\"",
     "test:backoffice:features": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p backoffice\"",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\""
+    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
+    "test:e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\""
   },
   "dependencies": {
     "@types/node": "^20",
