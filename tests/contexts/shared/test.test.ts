@@ -1,5 +1,5 @@
 describe("testing jest", () => {
     it("should pass", () => {
-        expect(1).toBeTruthy()
+        expect(1).toBe(1)
     });
 });
