@@ -10,8 +10,9 @@
     "test:unit": "NODE_ENV=test jest",
     "lint": "next lint",
     "prepare": "husky",
-    "test:acceptance:cms": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p cms\"",
-    "test:acceptance:backoffice": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p backoffice\""
+    "test:cms:features": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p cms\"",
+    "test:backoffice:features": "start-server-and-test dev http://localhost:3000 \"NODE_ENV=test cucumber-js -p backoffice\"",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\""
   },
   "dependencies": {
     "next": "14.2.3",
@@ -27,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cypress": "^13.10.0",
     "eslint": "^8",
     "eslint-config-codely": "^3.1.3",
     "eslint-config-next": "14.2.3",
