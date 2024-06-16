@@ -1,4 +1,4 @@
-{
+module.exports = {
   "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "hexagonal-architecture", "prettier" ],
   "overrides": [
     {
@@ -23,7 +23,7 @@
       }
     },
     {
-      "files": ["*.test.ts"],
+      "files": ["tests/**/*.test.ts"],
       "env": {
         "jest": true
       }

@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "node_modules/": true
+    },
+    "cucumber.features": [
+        "tests/features/**/*.feature"
+    ],
+    "cucumber.glue": [
+        "tests/features/step_definitions/*.steps.ts",
+        "tests/features/**/*.steps.ts"
+    ],
+}
