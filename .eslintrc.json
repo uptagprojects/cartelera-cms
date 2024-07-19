@@ -1,5 +1,5 @@
 {
-  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "hexagonal-architecture", "prettier" ],
+  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "prettier" ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
@@ -14,12 +14,6 @@
         "@typescript-eslint/no-unsafe-member-access": "off",
         "@typescript-eslint/no-unsafe-return": "off",
         "@typescript-eslint/require-await": "off"
-      }
-    },
-    {
-      "files": ["**/contexts/{cma,cda,backoffice,shared}/**/*.ts"],
-      "rules": {
-        "hexagonal-architecture/enforce": ["error"]
       }
     },
     {
