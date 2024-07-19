@@ -9,4 +9,5 @@
         "tests/features/step_definitions/*.steps.ts",
         "tests/features/**/*.steps.ts"
     ],
+    "prettier.configPath": "config/.prettierrc"
 }

@@ -4,6 +4,6 @@ module.exports = {
   testEnvironment: 'node',
   cacheDirectory: ".tmp/jestCache",
   testMatch: [
-      "**/tests/contexts/**/*.test.ts",
+    "**/*.test.ts",
   ]
 };

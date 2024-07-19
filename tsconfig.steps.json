@@ -9,7 +9,10 @@
         "moduleResolution": "node",
         "target": "esnext",
         "module": "commonjs",
-        "outDir": "../dist",
+        "outDir": "./dist",
     },
-    "include": ["**/*.ts"]
+    "include": [
+        "**/*.steps.ts",
+        "./tests/features/**/*.ts"
+    ]
 }

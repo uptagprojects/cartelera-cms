@@ -10,22 +10,20 @@
     "npm": ">=10.1.0"
   },
   "scripts": {
+    "prepare": "husky",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run test:unit && npm run test:features && npm run test:e2e:headless",
-    "test:unit": "npm run test:contexts && npm run test:components:headless",
     "lint": "next lint",
     "format": "prettier --write src/**/*.ts{,x}",
-    "prepare": "husky",
-    "test:contexts": "TS_NODE_PROJECT=tests/contexts/tsconfig.json NODE_ENV=test jest --passWithNoTests",
-    "test:components": "cypress open --component",
-    "test:components:headless": "cypress run --component",
-    "test:features": "TS_NODE_PROJECT=tests/features/tsconfig.json NODE_ENV=test cucumber-js -p default",
-    "test:cms:features": "TS_NODE_PROJECT=tests/features/tsconfig.json NODE_ENV=test cucumber-js -p cms",
-    "test:backoffice:features": "TS_NODE_PROJECT=tests/features/tsconfig.json NODE_ENV=test cucumber-js -p backoffice",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
-    "test:e2e:headless": "start-server-and-test dev http://localhost:3000 \"cypress run --e2e\""
+    "test": "npm run test:unit && npm run test:integration && npm run test:acceptance",
+    "test:unit": "npm run test:jest tests/contexts/**/*/application && npm run test:cypress",
+    "test:integration": "npm run test:jest tests/contexts/**/*/infrastructure",
+    "test:acceptance": "npm run test:features && npm run test:cypress:e2e",
+    "test:features": "TS_NODE_PROJECT=tsconfig/tsconfig.cucumber.json NODE_ENV=test cucumber-js",
+    "test:jest": "NODE_ENV=test jest",
+    "test:cypress": "TS_NODE_PROJECT=tsconfig/tsconfig.cypress.json NODE_ENV=test cypress run --component",
+    "test:cypress:e2e": "start-server-and-test dev http://localhost:3000 \"TS_NODE_PROJECT=tsconfig/tsconfig.cypress.json NODE_ENV=test cypress run --e2e\""
   },
   "dependencies": {
     "@types/react": "^18",
