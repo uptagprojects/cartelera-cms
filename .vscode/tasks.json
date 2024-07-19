@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "test:contexts",
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"problemMatcher": [],
+			"label": "npm: test:contexts",
+			"detail": "test context units"
+		},
+		{
+			"type": "npm",
+			"script": "test:features",
+			"group": {
+				"kind": "test",
+				"isDefault": false
+			},
+			"problemMatcher": [],
+			"label": "npm: test:features",
+			"detail": "run cucumber features"
+		}
+	]
+}
