@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "noErrorTruncation": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "lib": ["esnext", "dom"],
+        "moduleResolution": "node",
+        "target": "esnext",
+        "module": "commonjs",
+        "outDir": "./dist",
+    },
+    "include": [
+        "**/*.steps.ts",
+        "./tests/features/**/*.ts"
+    ]
+}

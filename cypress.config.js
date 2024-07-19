@@ -3,17 +3,17 @@ const { defineConfig } = require('cypress');
 module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000",
-    specPattern: "cypress/e2e/**/*.cy.ts",
+    specPattern: "./tests/e2e/**/*.cy.ts",
     setupNodeEvents(on, config) {},
-    supportFile: "cypress/support/e2e.ts"
+    supportFile: "./tests/e2e/support/e2e.ts"
   },
   component: {
     devServer: {
       framework: 'next',
       bundler: 'webpack',
     },
-    specPattern: "cypress/components/**/*.cy.tsx",
-    supportFile: "cypress/support/component.ts",
-    indexHtmlFile: "cypress/support/component-index.html"
+    specPattern: "./tests/components/**/*.cy.tsx",
+    supportFile: "./tests/components/support/components.ts",
+    indexHtmlFile: "./tests/components/support/component-index.html"
   }
 });
