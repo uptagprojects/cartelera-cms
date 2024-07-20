@@ -1,3 +1,3 @@
-import { StringValueObject } from "../../../shared/domain/StringValueObject";
+import { UrlValueObject } from "../../../shared/domain/UrlValueObject";
 
-export class CourseInstructorRelatedUrl extends StringValueObject {}
+export class CourseInstructorRelatedUrl extends UrlValueObject {}

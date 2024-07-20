@@ -1,7 +1,9 @@
 import { Hono } from "hono";
-import { routeCourses } from "./courses/routeCourses";
+import { routeCMS } from "./cms/routeCMS";
+import { routeBackoffice } from "./backoffice/routeBackoffice";
 const app = new Hono().basePath('/api');
 
-routeCourses(app);
+app.route("/manage", routeBackoffice());
+app.route("/", routeCMS());
 
 export default app;
