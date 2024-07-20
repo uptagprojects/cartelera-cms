@@ -14,8 +14,6 @@ CREATE TABLE IF NOT EXISTS cartelera.cms__courses (
     instructor_badge VARCHAR(120),
     instructor_avatar TEXT,
     instructor_related_url TEXT,
-    creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );

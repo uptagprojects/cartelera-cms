@@ -16,8 +16,6 @@ CREATE TABLE IF NOT EXISTS cartelera.cms__courses (
     instructor_avatar TEXT,
     instructor_related_url TEXT,
     instructor_email VARCHAR(120),
-    presentation_url TEXT,
-    creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
