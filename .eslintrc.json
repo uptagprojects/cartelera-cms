@@ -1,4 +1,4 @@
-module.exports = {
+{
   "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "prettier" ],
   "overrides": [
     {
