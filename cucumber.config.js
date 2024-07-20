@@ -13,28 +13,28 @@ module.exports = {
             ["junit", "coverage/junit.xml"]
         ]
     },
-    "cms": {
+    "cda": {
         "requireModule": ["ts-node/register"],
         "require": [
             "tests/features/step_definitions/*.steps.ts",
-            "test/features/cms/step_definitions/*.steps.ts"
+            "test/features/cda/step_definitions/*.steps.ts"
         ],
         "paths": [
-            "tests/features/cms/**/*.feature"
+            "tests/features/cda/**/*.feature"
         ],
         "format": [
             "progress-bar",
             ["junit", "coverage/junit.xml"]
         ]
     },
-    "backoffice": {
+    "cma": {
         "requireModule": ["ts-node/register"],
         "require": [
             "tests/features/step_definitions/*.steps.ts",
-            "test/features/backoffice/step_definitions/*.steps.ts"
+            "test/features/cma/step_definitions/*.steps.ts"
         ],
         "paths": [
-            "tests/features/backoffice/**/*.feature"
+            "tests/features/cma/**/*.feature"
         ],
         "format": [
             "progress-bar",

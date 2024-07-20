@@ -1,4 +1,4 @@
-import { CourseName } from "@/contexts/cms/courses/domain/CourseName";
+import { CourseName } from "@/contexts/cda/courses/domain/CourseName";
 import { faker } from "@faker-js/faker";
 
 export class CourseNameMother {

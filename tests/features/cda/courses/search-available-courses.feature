@@ -2,7 +2,7 @@ Feature: Search available courses
     As a user without special permissions
     I want to search all available courses
     Scenario: A valid course id
-        When I send a GET request to "/api/courses/"
+        When I send a GET request to "/api/courses"
         Then the response status should be 200
         And the response content should be:
         """

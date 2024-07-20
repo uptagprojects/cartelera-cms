@@ -1,3 +1,3 @@
-import { Identifier } from "@/contexts/shared/domain/Identifier";
+import { Identifier } from "../../../shared/domain/Identifier";
 
 export class CourseId extends Identifier {}

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { routeCourses } from "./courses/routeCourses";
 
-export const routeBackoffice = () => {
+export const routeCMA = () => {
     const app = new Hono();
     routeCourses(app);
     return app;

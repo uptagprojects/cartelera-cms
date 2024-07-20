@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cartelera.cms__course_periods (
+CREATE TABLE IF NOT EXISTS cartelera.cda__course_periods (
     id UUID PRIMARY KEY,
     course_id UUID NOT NULL,
     start_period TIMESTAMPTZ,

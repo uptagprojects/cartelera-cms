@@ -1,4 +1,4 @@
-import { CourseId } from "@/contexts/cms/courses/domain/CourseId";
+import { CourseId } from "../../../../../src/contexts/cda/courses/domain/CourseId";
 import { faker } from "@faker-js/faker";
 
 

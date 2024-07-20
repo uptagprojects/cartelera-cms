@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cartelera.cms__courses (
+CREATE TABLE IF NOT EXISTS cartelera.cma__courses (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     abstract TEXT,

@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { routeCMS } from "./cda/routeCMS";
-import { routeBackoffice } from "./cma/routeBackoffice";
+import { routeCMA } from "./cma/routeCMA";
+import { routeCDA } from "./cda/routeCDA";
 const app = new Hono().basePath('/api');
 
-app.route("/manage", routeBackoffice());
-app.route("/", routeCMS());
+app.route("/manage", routeCMA());
+app.route("/", routeCDA());
 
 export default app;
