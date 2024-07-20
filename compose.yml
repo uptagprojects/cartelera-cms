@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./databases/:/docker-entrypoint-initdb.d/
+    environment:
+      - POSTGRES_PASSWORD=password$
+      - POSTGRES_USER=user
+      - POSTGRES_DB=cartelera
+volumes:
+  db_data:

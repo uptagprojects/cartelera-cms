@@ -1,30 +1,32 @@
+import app from "../../../src/api/handler";
 import { When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
-import { request } from "./request";
+
 let _response: Response;
 
 When("I send a GET request to {string}", async (route: string) => {
-    _response = await request("GET", route);
+    _response = await app.request(route, {
+        method: "GET"
+    });
 });
 
-When("I send a POST request to {string} without body", async (route: string) => {
-    _response = await request("POST", route);
-});
-
-When("I send a POST request to {string} with body:", async (route: string, body) => {
-    _response = await request("POST", route, body);
-});
-
-When("I send a PUT request to {string} without body:", async (route: string) => {
-    _response = await request("PUT", route);
+When("I send a PUT request to {string} without body", async (route: string) => {
+    _response = await app.request(route, {
+        method: "PUT"
+    });
 });
 
 When("I send a PUT request to {string} with body:", async (route: string, body) => {
-    _response = await request("PUT", route, body);
+    _response = await app.request(route, {
+        method: "PUT",
+        body
+    });
 });
 
 When("I send a DELETE request to {string}", async (route: string) => {
-    _response = await request("DELETE", route);
+    _response = await app.request(route, {
+        method: "DELETE"
+    });
 });
 
 Then("the response status should be {int}", (status: number) => {
@@ -32,11 +34,11 @@ Then("the response status should be {int}", (status: number) => {
 })
 
 Then("the response should be empty", () => {
-    assert.deepEqual(_response.body, "");
+    assert.deepEqual(_response.body, null);
 })
 
 Then("the response content should be:", async (content: string) => {
-    assert.deepEqual(_response.headers.get("Content-Type"), "application/json");
+    assert.deepEqual(_response.headers.get("Content-Type"), "application/json; charset=UTF-8");
     const body = await _response.json();
     assert.deepEqual(body, JSON.parse(content));
 });

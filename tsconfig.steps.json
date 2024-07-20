@@ -12,6 +12,7 @@
         "outDir": "./dist",
     },
     "include": [
+        "tests/modules.d.ts",
         "**/*.steps.ts",
         "./tests/features/**/*.ts"
     ]
