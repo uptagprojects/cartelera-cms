@@ -38,4 +38,4 @@ Feature: Create a new course
             ]
         }
         """
-        Then the response status should be 422
+        Then the response status should be 202

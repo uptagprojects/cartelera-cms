@@ -20,17 +20,19 @@
     "test:unit": "npm run test:jest tests/contexts/**/*/application && npm run test:cypress",
     "test:integration": "npm run test:jest tests/contexts/**/*/infrastructure",
     "test:acceptance": "npm run test:features && npm run test:cypress:e2e",
-    "test:features": "TS_NODE_PROJECT=tsconfig/tsconfig.cucumber.json NODE_ENV=test cucumber-js",
+    "test:features": "TS_NODE_PROJECT=tsconfig.steps.json NODE_ENV=test cucumber-js -c cucumber.config.js",
     "test:jest": "NODE_ENV=test jest",
-    "test:cypress": "TS_NODE_PROJECT=tsconfig/tsconfig.cypress.json NODE_ENV=test cypress run --component",
-    "test:cypress:e2e": "start-server-and-test dev http://localhost:3000 \"TS_NODE_PROJECT=tsconfig/tsconfig.cypress.json NODE_ENV=test cypress run --e2e\""
+    "test:cypress": "TS_NODE_PROJECT=tsconfig.cy.json NODE_ENV=test cypress run --component",
+    "test:cypress:e2e": "start-server-and-test dev http://localhost:3000 \"TS_NODE_PROJECT=tsconfig.cy.json NODE_ENV=test cypress run --e2e\""
   },
   "dependencies": {
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "hono": "^4.5.0",
     "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18",
+    "pg": "^8.12.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -40,6 +42,7 @@
     "@faker-js/faker": "^8.4.1",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
+    "@types/pg": "^8.11.6",
     "ant-path-matcher": "^0.0.5",
     "cypress": "^13.11.0",
     "eslint": "^8.57.0",
@@ -48,6 +51,7 @@
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
     "jest": "^29.7.0",
+    "node-pg-migrate": "^7.5.2",
     "prettier": "^3.2.5",
     "start-server-and-test": "^2.0.3",
     "ts-jest": "^29.1.4",
