@@ -1,5 +1,5 @@
 {
-  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "prettier" ],
+  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "plugin:prettier/recommended" ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
