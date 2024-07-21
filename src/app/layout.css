@@ -1,0 +1,68 @@
+:root {
+  --primary-h: 267.15;
+  --primary-c: 0.076;
+  --primary-l: 32.91%;
+  --secondary-h: 72.94;
+  --secondary-c: 0.031;
+  --secondary-l: 93.63%;
+  --accent-h: 57.95;
+  --accent-c: 0.102;
+  --accent-l: 77.58%;
+  --glow-h: 4.69;
+  --glow-c: 0.109;
+  --glow-l: 40.84%;
+  --font-display: var(--font-lexend), "Menlo", ui-monospace;
+  --font-body: var(--font-literata), "Garamond", ui-serif, serif;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+  --border-radius: 0.5rem;
+  color-scheme: light dark;
+  --bg-light: oklch(calc(var(--secondary-l) + var(--secondary-l) * 0.7) var(--secondary-c) var(--secondary-h));
+  --bg-dark: oklch(calc(var(--primary-l) - var(--primary-l) * 0.7) var(--primary-c) var(--primary-h));
+  --text-light: oklch(calc(var(--primary-l) + var(--primary-l) * 0.15) var(--primary-c) var(--primary-h));
+  --text-dark: oklch(calc(var(--primary-l) + var(--primary-l) * 0.8) var(--primary-c) var(--primary-h));
+  max-width: 100dvw;
+  min-height: 100dvh;
+}
+
+body {
+  background-color: var(--bg-light);
+  background-color: light-dark(var(--bg-light), var(--bg-dark));
+  color: var(--text-light);
+  color: light-dark(var(--text-light), var(--text-dark));
+}
+
+h1,h2,h3,h4,h5 {
+  --text-size: 1.25em;
+  font-size: clamp(var(--text-size), 4vw + var(--text-size), calc(var(--text-size) * 1.5));
+  font-family: var(--font-display);
+
+  .display {
+    --text-size: calc(var(--text-size) * 2);
+    font-size: clamp(var(--text-size), 4vw + var(--text-size), calc(var(--text-size) * 1.5));
+  }
+}
+
+p, caption, label, figcaption {
+  --text-size: 1rem;
+  font-size: clamp(var(--text-size), 2vw + var(--text-size), calc(var(--text-size) * 1.25));
+  font-family: var(--font-body);
+}
+
+code, blockquote {
+  --text-size: 1.15rem;
+  font-size: clamp(var(--text-size), 2vw + var(--text-size), calc(var(--text-size) * 1.5));
+  font-family: var(--font-mono);
+}
+
+h1 { --text-size: 2.5rem; }
+
+h2 { --text-size: 1.5rem; }
+
+h3 { --text-size: 1.25rem; }
+
+h4 { --text-size: 1.2rem; }
+
+h5 { --text-size: 1rem; }
+

@@ -21,6 +21,12 @@
       "env": {
         "jest": true
       }
+    },
+    {
+      "files": ["*.cy.ts", "*.cy.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.cy.json"]
+      }
     }
   ]
 }
