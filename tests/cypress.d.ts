@@ -1,7 +1,10 @@
 /// <reference types="cypress" />
+import { mount } from "cypress/react18";
 
-declare namespace Cypress {
-    interface Chainable<Subject = any> {
-      mount(jsx: React__default.ReactNode, options?: MountOptions, rerenderKey?: string): Cypress.Chainable<MountReturn>
-    }
-  }
+declare global {
+	namespace Cypress {
+		interface Chainable {
+			mount: typeof mount;
+		}
+	}
+}

@@ -1,4 +1,4 @@
-import { Lexend, Literata } from "next/font/google";
+import { Lexend, Open_Sans } from "next/font/google";
 
 export const lexend = Lexend({
 	subsets: ["latin"],
@@ -6,8 +6,8 @@ export const lexend = Lexend({
 	variable: "--font-lexend"
 });
 
-export const literata = Literata({
+export const openSans = Open_Sans({
 	subsets: ["latin"],
 	weight: ["400", "500", "600", "700", "800"],
-	variable: "--font-literata"
+	variable: "--font-open-sans"
 });

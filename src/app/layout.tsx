@@ -1,8 +1,8 @@
-import "./layout.css";
+import "./globals.css";
 
 import type { Metadata } from "next";
 
-import { lexend, literata } from "./fonts";
+import { lexend, openSans } from "./fonts";
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -15,7 +15,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="es-ES" className={[lexend.variable, literata.variable].join(" ")}>
+		<html lang="es-ES" className={[lexend.variable, openSans.variable].join(" ")}>
 			<body>{children}</body>
 		</html>
 	);
