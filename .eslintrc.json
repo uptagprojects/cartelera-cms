@@ -1,5 +1,5 @@
 {
-  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "prettier" ],
+  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "plugin:prettier/recommended", "plugin:cypress/recommended" ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
@@ -20,6 +20,15 @@
       "files": ["*.test.ts"],
       "env": {
         "jest": true
+      }
+    },
+    {
+      "files": ["*.cy.ts", "*.cy.tsx"],
+      "parserOptions": {
+        "project": ["./tsconfig.cy.json"]
+      },
+      "env": {
+        "cypress/globals": true
       }
     }
   ]
