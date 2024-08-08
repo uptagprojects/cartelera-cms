@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "skipLibCheck": true,
+        "noErrorTruncation": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "lib": ["esnext"],
+        "moduleResolution": "node",
+        "target": "esnext",
+        "module": "commonjs",
+        "outDir": "./dist",
+    },
+    "include": [
+        "./src/**/*.ts",
+        "./tests/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/**",
+        ".github"
+    ]
+}

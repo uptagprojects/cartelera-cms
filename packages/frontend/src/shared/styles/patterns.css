@@ -1,0 +1,42 @@
+@layer defaults.patterns {
+    body {
+        background-color: var(--bg-color);
+        color: var(--font-color);
+        font-family: var(--font-body), sans-serif;
+        max-width: 100dvw;
+        min-height: 100dvh;
+    }
+    
+    h1,h2,h3,h4,h5 {
+        --text-size: 1.25em;
+        font-size: clamp(var(--text-size), 4vw + var(--text-size), calc(var(--text-size) * 1.5));
+        font-family: var(--font-display);
+    
+        .display {
+        --text-size: calc(var(--text-size) * 2);
+        font-size: clamp(var(--text-size), 4vw + var(--text-size), calc(var(--text-size) * 1.5));
+        }
+    }
+    
+    p, caption, label, figcaption {
+        --text-size: 1rem;
+        font-size: clamp(var(--text-size), 2vw + var(--text-size), calc(var(--text-size) * 1.25));
+        font-family: var(--font-body);
+    }
+    
+    code, blockquote {
+        --text-size: 1.15rem;
+        font-size: clamp(var(--text-size), 2vw + var(--text-size), calc(var(--text-size) * 1.5));
+        font-family: var(--font-mono), monospace;
+    }
+    
+    h1 { --text-size: 2.5rem; }
+    
+    h2 { --text-size: 1.5rem; }
+    
+    h3 { --text-size: 1.25rem; }
+    
+    h4 { --text-size: 1.2rem; }
+    
+    h5 { --text-size: 1rem; }
+} 
