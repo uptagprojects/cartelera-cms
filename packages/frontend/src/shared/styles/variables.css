@@ -1,0 +1,72 @@
+@layer defaults.variables {
+  :root {
+    --font-display: var(--font-lexend, "Lexend");
+    --font-body: var(--font-open-sans, "Open Sans");
+    --font-mono: "Fira Code";
+    --border-radius: 0.5rem;
+    --p-h: 52.41;
+    --p-c: 0.137;
+    --s-h: 268.22;
+    --s-c: 0.085;
+    --a-h: 351.06;
+    --a-c: 0.141;
+    --primary-100: oklch(98.59% var(--p-c) var(--p-h));
+    --primary-200: oklch(91.46% var(--p-c) var(--p-h));
+    --primary-300: oklch(84.33% var(--p-c) var(--p-h));
+    --primary-400: oklch(76.90% var(--p-c) var(--p-h));
+    --primary-500: oklch(69.47% var(--p-c) var(--p-h));
+    --primary-600: oklch(59.35% var(--p-c) var(--p-h));
+    --primary-700: oklch(49.24% var(--p-c) var(--p-h));
+    --primary-800: oklch(34.45% var(--p-c) var(--p-h));
+    --primary-900: oklch(19.65% var(--p-c) var(--p-h));
+    --secondary-100: oklch(82.64% var(--s-c) var(--s-h));
+    --secondary-200: oklch(75.70% var(--s-c) var(--s-h));
+    --secondary-300: oklch(68.75% var(--s-c) var(--s-h));
+    --secondary-400: oklch(61.80% var(--s-c) var(--s-h));
+    --secondary-500: oklch(54.85% var(--s-c) var(--s-h));
+    --secondary-600: oklch(44.29% var(--s-c) var(--s-h));
+    --secondary-700: oklch(33.74% var(--s-c) var(--s-h));
+    --secondary-800: oklch(23.19% var(--s-c) var(--s-h));
+    --secondary-900: oklch(12.64% var(--s-c) var(--s-h));
+    --accent-100: oklch(88.88% var(--a-c) var(--a-h));
+    --accent-200: oklch(81.38% var(--a-c) var(--a-h));
+    --accent-300: oklch(73.88% var(--a-c) var(--a-h));
+    --accent-400: oklch(66.38% var(--a-c) var(--a-h));
+    --accent-500: oklch(58.88% var(--a-c) var(--a-h));
+    --accent-600: oklch(51.38% var(--a-c) var(--a-h));
+    --accent-700: oklch(43.88% var(--a-c) var(--a-h));
+    --accent-800: oklch(36.38% var(--a-c) var(--a-h));
+    --accent-900: oklch(28.88% var(--a-c) var(--a-h));
+    --gray-100: oklch(94.91% 0 var(--p-h));
+    --gray-200: oklch(84.52% 0 var(--p-h));
+    --gray-300: oklch(72.52% 0 var(--p-h));
+    --gray-400: oklch(59.99% 0 var(--p-h));
+    --gray-500: oklch(46.40% 0 var(--p-h));
+    --gray-600: oklch(39.42% 0 var(--p-h));
+    --gray-700: oklch(32.11% 0 var(--p-h));
+    --gray-800: oklch(24.35% 0 var(--p-h));
+    --gray-900: oklch(15.91% 0 var(--p-h));
+    --primary-color: var(--primary-500);
+    --secondary-color: var(--secondary-500);
+    --accent-color: var(--accent-500);
+    --bg-color: var(--gray-100);
+    --font-color: var(--primary-900);
+    --sunset-gradient: radial-gradient(
+      131.84% 131.84% at 88.75% 15%,
+      var(--primary-500) 19%,
+      oklch(65.12% 0.169 19.62) 38%,
+      var(--accent-500) 55%,
+      oklch(52.11% 0.094 314.16) 70%,
+      var(--secondary-500) 83%,
+      oklch(38.83% 0.041 237.32)
+    );
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-color: var(--gray-900);
+      --font-color: var(--primary-100);
+    }
+  }
+}
