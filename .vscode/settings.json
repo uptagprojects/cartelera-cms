@@ -3,12 +3,13 @@
         "node_modules/": true
     },
     "cucumber.features": [
-        "packages/backend/tests/features/**/*.feature"
+        "tests/features/**/*.feature"
     ],
     "cucumber.glue": [
-        "packages/backend/tests/features/step_definitions/*.steps.ts",
-        "packages/backend/tests/features/**/*.steps.ts"
+        "tests/features/step_definitions/*.steps.ts",
+        "tests/features/**/*.steps.ts"
     ],
+    "prettier.configPath": ".prettierrc",
 //    "eslint.format.enable": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"

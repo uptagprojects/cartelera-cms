@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "types": ["cypress", "cypress-axe", "node"]
+    },
+    "include": [
+      "./next-env.d.ts",
+      "./tests/e2e/**/*.cy.ts",
+      "./tests/components/**/*.cy.tsx",
+      "./tests/cypress.d.ts"
+    ],
+    "exclude": [
+      "./node_modules"
+    ]
+}

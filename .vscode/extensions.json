@@ -1,6 +1,7 @@
 {
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
-        "cucumberopen.cucumber-official"
+        "cucumberopen.cucumber-official",
+        "andrew-codes.cypress-snippets"
 	]
 }
