@@ -5,7 +5,9 @@
     },
     "include": [
       "./next-env.d.ts",
-      "./tests/e2e/**/*.cy.ts",
+      "./tests/e2e/**/*.ts",
+      "./tests/e2e/**/*.cy.tsx",
+      "./tests/components/**/*.ts",
       "./tests/components/**/*.cy.tsx",
       "./tests/cypress.d.ts"
     ],

@@ -1,0 +1,15 @@
+- crear en el playground el DSL de las relaciones entre usuario, profesor, localizacion, guias, cursos, eventos, unidades curriculares, noticias y actividad (activity)
+- buscar un paquete para crear migraciones
+- crear migraciones de los repositorios usuario, profesor, guias, cursos, eventos, actividades, unidades curriculares, noticias
+- crear migraciones sobre el store de cartelera, lanzar en consola los datos importantes sobre el store que se crea, si es produccion se lanzan en consola solamente. De ser en development puedes crear o editar el .env con la info que necesitan
+- crear los dominios de cada uno de los contextos
+- conectar el openfga unicamente en el CMA (crea un middleware y santo remedio)
+- copiar y pegar el codigo del modo TV
+- copiar y pegar el codigo de la lista de eventos, guias, posts, etc
+- armar estructura del landing page en v0
+- armar estructura de la vista de un post en v0
+- armar estructura de la vista de un curso en v0
+- armar estructura de la vista de un evento en v0
+- armar estructura de la vista del creador de posts en v0
+- crear login
+- conectar login mediante next-auth si es posible, sino usar una libreria de hono
