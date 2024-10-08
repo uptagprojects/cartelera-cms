@@ -10,5 +10,39 @@ services:
       - POSTGRES_PASSWORD=password$
       - POSTGRES_USER=user
       - POSTGRES_DB=cartelera
+    networks:
+      - default
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h localhost -U user -d cartelera" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  rebac_migrate:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: openfga/openfga:latest
+    environment:
+      - OPENFGA_DATASTORE_ENGINE=postgres
+      - "OPENFGA_DATASTORE_URI=postgres://user:password$@db:5432/cartelera?sslmode=disable"
+    command: migrate
+    networks:
+      - default
+  rebac:
+    depends_on:
+      rebac_migrate:
+        condition: service_completed_successfully
+    image: openfga/openfga:latest
+    command: run
+    ports:
+      - 3000:3000
+      - 8080:8080
+      - 8081:8081
+    environment:
+      - OPENFGA_DATASTORE_ENGINE=postgres
+      - "OPENFGA_DATASTORE_URI=postgres://user:password$@db:5432/cartelera?sslmode=disable"
+      - OPENFGA_PLAYGROUND_ENABLED=true
+    networks:
+      - default
 volumes:
   db_data:

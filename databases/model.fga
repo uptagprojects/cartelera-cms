@@ -1,0 +1,76 @@
+model
+    schema 1.1
+
+
+type user
+
+type organization
+    relations
+        define admin: [user]
+
+type uc
+    relations
+        define department: [organization]
+        define admin: [user]
+        define professor: [user]
+        define can_view: [user:*]
+        define can_edit: admin or admin from department
+        define can_delete: admin from department
+    
+
+type guide
+    relations
+        define author: [user]
+        define area: [uc]
+        define can_view: [user:*]
+        define can_edit: author or professor from area or admin from area
+        define can_publish: professor from area
+        define can_delete: author or admin from area
+
+type course
+    relations
+        define speaker: [user]
+        define department: [organization]
+        define can_view: [user:*]
+        define can_edit: speaker or admin from department
+        define can_delete: admin from department
+
+type event
+    relations
+        define staff: [user]
+        define department: [organization]
+        define can_view: [user:*]
+        define can_publish: staff or admin from department
+        define can_edit: staff or admin from department
+        define can_delete: staff or admin from department
+
+type news
+    relations
+        define department: [organization]
+        define author: [user]
+        define can_view: [user:*]
+        define can_publish: admin from department
+        define can_edit: admin from department
+        define can_delete: admin from department
+
+
+#type group
+#  relations
+#    define member: [user]
+
+#type folder
+#  relations
+#    define can_create_file: owner
+#    define owner: [user]
+#    define parent: [folder]
+#    define viewer: [user, user:*, group#member] or owner or #viewer from parent
+
+#type doc
+#  relations
+#    define can_change_owner: owner
+#    define owner: [user]
+#    define parent: [folder]
+#    define can_read: viewer or owner or viewer from parent
+#    define can_share: owner or owner from parent
+#    define viewer: [user, user:*, group#member]
+#    define can_write: owner or owner from parent

@@ -18,6 +18,7 @@
 # production
 /build
 /.dist
+.migrate
 
 # misc
 .DS_Store

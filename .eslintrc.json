@@ -23,7 +23,7 @@
       }
     },
     {
-      "files": ["*.cy.ts", "*.cy.tsx"],
+      "files": ["*.cy.ts", "*.cy.tsx", "tests/e2e/**/*.ts", "tests/components/**/*.ts"],
       "parserOptions": {
         "project": ["./tsconfig.cy.json"]
       },
