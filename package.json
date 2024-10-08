@@ -27,9 +27,11 @@
     "test:cypress:e2e": "start-server-and-test dev http://localhost:3000 \"TS_NODE_PROJECT=tsconfig.cy.json NODE_ENV=test cypress run --e2e\""
   },
   "dependencies": {
+    "@openfga/sdk": "^0.7.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "hono": "^4.5.0",
+    "migrate": "^2.1.0",
     "next": "14.2.3",
     "pg": "^8.12.0",
     "react": "^18.2.0",
@@ -46,6 +48,7 @@
     "@types/pg": "^8.11.6",
     "cypress": "^13.13.1",
     "cypress-axe": "^1.5.0",
+    "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-codely": "^3.1.3",
     "eslint-config-next": "14.2.3",
