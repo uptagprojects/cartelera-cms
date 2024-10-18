@@ -1,19 +1,24 @@
+import { Button, Container } from "octagon-ui";
+
 export default function Home() {
 	return (
-		<main>
-			<h1>Heading 1</h1>
-			<h2>Heading 2</h2>
-			<h3>Heading 3</h3>
-			<h4 className="display">Display 4</h4>
-			<h4>Heading 4</h4>
-			<h5>Heading 5</h5>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem aspernatur, ea
-				reprehenderit nihil provident autem asperiores, cupiditate beatae consequatur
-				molestias quas odit modi dolore, a laudantium corporis ducimus distinctio enim!
-			</p>
-			<label>hello caption</label>
-			<blockquote>hello world;</blockquote>
-		</main>
+		<>
+			<Container center={true}>
+				<h2>Somos tecnologia</h2>
+				<Button variant="primary" label="revisa la cartelera" />
+			</Container>
+			<Container>
+				<h3>Aun no tenemos horarios disponibles</h3>
+				<Button variant="tertiary" label="" />
+			</Container>
+			<Container>
+				<h3>Estamos en la semana</h3>
+				<span>1</span>
+			</Container>
+			<Container>
+				<h3>Sigamos aprendiendo</h3>
+				<Button variant="primary" label="buscar cursos" />
+			</Container>
+		</>
 	);
 }
