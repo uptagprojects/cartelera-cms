@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button, Card, CardFooter, CardHeader } from "octagon-ui";
 import React from "react";
 
@@ -57,10 +58,12 @@ const NewsPage: React.FC = () => {
 				<h1>Ultimas guias</h1>
 				<ul>
 					{newsArticles.map(article => (
-						<li key={article.id}>
-							<h2>{article.title}</h2>
-							<p>{article.content}</p>
-						</li>
+						<Link key={article.id} href={`/guides/${article.id}`}>
+							<li key={article.id}>
+								<h2>{article.title}</h2>
+								<p>{article.content}</p>
+							</li>
+						</Link>
 					))}
 				</ul>
 			</section>

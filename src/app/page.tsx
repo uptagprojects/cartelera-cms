@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button, Container } from "octagon-ui";
 
 export default function Home() {
@@ -5,7 +6,9 @@ export default function Home() {
 		<>
 			<Container center={true}>
 				<h2>Somos tecnologia</h2>
-				<Button variant="primary" label="revisa la cartelera" />
+				<Link href="/news">
+					<Button variant="primary" label="revisa la cartelera" />
+				</Link>
 			</Container>
 			<Container>
 				<h3>Aun no tenemos horarios disponibles</h3>
