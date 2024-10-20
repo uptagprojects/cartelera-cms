@@ -1,8 +1,9 @@
+import { CourseAbstract } from "./CourseAbstract";
 import { CourseCreation } from "./CourseCreation";
-import { CourseDescription } from "./CourseDescription";
 import { CourseDuration } from "./CourseDuration";
 import { CourseFinishDate } from "./CourseFinishDate";
 import { CourseId } from "./CourseId";
+import { CourseInstructor, CourseInstructorPrimitives } from "./CourseInstructor/CourseInstructor";
 import { CourseLocation } from "./CourseLocation";
 import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
@@ -13,10 +14,11 @@ import { CourseUpdate } from "./CourseUpdate";
 export type CoursePrimitives = {
 	id: string;
 	name: string;
-	description: string;
+	abstract: string;
+	instructor: CourseInstructorPrimitives;
 	picture: string;
 	location: string;
-	duration: string;
+	duration: number;
 	startDate: string;
 	finishDate: string;
 	price: number;
@@ -25,34 +27,24 @@ export type CoursePrimitives = {
 };
 
 export class Course {
-	readonly id: CourseId;
-	readonly name: CourseName;
-	readonly description: CourseDescription;
-	readonly picture: CoursePicture;
-	readonly location: CourseLocation;
-	readonly duration: CourseDuration;
-	readonly startDate: CourseStartDate;
-	readonly finishDate: CourseFinishDate;
-	readonly price: CoursePrice;
-	readonly creation: CourseCreation;
-	readonly lastUpdate: CourseUpdate;
-
 	constructor(
-		id: CourseId,
-		name: CourseName,
-		description: CourseDescription,
-		picture: CoursePicture,
-		location: CourseLocation,
-		duration: CourseDuration,
-		startDate: CourseStartDate,
-		finishDate: CourseFinishDate,
-		price: CoursePrice,
-		creation: CourseCreation,
-		lastUpdate: CourseUpdate
+		readonly id: CourseId,
+		readonly name: CourseName,
+		readonly abstract: CourseAbstract,
+		readonly instructor: CourseInstructor,
+		readonly picture: CoursePicture,
+		readonly location: CourseLocation,
+		readonly duration: CourseDuration,
+		readonly startDate: CourseStartDate,
+		readonly finishDate: CourseFinishDate,
+		readonly price: CoursePrice,
+		readonly creation: CourseCreation,
+		readonly lastUpdate: CourseUpdate
 	) {
 		this.id = id;
 		this.name = name;
-		this.description = description;
+		this.abstract = abstract;
+		this.instructor = instructor;
 		this.picture = picture;
 		this.location = location;
 		this.duration = duration;
@@ -67,7 +59,8 @@ export class Course {
 		return new Course(
 			new CourseId(plainData.id),
 			new CourseName(plainData.name),
-			new CourseDescription(plainData.description),
+			new CourseAbstract(plainData.abstract),
+			CourseInstructor.fromPrimitives(plainData.instructor),
 			new CoursePicture(plainData.picture),
 			new CourseLocation(plainData.location),
 			new CourseDuration(Number(plainData.duration)),
@@ -79,19 +72,20 @@ export class Course {
 		);
 	}
 
-	private toPrimitives() {
+	private toPrimitives(): CoursePrimitives {
 		return {
 			id: this.id.value,
 			name: this.name.value,
-			description: this.description.value,
+			abstract: this.abstract.value,
+			instructor: this.instructor.toPrimitives(),
 			picture: this.picture.value,
 			location: this.location.value,
 			duration: this.duration.value,
-			startDate: this.startDate.value,
-			finishDate: this.finishDate.value,
+			startDate: this.startDate.value.toISOString(),
+			finishDate: this.finishDate.value.toISOString(),
 			price: this.price.value,
-			creation: this.creation.value,
-			lastUpdate: this.lastUpdate.value
+			creation: this.creation.value.toISOString(),
+			lastUpdate: this.lastUpdate.value.toISOString()
 		};
 	}
 }
