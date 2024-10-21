@@ -1,14 +1,13 @@
 import { CourseAbstract } from "./CourseAbstract";
+import { CourseAvailableSeats } from "./CourseAvailableSeats";
 import { CourseCreation } from "./CourseCreation";
-import { CourseDuration } from "./CourseDuration";
-import { CourseFinishDate } from "./CourseFinishDate";
+import { CourseDuration, CourseDurationPrimitives } from "./CourseDuration/CourseDuration";
 import { CourseId } from "./CourseId";
 import { CourseInstructor, CourseInstructorPrimitives } from "./CourseInstructor/CourseInstructor";
 import { CourseLocation } from "./CourseLocation";
 import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
 import { CoursePrice } from "./CoursePrice";
-import { CourseStartDate } from "./CourseStartDate";
 import { CourseUpdate } from "./CourseUpdate";
 
 export type CoursePrimitives = {
@@ -18,9 +17,7 @@ export type CoursePrimitives = {
 	instructor: CourseInstructorPrimitives;
 	picture: string;
 	location: string;
-	duration: number;
-	startDate: string;
-	finishDate: string;
+	duration: CourseDurationPrimitives;
 	price: number;
 	creation: string;
 	lastUpdate: string;
@@ -31,48 +28,32 @@ export class Course {
 		readonly id: CourseId,
 		readonly name: CourseName,
 		readonly abstract: CourseAbstract,
-		readonly instructor: CourseInstructor,
 		readonly picture: CoursePicture,
+		readonly instructor: CourseInstructor,
 		readonly location: CourseLocation,
 		readonly duration: CourseDuration,
-		readonly startDate: CourseStartDate,
-		readonly finishDate: CourseFinishDate,
 		readonly price: CoursePrice,
 		readonly creation: CourseCreation,
 		readonly lastUpdate: CourseUpdate
-	) {
-		this.id = id;
-		this.name = name;
-		this.abstract = abstract;
-		this.instructor = instructor;
-		this.picture = picture;
-		this.location = location;
-		this.duration = duration;
-		this.startDate = startDate;
-		this.finishDate = finishDate;
-		this.price = price;
-		this.creation = creation;
-		this.lastUpdate = lastUpdate;
-	}
+	) {}
 
-	static fromPrimitives(plainData: CoursePrimitives): Course {
+	static fromPrimitives(primitives: CoursePrimitives): Course {
 		return new Course(
-			new CourseId(plainData.id),
-			new CourseName(plainData.name),
-			new CourseAbstract(plainData.abstract),
-			CourseInstructor.fromPrimitives(plainData.instructor),
-			new CoursePicture(plainData.picture),
-			new CourseLocation(plainData.location),
-			new CourseDuration(Number(plainData.duration)),
-			new CourseStartDate(new Date(plainData.startDate)),
-			new CourseFinishDate(new Date(plainData.finishDate)),
-			new CoursePrice(plainData.price),
-			new CourseCreation(new Date(plainData.creation)),
-			new CourseUpdate(new Date(plainData.lastUpdate))
+			new CourseId(primitives.id),
+			new CourseName(primitives.name),
+			new CourseAbstract(primitives.abstract),
+			new CoursePicture(primitives.picture),
+			CourseInstructor.fromPrimitives(primitives.instructor),
+			new CourseLocation(primitives.location),
+			CourseDuration.fromPrimitives(primitives.duration),
+			new CoursePrice(primitives.price),
+			new CourseAvailableSeats(primitives.availableSeats),
+			new CourseCreation(new Date(primitives.creation)),
+			new CourseUpdate(new Date(primitives.lastUpdate))
 		);
 	}
 
-	private toPrimitives(): CoursePrimitives {
+	toPrimitives(): CoursePrimitives {
 		return {
 			id: this.id.value,
 			name: this.name.value,
@@ -80,9 +61,7 @@ export class Course {
 			instructor: this.instructor.toPrimitives(),
 			picture: this.picture.value,
 			location: this.location.value,
-			duration: this.duration.value,
-			startDate: this.startDate.value.toISOString(),
-			finishDate: this.finishDate.value.toISOString(),
+			duration: this.duration.toPrimitives(),
 			price: this.price.value,
 			creation: this.creation.value.toISOString(),
 			lastUpdate: this.lastUpdate.value.toISOString()

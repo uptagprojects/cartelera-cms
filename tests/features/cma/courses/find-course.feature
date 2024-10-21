@@ -2,7 +2,7 @@ Feature: Find a course
     As a user without special permissions
     I want to find a course by their id
     Scenario: A valid course id
-        When I send a GET request to "/api/courses/5d16fd83-7b22-417e-8301-187036193946"
+        When I send a GET request to "/api/cma/courses/5d16fd83-7b22-417e-8301-187036193946"
         Then the response status should be 200
         And the response content should be:
         """
