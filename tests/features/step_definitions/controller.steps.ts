@@ -10,6 +10,19 @@ When("I send a GET request to {string}", async (route: string) => {
     });
 });
 
+When("I send a POST request to {string} without body", async (route: string) => {
+    _response = await app.request(route, {
+        method: "POST"
+    });
+});
+
+When("I send a POST request to {string} with body:", async (route: string, body) => {
+    _response = await app.request(route, {
+        method: "POST",
+        body
+    });
+});
+
 When("I send a PUT request to {string} without body", async (route: string) => {
     _response = await app.request(route, {
         method: "PUT"
@@ -33,7 +46,7 @@ Then("the response status should be {int}", (status: number) => {
     assert.equal(_response.status, status);
 })
 
-Then("the response should be empty", () => {
+Then("the response content should be empty", () => {
     assert.deepEqual(_response.body, null);
 })
 
