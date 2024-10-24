@@ -26,8 +26,8 @@ export class CourseInstructor {
 			new CourseInstructorName(plainData.name),
 			new CourseInstructorBadge(plainData.badge),
 			new CourseInstructorEmail(plainData.email),
-			new CourseInstructorAvatar(new URL(plainData.avatar)),
-			new CourseInstructorRelatedUrl(new URL(plainData.relatedUrl))
+			new CourseInstructorAvatar(plainData.avatar),
+			new CourseInstructorRelatedUrl(plainData.relatedUrl)
 		);
 	}
 

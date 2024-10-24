@@ -1,26 +1,40 @@
+import { UserAvatar } from "./UserAvatar";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
 import { UserName } from "./UserName";
-import { UserPassword } from "./UserPassword";
+import { UserStatus } from "./UserStatus";
 
 export type UserPrimitives = {
 	id: string;
 	name: string;
 	email: string;
-	password: string;
+	avatar: string;
+	status: string;
 };
 
 export class User {
-	readonly id: UserId;
-	readonly name: UserName;
-	readonly email: UserEmail;
-	readonly password: UserPassword;
+	constructor(
+		readonly id: UserId,
+		readonly name: UserName,
+		readonly email: UserEmail,
+		readonly avatar: UserAvatar,
+		readonly status: UserStatus
+	) {}
 
-	constructor(id: UserId, name: UserName, email: UserEmail, password: UserPassword) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.password = password;
+	static create(id: string, name: string, email: string, avatar: string): User {
+		const defaultUserStatus = UserStatus.Active;
+
+		const user = new User(
+			new UserId(id),
+			new UserName(name),
+			new UserEmail(email),
+			new UserAvatar(avatar),
+			defaultUserStatus
+		);
+
+		//user.record(new UserRegisteredDomainEvent(id, name, email, profilePicture, defaultUserStatus));
+
+		return user;
 	}
 
 	static fromPrimitives(primitives: UserPrimitives): User {
@@ -28,7 +42,8 @@ export class User {
 			new UserId(primitives.id),
 			new UserName(primitives.name),
 			new UserEmail(primitives.email),
-			new UserPassword(primitives.password)
+			new UserAvatar(primitives.avatar),
+			primitives.status as UserStatus
 		);
 	}
 
@@ -37,7 +52,8 @@ export class User {
 			id: this.id.value,
 			name: this.name.value,
 			email: this.email.value,
-			password: "".padStart(16, " ")
+			avatar: this.avatar.value.toString(),
+			status: this.status
 		};
 	}
 }

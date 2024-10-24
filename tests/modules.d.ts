@@ -1,1 +1,1 @@
-declare module 'ant-path-matcher';
+declare module "ant-path-matcher";

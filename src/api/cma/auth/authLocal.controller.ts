@@ -1,11 +1,11 @@
 import { type Context } from "hono";
 
-import { UserAuthenticator } from "@/contexts/cma/users/application/authenticate/UserAuthenticator";
-import { PasswordDoesNotMeetLengthRequirements } from "@/contexts/cma/users/domain/PasswordDoesNotMeetLengthRequirements";
-import { User } from "@/contexts/cma/users/domain/User";
-import { UserEmailIsNotValid } from "@/contexts/cma/users/domain/UserEmailIsNotValid";
-import { PostgresUserRepository } from "@/contexts/cma/users/infrastructure/PostgresUserRepository";
-import { getPool } from "@/contexts/shared/infrastructure/PostgresPoolConnection";
+import { UserAuthenticator } from "../../../contexts/cma/users/application/authenticate/UserAuthenticator";
+import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/users/domain/PasswordDoesNotMeetLengthRequirements";
+import { User } from "../../../contexts/cma/users/domain/User";
+import { UserEmailIsNotValid } from "../../../contexts/cma/users/domain/UserEmailIsNotValid";
+import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
+import { getPool } from "../../../contexts/shared/infrastructure/PostgresPoolConnection";
 
 const repository = new PostgresUserRepository(getPool());
 

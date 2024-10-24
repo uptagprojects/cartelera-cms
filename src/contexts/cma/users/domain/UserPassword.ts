@@ -1,7 +1,6 @@
 import { hashSync } from "bcrypt";
 
-import { StringValueObject } from "@/contexts/shared/domain/StringValueObject";
-
+import { StringValueObject } from "../../../shared/domain/StringValueObject";
 import { PasswordDoesNotMeetLengthRequirements } from "./PasswordDoesNotMeetLengthRequirements";
 
 export const HASH_ROUNDS = 10;

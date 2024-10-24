@@ -10,7 +10,8 @@ Feature: Find an user
             "id": "3b9fbc9e-9063-4235-814a-8714dcabbe55",
             "name": "Jane Doe",
             "email": "janedoe@example.com",
-            "locked": false,
+            "avatar": "https://example.com/janedoe.jpg",
+            "status": "active",
             "creation": "2024-02-03T10:00:00Z"
         }
         """
@@ -26,7 +27,8 @@ Feature: Find an user
             "id": "3b9fbc9e-9063-4235-814a-8714dcabbe55",
             "name": "My User",
             "email": "myuser@example.com",
-            "locked": false,
+            "avatar": "https://example.com/janedoe.jpg",
+            "status": "active",
             "creation": "2024-02-03T10:00:00Z"
         }
         """
