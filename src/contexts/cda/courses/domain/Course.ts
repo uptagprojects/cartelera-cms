@@ -1,5 +1,3 @@
-//import { AggregateRoot } from '../../../Shared/domain/AggregateRoot';
-//import { CourseCreatedDomainEvent } from './CourseCreatedDomainEvent';
 import { CourseDuration } from "./CourseDuration";
 import { CourseId } from "./CourseId";
 import { CourseInstructorName } from "./CourseInstructorName";
@@ -31,19 +29,6 @@ export class Course {
 		this.location = location;
 	}
 
-	//   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
-	//     const course = new Course(id, name, duration);
-
-	//     course.record(
-	//       new CourseCreatedDomainEvent({
-	//         aggregateId: course.id.value,
-	//         duration: course.duration.value,
-	//         name: course.name.value
-	//       })
-	//     );
-
-	//     return course;
-	//   }
 	static fromPrimitives(plainData: {
 		id: string;
 		name: string;
