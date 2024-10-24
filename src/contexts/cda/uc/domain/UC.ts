@@ -10,32 +10,17 @@ export class UC {
         this.name = name;
     }
 
-    //   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
-    //     const course = new Course(id, name, duration);
+    static fromPrimitives(plainData: { id: string; name: string; }): UC {
+        return new UC(
+            new UCId(plainData.id),
+            new UCName(plainData.name),
+        );
+    }
 
-    //     course.record(
-    //       new CourseCreatedDomainEvent({
-    //         aggregateId: course.id.value,
-    //         duration: course.duration.value,
-    //         name: course.name.value
-    //       })
-    //     );
-
-    //     return course;
-    //   }
-    //   static fromPrimitives(plainData: { id: string; name: string; duration: string }): Course {
-    //     return new Course(
-    //       new CourseId(plainData.id),
-    //       new CourseName(plainData.name),
-    //       new CourseDuration(plainData.duration)
-    //     );
-    //   }
-
-    //   toPrimitives(): any {
-    //     return {
-    //       id: this.id.value,
-    //       name: this.name.value,
-    //       duration: this.duration.value
-    //     };
-    //   }
+    toPrimitives(): any {
+        return {
+            id: this.id.value,
+            name: this.name.value,
+        };
+    }
 }

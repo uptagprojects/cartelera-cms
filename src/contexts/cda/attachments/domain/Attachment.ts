@@ -1,7 +1,12 @@
-import { AttachmentId } from "./AttachementId";
-import { AttachmentURL } from "./AttachmentURL";
-import { SourceId } from "./SourceId";
+import { AttachmentId } from './AttachementId';
+import { AttachmentURL } from './AttachmentURL';
+import { SourceId } from './SourceId';
 
+export interface AttachmentPrimitives {
+    id: string;
+    sourceId: string;
+    url: string
+}
 export class Attachment {
     readonly id: AttachmentId;
     readonly sourceId: SourceId;
@@ -13,32 +18,20 @@ export class Attachment {
         this.url = url;
     }
 
-    //   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
-    //     const course = new Course(id, name, duration);
+    static fromPrimitives(plainData: AttachmentPrimitives):
+        Attachment {
+        return new Attachment(
+            new AttachmentId(plainData.id),
+            new SourceId(plainData.sourceId),
+            new AttachmentURL(plainData.url)
+        );
+    }
 
-    //     course.record(
-    //       new CourseCreatedDomainEvent({
-    //         aggregateId: course.id.value,
-    //         duration: course.duration.value,
-    //         name: course.name.value
-    //       })
-    //     );
-
-    //     return course;
-    //   }
-    //   static fromPrimitives(plainData: { id: string; name: string; duration: string }): Course {
-    //     return new Course(
-    //       new CourseId(plainData.id),
-    //       new CourseName(plainData.name),
-    //       new CourseDuration(plainData.duration)
-    //     );
-    //   }
-
-    //   toPrimitives(): any {
-    //     return {
-    //       id: this.id.value,
-    //       name: this.name.value,
-    //       duration: this.duration.value
-    //     };
-    //   }
+    toPrimitives(): AttachmentPrimitives {
+        return {
+            id: this.id.value,
+            sourceId: this.sourceId.value,
+            url: this.url.value.toString()
+        };
+    }
 }

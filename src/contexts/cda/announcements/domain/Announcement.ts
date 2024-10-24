@@ -1,11 +1,11 @@
-import { Attachment } from "../../attachments/domain/Attachment";
-import { AnnouncementAuthorId } from "./AnnouncementAuthorId";
+import { Attachment, AttachmentPrimitives } from '../../attachments/domain/Attachment';
+import { AnnouncementAuthorId } from './AnnouncementAuthorId';
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
 import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
 import { AnnouncementTitle } from "./AnnouncementTitle";
 
-export class Guide {
+export class Announcement {
     readonly id: AnnouncementId;
     readonly title: AnnouncementTitle;
     readonly content: AnnouncementContent;
@@ -22,32 +22,33 @@ export class Guide {
         this.attachements = attachements;
     }
 
-    //   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
-    //     const course = new Course(id, name, duration);
+    static fromPrimitives(plainData: {
+        id: string;
+        title: string;
+        content: string;
+        authorId: string;
+        publishDate: string;
+        attachments: AttachmentPrimitives[]
+    }):
+        Announcement {
+        return new Announcement(
+            new AnnouncementId(plainData.id),
+            new AnnouncementTitle(plainData.title),
+            new AnnouncementContent(plainData.content),
+            new AnnouncementAuthorId(plainData.authorId),
+            new AnnouncementPublishDate(plainData.publishDate),
+            plainData.attachments.map(v => Attachment.fromPrimitives(v))
+        );
+    }
 
-    //     course.record(
-    //       new CourseCreatedDomainEvent({
-    //         aggregateId: course.id.value,
-    //         duration: course.duration.value,
-    //         name: course.name.value
-    //       })
-    //     );
-
-    //     return course;
-    //   }
-    //   static fromPrimitives(plainData: { id: string; name: string; duration: string }): Course {
-    //     return new Course(
-    //       new CourseId(plainData.id),
-    //       new CourseName(plainData.name),
-    //       new CourseDuration(plainData.duration)
-    //     );
-    //   }
-
-    //   toPrimitives(): any {
-    //     return {
-    //       id: this.id.value,
-    //       name: this.name.value,
-    //       duration: this.duration.value
-    //     };
-    //   }
+    toPrimitives(): any {
+        return {
+            id: this.id.value,
+            title: this.title.value,
+            content: this.content.value,
+            authorId: this.authorId.value,
+            publishDate: this.publishDate.value,
+            attachments: this.attachements
+        };
+    }
 }
