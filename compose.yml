@@ -58,31 +58,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=cartelera
       - RABBITMQ_DEFAULT_PASS=cartelera
-  grafana:
-    # https://hub.docker.com/r/grafana/grafana/tags
-    image: grafana/grafana:8.3.4
-    ports:
-      - "3000:3000"
-    networks:
-      - default
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/rabbitmq.yaml
-      - ./monitoring/grafana/datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
-      - ./monitoring/grafana/dashboards:/dashboards
-    environment:
-      GF_INSTALL_PLUGINS: "flant-statusmap-panel,grafana-piechart-panel"
-  prometheus:
-    image: prom/prometheus:v2.28.1
-    networks:
-      - "rabbitmq-prometheus"
-    ports:
-      - "9090:9090"
-    volumes:
-      - prometheus_data:/prometheus
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
 volumes:
   db_data:
   openfga_data:
-  prometheus_data:
-  grafana_data:
