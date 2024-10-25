@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cartelera.cda__courses (
+CREATE TABLE IF NOT EXISTS cda__courses (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     abstract TEXT,
@@ -15,6 +15,5 @@ CREATE TABLE IF NOT EXISTS cartelera.cda__courses (
     instructor_avatar TEXT,
     instructor_related_url TEXT,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

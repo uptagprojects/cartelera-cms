@@ -1,13 +1,10 @@
-CREATE TABLE IF NOT EXISTS cma__courses (
+CREATE TABLE IF NOT EXISTS cma__users (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
-    abstract TEXT,
-    duration JSON,
-    picture TEXT,
-    instructor JSON,
-    location TEXT,
-    price NUMERIC,
-    available_seats INT,
+    email VARCHAR(120),
+    avatar TEXT,
+    password TEXT,
+    status VARCHAR(20),
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP

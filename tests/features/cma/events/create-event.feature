@@ -14,5 +14,5 @@ Feature: Create a new event
             "creation": "2024-02-03T10:00:00Z"
         }
         """
-        Then the response status should be 202
+        Then the response status should be 201
         And the response content should be empty

@@ -21,15 +21,6 @@
       "env": {
         "jest": true
       }
-    },
-    {
-      "files": ["*.cy.ts", "*.cy.tsx", "tests/e2e/**/*.ts", "tests/components/**/*.ts"],
-      "parserOptions": {
-        "project": ["./tsconfig.cy.json"]
-      },
-      "env": {
-        "cypress/globals": true
-      }
     }
   ]
 }

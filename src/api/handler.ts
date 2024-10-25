@@ -5,7 +5,7 @@ import { routeCMA } from "./cma/routeCMA";
 
 const app = new Hono().basePath("/api");
 
-app.route("/manage", routeCMA());
+app.route("/cma", routeCMA());
 app.route("/", routeCDA());
 
 export default app;

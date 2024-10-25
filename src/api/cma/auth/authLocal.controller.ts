@@ -37,5 +37,8 @@ export async function authLocal(c: Context): Promise<Response> {
 
 	c.status(200);
 
-	return c.json([]);
+	return c.json({
+		user: user.toPrimitives(),
+		jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzQwZjQwMzQ4MzQwMzQ4MzQwMzQ4MyIsImlhdCI6MTYzNjIwNjYwMiwiZXhwIjoxNjM2MjA2NjAyfQ.7"
+	});
 }

@@ -1,13 +1,11 @@
 import { User } from "../../../../../src/contexts/cma/users/domain/User";
 import { UserEmail } from "../../../../../src/contexts/cma/users/domain/UserEmail";
-import { UserId } from "../../../../../src/contexts/cma/users/domain/UserId";
-import { UserName } from "../../../../../src/contexts/cma/users/domain/UserName";
 import { UserPassword } from "../../../../../src/contexts/cma/users/domain/UserPassword";
 import { UserRepository } from "../../../../../src/contexts/cma/users/domain/UserRepository";
 
 export class MockUserRepository implements UserRepository {
-    private readonly mockSearchByEmailAndPassword: jest.fn();
-    private readonly mockSave: jest.fn();
+    private readonly mockSearchByEmailAndPassword = jest.fn();
+    private readonly mockSave = jest.fn();
 
     async searchByEmailAndPassword(email: UserEmail, password: UserPassword): Promise<User | null> {
         expect(this.mockSearchByEmailAndPassword).toHaveBeenCalledWith(email, password);

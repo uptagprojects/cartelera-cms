@@ -18,7 +18,8 @@ Feature: Login authentication with email
             "user": {
                 "id": "e45dab73-870e-4298-8d24-aef0f90f486c",
                 "name": "Jane Doe",
-                "email": "janedoe@example.com"
+                "email": "janedoe@example.com",
+                "avatar": "https://example.com/janedoe.jpg",
             }
         }
         """
