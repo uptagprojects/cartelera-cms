@@ -7,13 +7,8 @@ interface DatabaseEvent {
     id: string,
     name: string,
     location: string,
-<<<<<<< HEAD
-    startDate: Date,
-    endDate: Date
-=======
     startDate: string,
     endDate: string
->>>>>>> feature/cda-domain
 }
 
 export class PostgresEventRepository implements EventRepository {

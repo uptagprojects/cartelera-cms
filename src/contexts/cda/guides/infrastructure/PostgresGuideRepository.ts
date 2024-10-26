@@ -1,26 +1,10 @@
 import { Pool } from 'pg';
-<<<<<<< HEAD
-import { Attachment } from '../../attachments/domain/Attachment';
-=======
 import { AttachmentPrimitives } from '../../attachments/domain/Attachment';
->>>>>>> feature/cda-domain
 import { GuideRepository } from '../domain/GuideRepository';
 import { Guide } from '../domain/Guide';
 import { GuideId } from '../domain/GuideId';
 
 interface DatabaseGuide {
-<<<<<<< HEAD
-    id:string,
-    title: string,
-    content: string,
-    professorId: string,
-    publishDate : Date,
-    attachments : Attachment[]
-}
-
-export class PostgresGuideRepository implements GuideRepository {
-    constructor (private readonly pool:Pool) {}
-=======
     id: string,
     title: string,
     content: string,
@@ -31,7 +15,6 @@ export class PostgresGuideRepository implements GuideRepository {
 
 export class PostgresGuideRepository implements GuideRepository {
     constructor(private readonly pool: Pool) { }
->>>>>>> feature/cda-domain
     async search(id: GuideId) {
 
         const client = await this.pool.connect();
