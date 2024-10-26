@@ -28,7 +28,11 @@ export class Guide {
         title: string;
         content: string;
         professorId: string;
+<<<<<<< HEAD
         publishDate: Date;
+=======
+        publishDate: string;
+>>>>>>> feature/cda-domain
         attachments: AttachmentPrimitives[]
     }):
         Guide {
