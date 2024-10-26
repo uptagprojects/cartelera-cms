@@ -1,20 +1,20 @@
 import { Pool } from 'pg';
-import { Attachment } from '../../attachments/domain/Attachment';
+import { AttachmentPrimitives } from '../../attachments/domain/Attachment';
 import { GuideRepository } from '../domain/GuideRepository';
 import { Guide } from '../domain/Guide';
 import { GuideId } from '../domain/GuideId';
 
 interface DatabaseGuide {
-    id:string,
+    id: string,
     title: string,
     content: string,
     professorId: string,
-    publishDate : Date,
-    attachments : Attachment[]
+    publishDate: string,
+    attachments: AttachmentPrimitives[]
 }
 
 export class PostgresGuideRepository implements GuideRepository {
-    constructor (private readonly pool:Pool) {}
+    constructor(private readonly pool: Pool) { }
     async search(id: GuideId) {
 
         const client = await this.pool.connect();

@@ -7,8 +7,8 @@ interface DatabaseEvent {
     id: string,
     name: string,
     location: string,
-    startDate: Date,
-    endDate: Date
+    startDate: string,
+    endDate: string
 }
 
 export class PostgresEventRepository implements EventRepository {

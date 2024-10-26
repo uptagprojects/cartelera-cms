@@ -28,7 +28,7 @@ export class Guide {
         title: string;
         content: string;
         professorId: string;
-        publishDate: Date;
+        publishDate: string;
         attachments: AttachmentPrimitives[]
     }):
         Guide {
