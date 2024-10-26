@@ -1,3 +1,5 @@
+import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
+import { UserRegisteredDomainEvent } from "./event/UserRegisteredDomainEvent";
 import { UserAvatar } from "./UserAvatar";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
@@ -12,14 +14,16 @@ export type UserPrimitives = {
 	status: string;
 };
 
-export class User {
+export class User extends AggregateRoot {
 	constructor(
-		readonly id: UserId,
-		readonly name: UserName,
-		readonly email: UserEmail,
-		readonly avatar: UserAvatar,
-		readonly status: UserStatus
-	) {}
+		private readonly id: UserId,
+		private readonly name: UserName,
+		private readonly email: UserEmail,
+		private readonly avatar: UserAvatar,
+		private readonly status: UserStatus
+	) {
+		super();
+	}
 
 	static create(id: string, name: string, email: string, avatar: string): User {
 		const defaultUserStatus = UserStatus.Active;
@@ -32,7 +36,7 @@ export class User {
 			defaultUserStatus
 		);
 
-		//user.record(new UserRegisteredDomainEvent(id, name, email, profilePicture, defaultUserStatus));
+		user.record(new UserRegisteredDomainEvent(id, name, email, avatar, defaultUserStatus));
 
 		return user;
 	}

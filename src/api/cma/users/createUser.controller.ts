@@ -1,6 +1,6 @@
 import { Context } from "hono";
 import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
-import { getPool } from "../../../contexts/shared/infrastructure/PostgresPoolConnection";
+import { getPool } from "../../../contexts/shared/infrastructure/PostgresConnection";
 import { UserRegistrar } from "../../../contexts/cma/users/application/registrar/UserRegistrar";
 import { InvalidArgumentError } from "../../../contexts/shared/domain/InvalidArgumentError";
 

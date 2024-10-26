@@ -17,7 +17,8 @@ export class MockUserRepository implements UserRepository {
     }
 
     shouldSearchByEmailAndPassword(user: User, password: UserPassword): void {
-        this.mockSearchByEmailAndPassword(user.email, password);
+        const { email } = user.toPrimitives();
+        this.mockSearchByEmailAndPassword(email, password);
         this.mockSearchByEmailAndPassword.mockReturnValueOnce(user);
     }
 

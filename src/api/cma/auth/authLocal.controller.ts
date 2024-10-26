@@ -5,7 +5,7 @@ import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/use
 import { User } from "../../../contexts/cma/users/domain/User";
 import { UserEmailIsNotValid } from "../../../contexts/cma/users/domain/UserEmailIsNotValid";
 import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
-import { getPool } from "../../../contexts/shared/infrastructure/PostgresPoolConnection";
+import { getPool } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
 const repository = new PostgresUserRepository(getPool());
 
