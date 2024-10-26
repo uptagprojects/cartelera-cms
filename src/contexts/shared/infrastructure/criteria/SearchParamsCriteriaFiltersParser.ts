@@ -18,8 +18,10 @@ export class SearchParamsCriteriaFiltersParser {
 		});
 
 		return Object.values(tempFilters).filter(
-			(filter) =>
-				filter.field !== undefined && filter.operator !== undefined && filter.value !== undefined,
+			filter =>
+				filter.field !== undefined &&
+				filter.operator !== undefined &&
+				filter.value !== undefined
 		) as FiltersPrimitives[];
 	}
 }

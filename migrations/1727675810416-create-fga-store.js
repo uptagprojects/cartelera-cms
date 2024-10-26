@@ -14,8 +14,6 @@ module.exports.up = async function () {
 	const { id } = await fgaClient.createStore({
 		name: process.env.FGA_STORE_NAME ?? "cartelera"
 	});
-	console.log("store id: ", id);
-	console.log("please keep it safe");
 
 	if (process.env.NODE_ENV !== "production") {
 		appendFileSync(path.resolve(__dirname, "../", ".env"), `FGA_STORE_ID=${id}\n`);

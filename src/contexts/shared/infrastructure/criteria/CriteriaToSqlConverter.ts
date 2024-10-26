@@ -7,7 +7,7 @@ export class CriteriaToSqlConverter {
 		if (criteria.hasFilters()) {
 			query = query.concat(" WHERE ");
 
-			const whereQuery = criteria.filters.value.map((filter) => {
+			const whereQuery = criteria.filters.value.map(filter => {
 				return `${filter.field.value} ${filter.operator.value} '${filter.value.value}'`;
 			});
 
@@ -16,7 +16,7 @@ export class CriteriaToSqlConverter {
 
 		if (criteria.hasOrder()) {
 			query = query.concat(
-				` ORDER BY ${criteria.order.orderBy.value} ${criteria.order.orderType.value.valueOf()}`,
+				` ORDER BY ${criteria.order.orderBy.value} ${criteria.order.orderType.value.valueOf()}`
 			);
 		}
 

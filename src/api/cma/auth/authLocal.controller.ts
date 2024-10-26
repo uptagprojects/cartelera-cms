@@ -1,11 +1,11 @@
 import { type Context } from "hono";
 
-import { UserAuthenticator } from "@/contexts/cma/users/application/authenticate/UserAuthenticator";
-import { PasswordDoesNotMeetLengthRequirements } from "@/contexts/cma/users/domain/PasswordDoesNotMeetLengthRequirements";
-import { User } from "@/contexts/cma/users/domain/User";
-import { UserEmailIsNotValid } from "@/contexts/cma/users/domain/UserEmailIsNotValid";
-import { PostgresUserRepository } from "@/contexts/cma/users/infrastructure/PostgresUserRepository";
-import { getPool } from "@/contexts/shared/infrastructure/PostgresPoolConnection";
+import { UserAuthenticator } from "../../../contexts/cma/users/application/authenticate/UserAuthenticator";
+import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/users/domain/PasswordDoesNotMeetLengthRequirements";
+import { User } from "../../../contexts/cma/users/domain/User";
+import { UserEmailIsNotValid } from "../../../contexts/cma/users/domain/UserEmailIsNotValid";
+import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
+import { getPool } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
 const repository = new PostgresUserRepository(getPool());
 
@@ -37,5 +37,8 @@ export async function authLocal(c: Context): Promise<Response> {
 
 	c.status(200);
 
-	return c.json([]);
+	return c.json({
+		user: user.toPrimitives(),
+		jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzQwZjQwMzQ4MzQwMzQ4MzQwMzQ4MyIsImlhdCI6MTYzNjIwNjYwMiwiZXhwIjoxNjM2MjA2NjAyfQ.7"
+	});
 }

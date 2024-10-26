@@ -1,4 +1,11 @@
 {
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  },
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -18,10 +25,7 @@
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -32,7 +36,8 @@
     "tests/modules.d.ts",
     "tests/contexts/**/*.ts",
     "tests/features/**/*.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "jest.config.js"
   ],
   "exclude": [
     "tests/components/",
@@ -42,6 +47,7 @@
     "**/*.steps.ts",
     "./cypress.config.ts",
     "./cypress.config.js",
+    "cypress",
     "./node_modules",
     ".github"
   ]

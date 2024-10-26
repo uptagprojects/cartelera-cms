@@ -4,4 +4,6 @@ import { UserPassword } from "./UserPassword";
 
 export interface UserRepository {
 	searchByEmailAndPassword(email: UserEmail, password: UserPassword): Promise<User | null>;
+
+	save(user: User, password: UserPassword): Promise<void>;
 }

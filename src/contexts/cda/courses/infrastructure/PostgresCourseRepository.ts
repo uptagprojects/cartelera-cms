@@ -1,32 +1,29 @@
-import { Pool } from 'pg';
-import { CourseRepository } from '../domain/CourseRepository';
-import { CourseId } from '../domain/CourseId';
-import { Course } from '../domain/Course';
+import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
+import { Course } from "../domain/Course";
+import { CourseId } from "../domain/CourseId";
+import { CourseRepository } from "../domain/CourseRepository";
 
 interface DatabaseCourse {
-    id: string;
-    name: string;
-    duration: number;
-    instructorName: string;
-    picture: string;
-    location: string
+	id: string;
+	name: string;
+	duration: number;
+	instructorName: string;
+	picture: string;
+	location: string;
 }
 
 export class PostgresCourseRepository implements CourseRepository {
-    constructor(private readonly pool: Pool) { }
-    async search(id: CourseId) {
-        const client = await this.pool.connect();
+	constructor(private readonly connection: PostgresConnection) {}
+	async search(id: CourseId): Promise<Course | null> {
+		const res = await this.connection.searchOne<DatabaseCourse>(
+			"SELECT *** insert PARAMETROS *** FROM cda__courses WHERE id = $1 LIMIT 1",
+			[id.value]
+		);
 
-        const res = await client.query<DatabaseCourse>(
-            "SELECT *** insert PARAMETROS *** FROM cda__courses WHERE id = $1 LIMIT 1",
-            [id.value]
-        );
-        client.release();
+		if (!res) {
+			return null;
+		}
 
-        if (res.rows.length < 1 || !res.rows[0]) {
-            return null;
-        }
-
-        return Course.fromPrimitives(res.rows[0]);
-    }
+		return Course.fromPrimitives(res);
+	}
 }

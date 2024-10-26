@@ -10,6 +10,7 @@
         "target": "esnext",
         "module": "commonjs",
         "outDir": "./dist",
+        "strictNullChecks": true
     },
     "include": [
         "tests/modules.d.ts",

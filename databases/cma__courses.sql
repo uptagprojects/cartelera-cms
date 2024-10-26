@@ -1,23 +1,15 @@
-CREATE TABLE IF NOT EXISTS cartelera.cma__courses (
+CREATE TABLE IF NOT EXISTS cma__courses (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     abstract TEXT,
-    start_date DATE,
-    finish_date DATE,
-    duration_hours NUMERIC, /* there is a posibility of half hours */
-    image TEXT,
+    duration JSON,
+    picture TEXT,
+    instructor JSON,
     location TEXT,
     price NUMERIC,
-    occupied_seats INT,
-    total_seats INT,
-    online BOOLEAN,
-    instructor_name VARCHAR(120),
-    instructor_badge VARCHAR(120),
-    instructor_avatar TEXT,
-    instructor_related_url TEXT,
-    instructor_email VARCHAR(120),
+    available_seats INT,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

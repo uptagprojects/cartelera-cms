@@ -2,7 +2,6 @@ import { FilterField } from "./FilterField";
 import { FilterOperator, Operator } from "./FilterOperator";
 import { FilterValue } from "./FilterValue";
 
-
 export type FiltersPrimitives = {
 	field: string;
 	operator: string;
@@ -24,7 +23,7 @@ export class Filter {
 		return new Filter(
 			new FilterField(field),
 			new FilterOperator(Operator[operator as keyof typeof Operator]),
-			new FilterValue(value),
+			new FilterValue(value)
 		);
 	}
 
@@ -32,7 +31,7 @@ export class Filter {
 		return {
 			field: this.field.value,
 			operator: this.operator.value,
-			value: this.operator.value,
+			value: this.operator.value
 		};
 	}
 }

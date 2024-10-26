@@ -3,7 +3,7 @@ import "octagon-ui/dist/index.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Nav } from "@/components/nav/Nav";
+import { Nav } from "../components/nav/Nav";
 
 export const metadata: Metadata = {
 	title: "Cartelera PNFi-UPTAG",

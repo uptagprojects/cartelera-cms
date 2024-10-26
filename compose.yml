@@ -38,11 +38,26 @@ services:
       - 3000:3000
       - 8080:8080
       - 8081:8081
+    volumes:
+      - openfga_data:/data
     environment:
-      - OPENFGA_DATASTORE_ENGINE=postgres
-      - "OPENFGA_DATASTORE_URI=postgres://user:password$@db:5432/cartelera?sslmode=disable"
+      - OPENFGA_DATASTORE_ENGINE=sqlite
+      - "OPENFGA_DATASTORE_URI=file:/data/openfga.db"
       - OPENFGA_PLAYGROUND_ENABLED=true
     networks:
       - default
+  rabbitmq:
+    image: 'rabbitmq:4.0-management'
+    restart: unless-stopped
+    networks:
+      - default
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    environment:
+      - RABBITMQ_DEFAULT_USER=cartelera
+      - RABBITMQ_DEFAULT_PASS=cartelera
 volumes:
   db_data:
+  openfga_data:

@@ -5,6 +5,15 @@ import { CourseLocation } from "./CourseLocation";
 import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
 
+export interface CdaCoursePrimitives {
+	id: string;
+	name: string;
+	duration: number;
+	instructorName: string;
+	picture: string;
+	location: string;
+}
+
 export class Course {
 	readonly id: CourseId;
 	readonly name: CourseName;
@@ -29,14 +38,7 @@ export class Course {
 		this.location = location;
 	}
 
-	static fromPrimitives(plainData: {
-		id: string;
-		name: string;
-		duration: number;
-		instructorName: string;
-		picture: string;
-		location: string;
-	}): Course {
+	static fromPrimitives(plainData: CdaCoursePrimitives): Course {
 		return new Course(
 			new CourseId(plainData.id),
 			new CourseName(plainData.name),
@@ -47,7 +49,7 @@ export class Course {
 		);
 	}
 
-	toPrimitives(): any {
+	toPrimitives(): CdaCoursePrimitives {
 		return {
 			id: this.id.value,
 			name: this.name.value,
