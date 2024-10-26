@@ -4,7 +4,7 @@ import { Announcement } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
 
 export class UsersByCriteriaSearcher {
-	constructor(private readonly repository: AnnouncementRepository) {}
+	constructor(private readonly repository: AnnouncementRepository) { }
 
 	async search(
 		filters: FiltersPrimitives[],
