@@ -1,35 +1,29 @@
-import { Pool } from "pg";
-import { EventRepository } from "../domain/EventRepository";
+import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Event } from "../domain/Event";
 import { EventId } from "../domain/EventId";
+import { EventRepository } from "../domain/EventRepository";
 
 interface DatabaseEvent {
-    id: string,
-    name: string,
-    location: string,
-    startDate: string,
-    endDate: string
+	id: string;
+	name: string;
+	location: string;
+	startDate: string;
+	endDate: string;
 }
 
 export class PostgresEventRepository implements EventRepository {
-    constructor(private readonly pool: Pool) { }
+	constructor(private readonly connection: PostgresConnection) {}
 
-    async search(id: EventId) {
+	async search(id: EventId): Promise<Event | null> {
+		const res = await this.connection.searchOne<DatabaseEvent>(
+			"SELECT *** insert PARAMETROS *** FROM cda__events WHERE id = $1 LIMIT 1",
+			[id.value]
+		);
 
-        const client = await this.pool.connect();
+		if (!res) {
+			return null;
+		}
 
-        const res = await client.query<DatabaseEvent>(
-            "SELECT *** insert PARAMETROS *** FROM cda__events WHERE id = $1 LIMIT 1",
-            [id.value]
-        );
-        client.release();
-
-        if (res.rows.length < 1 || !res.rows[0]) {
-            return null;
-        }
-
-        return Event.fromPrimitives(res.rows[0]);
-
-
-    }
+		return Event.fromPrimitives(res);
+	}
 }

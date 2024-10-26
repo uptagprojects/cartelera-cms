@@ -1,3 +1,3 @@
 import { StringValueObject } from "../StringValueObject";
 
-export class FilterValue extends StringValueObject { }
+export class FilterValue extends StringValueObject {}

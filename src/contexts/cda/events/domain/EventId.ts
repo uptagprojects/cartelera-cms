@@ -1,3 +1,3 @@
 import { Identifier } from "../../../shared/domain/Identifier";
 
-export class EventId  extends Identifier {}
+export class EventId extends Identifier {}

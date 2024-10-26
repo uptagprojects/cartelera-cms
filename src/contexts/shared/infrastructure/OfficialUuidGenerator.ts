@@ -1,10 +1,11 @@
-import { v4 } from "uuid";
-import { UuidGenerator } from "../domain/UuidGenerator";
 import { Service } from "diod";
+import { v4 } from "uuid";
+
+import { UuidGenerator } from "../domain/UuidGenerator";
 
 @Service()
 export class OfficialUuidGenerator extends UuidGenerator {
-    async generate() {
-        return v4();
-    }
+	async generate(): Promise<string> {
+		return v4();
+	}
 }

@@ -5,12 +5,14 @@ export class Filters {
 
 	static fromPrimitives(filters: FiltersPrimitives[]): Filters {
 		return new Filters(
-			filters.map((filter) => Filter.fromPrimitives(filter.field, filter.operator, filter.value)),
+			filters.map(filter =>
+				Filter.fromPrimitives(filter.field, filter.operator, filter.value)
+			)
 		);
 	}
 
 	toPrimitives(): FiltersPrimitives[] {
-		return this.value.map((filter) => filter.toPrimitives());
+		return this.value.map(filter => filter.toPrimitives());
 	}
 
 	isEmpty(): boolean {

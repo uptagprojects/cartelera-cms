@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+
 import { routeEventBus } from "./event-bus/routeEventBus";
 
 export const routeShared = (): Hono => {

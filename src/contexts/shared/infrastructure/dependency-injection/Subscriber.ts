@@ -1,5 +1,5 @@
-export const Subscriber = (queueName: string): ClassDecorator => {
-    return <TFunction extends Function>(target: TFunction): TFunction => {
-        return target;
-    }
-}
+export const Subscriber = (_: string): ClassDecorator => {
+	return <TFunction extends Function>(target: TFunction): TFunction => {
+		return target;
+	};
+};

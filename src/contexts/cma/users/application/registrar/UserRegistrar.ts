@@ -1,12 +1,15 @@
 import crypto from "crypto";
 
+import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { User } from "../../domain/User";
 import { UserPassword } from "../../domain/UserPassword";
 import { UserRepository } from "../../domain/UserRepository";
-import { EventBus } from "../../../../shared/domain/event/EventBus";
 
 export class UserRegistrar {
-	constructor(private readonly repository: UserRepository, private readonly eventBus: EventBus) {}
+	constructor(
+		private readonly repository: UserRepository,
+		private readonly eventBus: EventBus
+	) {}
 
 	async register(id: string, name: string, email: string, avatar: string): Promise<void> {
 		const userPassword = new UserPassword(this.generateRandomPassword());

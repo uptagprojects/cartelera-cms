@@ -44,7 +44,7 @@ type event
         define can_edit: staff or admin from department
         define can_delete: staff or admin from department
 
-type notice
+type announcement
     relations
         define department: [organization]
         define author: [user]

@@ -1,5 +1,4 @@
 import { CourseAbstract } from "./CourseAbstract";
-import { CourseAvailableSeats } from "./CourseAvailableSeats";
 import { CourseCreation } from "./CourseCreation";
 import { CourseDuration, CourseDurationPrimitives } from "./CourseDuration/CourseDuration";
 import { CourseId } from "./CourseId";
@@ -47,7 +46,6 @@ export class Course {
 			new CourseLocation(primitives.location),
 			CourseDuration.fromPrimitives(primitives.duration),
 			new CoursePrice(primitives.price),
-			new CourseAvailableSeats(primitives.availableSeats),
 			new CourseCreation(new Date(primitives.creation)),
 			new CourseUpdate(new Date(primitives.lastUpdate))
 		);

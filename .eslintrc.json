@@ -1,5 +1,5 @@
 {
-  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "plugin:prettier/recommended", "plugin:cypress/recommended" ],
+  "extends": [ "next", "next/core-web-vitals", "eslint-config-codely/typescript", "plugin:prettier/recommended" ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
@@ -20,6 +20,12 @@
       "files": ["*.test.ts"],
       "env": {
         "jest": true
+      }
+    },
+    {
+      "files": ["*.steps.ts"],
+      "parserOptions": {
+        "project": ["./tsconfig.steps.json"]
       }
     }
   ]

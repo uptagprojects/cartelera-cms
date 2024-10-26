@@ -8,26 +8,26 @@ const connection = new RabbitMQConnection();
 const exchangeName = "domain_events";
 
 const subscribers = container
-    .findTaggedServiceIdentifiers<DomainEventSubscriber<DomainEvent>>("subscriber")
-    .map(id => container.get(id));
+	.findTaggedServiceIdentifiers<DomainEventSubscriber<DomainEvent>>("subscriber")
+	.map(id => container.get(id));
 
 const queues: {
-    name: string;
-    bindingKeys: string[];
-}[] = subscribers.map((subscriber) => ({
-    name: subscriber.name(),
-    bindingKeys: subscriber.subscribedTo().map(event => event.eventName)
-}))
+	name: string;
+	bindingKeys: string[];
+}[] = subscribers.map(subscriber => ({
+	name: subscriber.name(),
+	bindingKeys: subscriber.subscribedTo().map(event => event.eventName)
+}));
 
 async function main(): Promise<void> {
-    await connection.connect();
-    await connection.declareExchange(exchangeName);
-    await Promise.all(
-        queues.map(async queue =>
-            connection.declareQueue(queue.name, exchangeName, queue.bindingKeys)
-        )
-    );
-    await connection.close();
+	await connection.connect();
+	await connection.declareExchange(exchangeName);
+	await Promise.all(
+		queues.map(async queue =>
+			connection.declareQueue(queue.name, exchangeName, queue.bindingKeys)
+		)
+	);
+	await connection.close();
 }
 
 main().catch(console.error);
