@@ -42,3 +42,5 @@ function consume(subscriber: DomainEventSubscriber<DomainEvent>) {
 		await connection.ack(message);
 	};
 }
+
+main().catch(console.error);
