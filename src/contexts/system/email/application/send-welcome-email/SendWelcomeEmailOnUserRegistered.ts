@@ -1,7 +1,7 @@
 import { Service } from "diod";
 
 import { UserRegisteredDomainEvent } from "../../../../cma/users/domain/event/UserRegisteredDomainEvent";
-import { DomainEventName } from "../../../../shared/domain/event/DomainEventName";
+import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
 import { WelcomeEmailSender } from "./WelcomeEmailSender";
 
@@ -15,11 +15,11 @@ export class SendWelcomeEmailOnUserRegistered
 		await this.sender.send(event.id, event.name, event.email);
 	}
 
-	subscribedTo(): DomainEventName<UserRegisteredDomainEvent>[] {
+	subscribedTo(): DomainEventClass[] {
 		return [UserRegisteredDomainEvent];
 	}
 
 	name(): string {
-		return "pnfi.cartelera.send_welcome_email_on_user_registered";
+		return "pnfi.system.send_welcome_email_on_user_registered";
 	}
 }

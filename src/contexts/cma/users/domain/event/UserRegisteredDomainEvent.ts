@@ -1,7 +1,8 @@
-import { DomainEvent } from "../../../../shared/domain/event/DomainEvent";
+import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
+import { UserDomainEvent } from "./UserDomainEvent";
 
-export class UserRegisteredDomainEvent extends DomainEvent {
-	static eventName = "pnfi.cartelera.cma.user.registered";
+export class UserRegisteredDomainEvent extends UserDomainEvent {
+	static eventName = "pnfi.cma.user.registered";
 	constructor(
 		public readonly id: string,
 		public readonly name: string,
@@ -12,6 +13,23 @@ export class UserRegisteredDomainEvent extends DomainEvent {
 		occurredOn?: Date
 	) {
 		super(UserRegisteredDomainEvent.eventName, id, eventId, occurredOn);
+	}
+
+	static fromPrimitives(
+		aggregateId: string,
+		eventId: string,
+		occurredOn: Date,
+		attributes: DomainEventAttributes
+	): UserRegisteredDomainEvent {
+		return new UserRegisteredDomainEvent(
+			aggregateId,
+			attributes.name as string,
+			attributes.email as string,
+			attributes.avatar as string,
+			attributes.status as string,
+			eventId,
+			occurredOn
+		);
 	}
 
 	toPrimitives(): Record<string, unknown> {

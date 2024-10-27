@@ -1,6 +1,5 @@
 import { Service } from "diod";
-import type { Pool, PoolClient } from "pg";
-import pg from "pg";
+import { Pool, PoolClient } from "pg";
 
 type ColumnValue = string | number | boolean | Date | null;
 
@@ -10,10 +9,10 @@ export class PostgresConnection {
 
 	private get pool(): Pool {
 		if (!this.poolInstance) {
-			this.poolInstance = new pg.Pool({
+			this.poolInstance = new Pool({
 				connectionString:
 					process.env.POSTGRES_CONNECTION ??
-					"postgres://user:password$@db:5432/cartelera?sslmode=disable"
+					"postgres://user:password$@localhost:5432/cartelera?sslmode=disable"
 			});
 		}
 
