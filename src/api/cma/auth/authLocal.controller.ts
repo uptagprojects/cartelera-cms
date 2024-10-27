@@ -5,12 +5,12 @@ import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/use
 import { User } from "../../../contexts/cma/users/domain/User";
 import { UserEmailIsNotValid } from "../../../contexts/cma/users/domain/UserEmailIsNotValid";
 import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
-import { getPool } from "../../../contexts/shared/infrastructure/PostgresConnection";
+import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
-const repository = new PostgresUserRepository(getPool());
 
 export async function authLocal(c: Context): Promise<Response> {
 	const body = await c.req.parseBody();
+	const repository = new PostgresUserRepository(new PostgresConnection());
 
 	const userAuthenticator = new UserAuthenticator(repository);
 

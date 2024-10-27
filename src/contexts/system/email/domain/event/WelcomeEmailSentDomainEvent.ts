@@ -1,7 +1,7 @@
-import { DomainEvent } from "../../../../shared/domain/event/DomainEvent";
+import { DomainEvent, DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
 
 export class WelcomeEmailSentDomainEvent extends DomainEvent {
-	static eventName = "pnfi.cartelera.system.welcome_email.sent";
+	static eventName = "pnfi.system.welcome_email.sent";
 	constructor(
 		public readonly id: string,
 		public readonly userId: string,
@@ -14,6 +14,25 @@ export class WelcomeEmailSentDomainEvent extends DomainEvent {
 		occurredOn?: Date
 	) {
 		super(WelcomeEmailSentDomainEvent.eventName, id, eventId, occurredOn);
+	}
+
+	static fromPrimitives(
+		aggregateId: string,
+		eventId: string,
+		occurredOn: Date,
+		attributes: DomainEventAttributes
+	): WelcomeEmailSentDomainEvent {
+		return new WelcomeEmailSentDomainEvent(
+			aggregateId,
+			attributes.userId as string,
+			attributes.userName as string,
+			attributes.fromEmailAddress as string,
+			attributes.toEmailAddress as string,
+			attributes.emailSubject as string,
+			attributes.emailBody as string,
+			eventId,
+			occurredOn
+		);
 	}
 
 	toPrimitives(): Record<string, unknown> {

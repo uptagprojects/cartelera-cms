@@ -14,8 +14,11 @@ export class RabbitMQEventBus implements EventBus {
 	) {}
 
 	async publish(events: DomainEvent[]): Promise<void> {
+		await this.connection.connect();
+
 		const promises = events.map(async event => {
 			const serializedEvent = DomainEventJSONSerializer.serialize(event);
+
 			await this.publishRaw(event.eventId, event.eventName, serializedEvent);
 		});
 

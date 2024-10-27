@@ -1,5 +1,5 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
-import { CriteriaToSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToSqlConverter";
+import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { AttachmentPrimitives } from "../../attachments/domain/Attachment";
 import { Announcement } from "../domain/Announcement";
@@ -19,7 +19,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 
 	async search(id: AnnouncementId): Promise<Announcement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
-			"SELECT *** insert PARAMETROS *** FROM cda__announcements WHERE id = $1 LIMIT 1",
+			"SELECT id, title, content, author_id, publish_date, attachments FROM cda__announcements WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 
@@ -27,19 +27,25 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			return null;
 		}
 
-		return Announcement.fromPrimitives(res);
+		return Announcement.fromPrimitives({
+			id: res.id,
+			title: res.title,
+			content: res.content,
+			authorId: res.authorId,
+			publishDate: res.publishDate,
+			attachments: res.attachments
+		});
 	}
 
 	async matching(criteria: Criteria): Promise<Announcement[]> {
-		const converter = new CriteriaToSqlConverter();
+		const converter = new CriteriaToPostgresSqlConverter();
+		const { query, params } = converter.convert(
+			["id", "title", "content", "authorId", "publishDate"],
+			"cda__announcements",
+			criteria
+		)
 
-		const results = await this.connection.searchAll<DatabaseAnnouncement>(
-			converter.convert(
-				["id", "title", "content", "authorId", "publishDate"],
-				"cda__announcements",
-				criteria
-			)
-		);
+		const results = await this.connection.searchAll<DatabaseAnnouncement>(query, params);
 
 		return results.map(a =>
 			Announcement.fromPrimitives({

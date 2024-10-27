@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { DomainEvent } from "../contexts/shared/domain/event/DomainEvent";
 import { DomainEventSubscriber } from "../contexts/shared/domain/event/DomainEventSubscriber";
 import { container } from "../contexts/shared/infrastructure/dependency-injection/diod.config";

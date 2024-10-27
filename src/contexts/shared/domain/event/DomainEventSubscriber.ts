@@ -1,8 +1,8 @@
 import { DomainEvent } from "./DomainEvent";
-import { DomainEventName } from "./DomainEventName";
+import { DomainEventClass } from "./DomainEventClass";
 
 export interface DomainEventSubscriber<T extends DomainEvent> {
-	on(event: T): Promise<void>;
-	subscribedTo(): DomainEventName<T>[];
+	on(domainEvent: T): Promise<void>;
+	subscribedTo(): DomainEventClass[];
 	name(): string;
 }

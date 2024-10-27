@@ -1,6 +1,16 @@
 import { v4 } from "uuid";
 
+export type DomainEventAttributes = { [key: string]: unknown };
+
 export abstract class DomainEvent {
+	static fromPrimitives: (
+		aggregateId: string,
+		eventId: string,
+		occurredOn: Date,
+		attributes: DomainEventAttributes
+		// eslint-disable-next-line no-use-before-define
+	) => DomainEvent;
+
 	public readonly eventId: string;
 	public readonly occurredOn: Date;
 
@@ -14,5 +24,5 @@ export abstract class DomainEvent {
 		this.occurredOn = occurredOn ?? new Date();
 	}
 
-	abstract toPrimitives(): Record<string, unknown>;
+	abstract toPrimitives(): DomainEventAttributes;
 }
