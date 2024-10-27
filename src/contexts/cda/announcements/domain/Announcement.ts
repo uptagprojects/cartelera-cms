@@ -38,7 +38,7 @@ export class Announcement {
 		this.attachements = attachements;
 	}
 
-	static fromPrimitives(plainData: AttachmentPrimitives): Announcement {
+	static fromPrimitives(plainData: AnnouncementPrimitives): Announcement {
 		return new Announcement(
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
@@ -49,14 +49,14 @@ export class Announcement {
 		);
 	}
 
-	toPrimitives(): AttachmentPrimitives {
+	toPrimitives(): AnnouncementPrimitives {
 		return {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
 			authorId: this.authorId.value,
-			publishDate: this.publishDate.value,
-			attachments: this.attachements
+			publishDate: this.publishDate.value.toISOString(),
+			attachments: this.attachements.map(v => v.toPrimitives())
 		};
 	}
 }

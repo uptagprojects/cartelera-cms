@@ -17,7 +17,7 @@ export type WelcomeEmailPrimitives = {
 };
 
 export class WelcomeEmail extends Email {
-	private static readonly from = "noreply@pnfi.uptag.net";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@pnfi.uptag.net";
 
 	private constructor(
 		id: EmailId,
