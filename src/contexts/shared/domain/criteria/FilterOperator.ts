@@ -6,7 +6,7 @@ export enum Operator {
 	LOWER_THAN = "<",
 	LOWER_THAN_OR_EQUAL = "<=",
 	CONTAINS = "CONTAINS",
-	NOT_CONTAINS = "NOT_CONTAINS",
+	NOT_CONTAINS = "NOT_CONTAINS"
 }
 
 export class FilterOperator {

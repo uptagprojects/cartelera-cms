@@ -75,6 +75,10 @@ export class PostgresConnection {
 		}
 	}
 
+	async truncate(table: string): Promise<void> {
+		await this.execute(`TRUNCATE TABLE ${table}`, []);
+	}
+
 	async close(): Promise<void> {
 		if (this.poolInstance !== null) {
 			await this.poolInstance.end();

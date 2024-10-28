@@ -4,15 +4,20 @@ import { Filter } from "../../domain/criteria/Filter";
 type Mappings = { [key: string]: string };
 
 export class CriteriaToPostgresSqlConverter {
-	convert(fieldsToSelect: string[], tableName: string, criteria: Criteria, mappings: Mappings = {}): { query: string; params: (string | number)[] }  {
+	convert(
+		fieldsToSelect: string[],
+		tableName: string,
+		criteria: Criteria,
+		mappings: Mappings = {}
+	): { query: string; params: (string | number)[] } {
 		let query = `SELECT ${fieldsToSelect.join(", ")} FROM ${tableName}`;
 		const params: (string | number)[] = [];
 
 		if (criteria.hasFilters()) {
 			query += " WHERE ";
 
-			const whereQueries = criteria.filters.value.map((filter) =>
-				this.generateWhereQuery(filter, mappings, params),
+			const whereQueries = criteria.filters.value.map(filter =>
+				this.generateWhereQuery(filter, mappings, params)
 			);
 
 			query += whereQueries.join(" AND ");
@@ -38,8 +43,6 @@ export class CriteriaToPostgresSqlConverter {
 
 		const finalQuery = { query: `${query};`, params };
 
-		console.log(finalQuery);
-
 		return finalQuery;
 	}
 
@@ -56,25 +59,25 @@ export class CriteriaToPostgresSqlConverter {
 		const paramIndex = `$${params.length + 1}`;
 
 		if (filter.operator.isContains()) {
-			queryPart += "LIKE " + paramIndex;
+			queryPart += `LIKE ${paramIndex}`;
 			params.push(`%${value}%`);
 		} else if (filter.operator.isNotContains()) {
-			queryPart += "NOT LIKE " + paramIndex;
+			queryPart += `NOT LIKE ${paramIndex}`;
 			params.push(`%${value}%`);
 		} else if (filter.operator.isNotEquals()) {
-			queryPart += "!= " + paramIndex;
+			queryPart += `!= ${paramIndex}`;
 			params.push(value);
 		} else if (filter.operator.isGreaterThan()) {
-			queryPart += "> " + paramIndex;
+			queryPart += `> ${paramIndex}`;
 			params.push(value);
 		} else if (filter.operator.isGreaterThanOrEqual()) {
-			queryPart += ">= " + paramIndex;
+			queryPart += `>= ${paramIndex}`;
 			params.push(value);
 		} else if (filter.operator.isLowerThan()) {
-			queryPart += "< " + paramIndex;
+			queryPart += `< ${paramIndex}`;
 			params.push(value);
 		} else if (filter.operator.isLowerThanOrEqual()) {
-			queryPart += "<= " + paramIndex;
+			queryPart += `<= ${paramIndex}`;
 			params.push(value);
 		} else {
 			queryPart += `${filter.operator.value} ${paramIndex}`;

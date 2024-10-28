@@ -1,12 +1,11 @@
 import { type Context } from "hono";
 
+import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/auth/domain/AuthPasswordDoesNotMeetLengthRequirements";
 import { UserAuthenticator } from "../../../contexts/cma/users/application/authenticate/UserAuthenticator";
-import { PasswordDoesNotMeetLengthRequirements } from "../../../contexts/cma/users/domain/PasswordDoesNotMeetLengthRequirements";
 import { User } from "../../../contexts/cma/users/domain/User";
 import { UserEmailIsNotValid } from "../../../contexts/cma/users/domain/UserEmailIsNotValid";
 import { PostgresUserRepository } from "../../../contexts/cma/users/infrastructure/PostgresUserRepository";
 import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
-
 
 export async function authLocal(c: Context): Promise<Response> {
 	const body = await c.req.parseBody();

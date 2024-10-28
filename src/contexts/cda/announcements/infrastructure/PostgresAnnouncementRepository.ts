@@ -43,7 +43,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			["id", "title", "content", "authorId", "publishDate"],
 			"cda__announcements",
 			criteria
-		)
+		);
 
 		const results = await this.connection.searchAll<DatabaseAnnouncement>(query, params);
 
