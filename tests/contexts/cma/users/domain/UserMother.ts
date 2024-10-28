@@ -12,7 +12,7 @@ export class UserMother {
 			name: UserNameMother.create().value,
 			email: UserEmailMother.create().value,
 			avatar: UserAvatarMother.create().value.toString(),
-			status: UserStatus.Active,
+			status: UserStatus.ACTIVE,
 			...params
 		};
 

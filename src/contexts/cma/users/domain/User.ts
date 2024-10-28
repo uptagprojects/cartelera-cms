@@ -1,5 +1,11 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
+import { UserArchivedDomainEvent } from "./event/UserArchivedDomainEvent";
+import { UserAvatarUpdatedDomainEvent } from "./event/UserAvatarUpdatedDomainEvent";
+import { UserBlockedDomainEvent } from "./event/UserBlockedDomainEvent";
+import { UserEmailUpdatedDomainEvent } from "./event/UserEmailUpdatedDomainEvent";
+import { UserNameUpdatedDomainEvent } from "./event/UserNameUpdatedDomainEvent";
 import { UserRegisteredDomainEvent } from "./event/UserRegisteredDomainEvent";
+import { UserRestoredDomainEvent } from "./event/UserRestoredDomainEvent";
 import { UserAvatar } from "./UserAvatar";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
@@ -17,16 +23,16 @@ export type UserPrimitives = {
 export class User extends AggregateRoot {
 	constructor(
 		private readonly id: UserId,
-		private readonly name: UserName,
-		private readonly email: UserEmail,
-		private readonly avatar: UserAvatar,
-		private readonly status: UserStatus
+		private name: UserName,
+		private email: UserEmail,
+		private avatar: UserAvatar,
+		private status: UserStatus
 	) {
 		super();
 	}
 
 	static create(id: string, name: string, email: string, avatar: string): User {
-		const defaultUserStatus = UserStatus.Active;
+		const defaultUserStatus = UserStatus.ACTIVE;
 
 		const user = new User(
 			new UserId(id),
@@ -59,5 +65,39 @@ export class User extends AggregateRoot {
 			avatar: this.avatar.value.toString(),
 			status: this.status
 		};
+	}
+
+	getId(): UserId {
+		return this.id;
+	}
+
+	updateEmail(email: string): void {
+		this.email = new UserEmail(email);
+		this.record(new UserEmailUpdatedDomainEvent(this.id.value, email));
+	}
+
+	updateName(name: string): void {
+		this.name = new UserName(name);
+		this.record(new UserNameUpdatedDomainEvent(this.id.value, name));
+	}
+
+	updateAvatar(avatar: string): void {
+		this.avatar = new UserAvatar(avatar);
+		this.record(new UserAvatarUpdatedDomainEvent(this.id.value, avatar));
+	}
+
+	archive(): void {
+		this.status = UserStatus.ARCHIVED;
+		this.record(new UserArchivedDomainEvent(this.id.value));
+	}
+
+	block(): void {
+		this.status = UserStatus.BLOCKED;
+		this.record(new UserBlockedDomainEvent(this.id.value));
+	}
+
+	restore(): void {
+		this.status = UserStatus.ACTIVE;
+		this.record(new UserRestoredDomainEvent(this.id.value));
 	}
 }

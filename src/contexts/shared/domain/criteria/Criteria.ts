@@ -7,7 +7,7 @@ export class Criteria {
 		public readonly filters: Filters,
 		public readonly order: Order,
 		public readonly pageSize: number | null,
-		public readonly pageNumber: number | null,
+		public readonly pageNumber: number | null
 	) {
 		if (pageNumber !== null && pageSize === null) {
 			throw new Error("Page size is required when page number is defined");
@@ -19,7 +19,7 @@ export class Criteria {
 		orderBy: string | null,
 		orderType: string | null,
 		pageSize: number | null,
-		pageNumber: number | null,
+		pageNumber: number | null
 	): Criteria {
 		return new Criteria(
 			Filters.fromPrimitives(filters),

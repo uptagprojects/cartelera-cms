@@ -15,19 +15,21 @@ export class MailjetEmailSender implements EmailSender {
 		const emailPrimitives = _email.toPrimitives();
 		try {
 			await this.client.post("send", { version: "v3.1" }).request({
-				Messages: [{
-					From: {
-						Email: emailPrimitives.from
-					},
-					To: [
-						{
-							Email: emailPrimitives.to
-						}
-					],
-					Subject: emailPrimitives.subject,
-					TextPart: emailPrimitives.body,
-					HTMLPart: emailPrimitives.body
-				}]
+				Messages: [
+					{
+						From: {
+							Email: emailPrimitives.from
+						},
+						To: [
+							{
+								Email: emailPrimitives.to
+							}
+						],
+						Subject: emailPrimitives.subject,
+						TextPart: emailPrimitives.body,
+						HTMLPart: emailPrimitives.body
+					}
+				]
 			});
 		} catch (error: unknown) {
 			// TO DO: Handle error and log it
