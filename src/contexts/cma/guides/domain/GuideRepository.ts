@@ -3,9 +3,9 @@ import { Guide } from "./Guide";
 import { GuideId } from "./GuideId";
 
 export interface GuideRepository {
-    save(guide: Guide): Promise<void>;
+	save(guide: Guide): Promise<void>;
 
-    search(id: GuideId): Promise<Guide | null>;
+	search(id: GuideId): Promise<Guide | null>;
 
-    matching(criteria: Criteria): Promise<Guide[]>;
+	matching(criteria: Criteria): Promise<Guide[]>;
 }

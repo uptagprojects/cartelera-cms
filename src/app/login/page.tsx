@@ -1,14 +1,7 @@
-import React from "react";
 import { Container } from "octagon-ui";
-import { LoginForm } from "../../components/loginForm/LoginForm";
+import React from "react";
 
-const guide = {
-	title: "Guia 1",
-	content:
-		"## markdown content\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc",
-	date: "2021-08-01",
-	uc: "ingles"
-};
+import { LoginForm } from "../../components/loginForm/LoginForm";
 
 const GuidePage: React.FC = () => {
 	return (
@@ -16,7 +9,7 @@ const GuidePage: React.FC = () => {
 			<header>
 				<h3>Iniciar Sesion</h3>
 			</header>
-            <LoginForm />
+			<LoginForm />
 		</Container>
 	);
 };

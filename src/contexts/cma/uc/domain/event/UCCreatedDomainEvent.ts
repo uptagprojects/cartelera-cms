@@ -3,7 +3,7 @@ import { UCDomainEvent } from "./UCDomainEvent";
 
 export class UCCreatedDomainEvent extends UCDomainEvent {
 	static eventName = "pnfi.cma.uc.created";
-    
+
 	constructor(
 		public readonly id: string,
 		public readonly name: string,

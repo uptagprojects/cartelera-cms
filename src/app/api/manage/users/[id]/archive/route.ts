@@ -1,28 +1,28 @@
 import { NextRequest } from "next/server";
+
 import { UserArchiver } from "../../../../../../contexts/cma/users/application/archive/UserArchiver";
 import { UserDoesNotExist } from "../../../../../../contexts/cma/users/domain/UserDoesNotExist";
 import { PostgresUserRepository } from "../../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
-import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
+import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function PUT(
 	_request: NextRequest,
 	{ params: { id } }: { params: { id: string } }
 ): Promise<Response> {
-
 	const postgresConnection = new PostgresConnection();
 
 	try {
-        await new UserArchiver(
-            new PostgresUserRepository(postgresConnection),
-            new RabbitMQEventBus(
-                new RabbitMQConnection(),
-                new DomainEventFailover(postgresConnection)
-            )
-        ).archive(id);
+		await new UserArchiver(
+			new PostgresUserRepository(postgresConnection),
+			new RabbitMQEventBus(
+				new RabbitMQConnection(),
+				new DomainEventFailover(postgresConnection)
+			)
+		).archive(id);
 	} catch (error) {
 		if (error instanceof UserDoesNotExist) {
 			return new Response(

@@ -13,11 +13,7 @@ export class RestoredEmailSender {
 		private readonly eventBus: EventBus
 	) {}
 
-	async send(
-		userId: string,
-		name: string,
-		emailAddress: string
-	): Promise<void> {
+	async send(userId: string, name: string, emailAddress: string): Promise<void> {
 		const email = RestoredEmail.send(
 			await this.uuidGenerator.generate(),
 			userId,

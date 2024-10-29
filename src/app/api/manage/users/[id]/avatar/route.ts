@@ -1,13 +1,14 @@
 import { NextRequest } from "next/server";
+import { z } from "zod";
+
+import { UserAvatarUpdater } from "../../../../../../contexts/cma/users/application/update-avatar/UserAvatarUpdater";
 import { UserDoesNotExist } from "../../../../../../contexts/cma/users/domain/UserDoesNotExist";
 import { PostgresUserRepository } from "../../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
-import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
-import { UserAvatarUpdater } from "../../../../../../contexts/cma/users/application/update-avatar/UserAvatarUpdater";
-import { z } from "zod";
+import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 const validator = z.object({
 	avatar: z.string().url()
@@ -17,7 +18,7 @@ export async function PUT(
 	request: NextRequest,
 	{ params: { id } }: { params: { id: string } }
 ): Promise<Response> {
-    const json = await request.json();
+	const json = await request.json();
 	const parsed = validator.safeParse(json);
 
 	if (!parsed.success) {
@@ -32,13 +33,13 @@ export async function PUT(
 	const postgresConnection = new PostgresConnection();
 
 	try {
-        await new UserAvatarUpdater(
-            new PostgresUserRepository(postgresConnection),
-            new RabbitMQEventBus(
-                new RabbitMQConnection(),
-                new DomainEventFailover(postgresConnection)
-            )
-        ).update(id, parsed.data.avatar);
+		await new UserAvatarUpdater(
+			new PostgresUserRepository(postgresConnection),
+			new RabbitMQEventBus(
+				new RabbitMQConnection(),
+				new DomainEventFailover(postgresConnection)
+			)
+		).update(id, parsed.data.avatar);
 	} catch (error) {
 		if (error instanceof UserDoesNotExist) {
 			return new Response(

@@ -3,11 +3,11 @@ import { GuideAttachmentDomainEvent } from "./GuideAttachmentDomainEvent";
 
 export class GuideAttachmentUploadedDomainEvent extends GuideAttachmentDomainEvent {
 	static eventName = "pnfi.cma.guide_attachment.uploaded";
-    
+
 	constructor(
 		public readonly id: string,
 		public readonly guideId: string,
-        public readonly url: string,
+		public readonly url: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -23,7 +23,7 @@ export class GuideAttachmentUploadedDomainEvent extends GuideAttachmentDomainEve
 		return new GuideAttachmentUploadedDomainEvent(
 			aggregateId,
 			attributes.guideId as string,
-            attributes.url as string,
+			attributes.url as string,
 			eventId,
 			occurredOn
 		);
@@ -33,7 +33,7 @@ export class GuideAttachmentUploadedDomainEvent extends GuideAttachmentDomainEve
 		return {
 			id: this.id,
 			guideId: this.guideId,
-            url: this.url
+			url: this.url
 		};
 	}
 }
