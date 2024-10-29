@@ -1,7 +1,8 @@
+import { GuideId } from "../../guides/domain/GuideId";
 import { GuideAttachment } from "./GuideAttachment";
 
 export interface GuideAttachmentRepository {
-    save(guideAttachment: GuideAttachment): Promise<void>;
+	save(guideAttachment: GuideAttachment): Promise<void>;
 
-    search(id: string): Promise<GuideAttachment | null>;
+	searchAllByGuideId(guideId: GuideId): Promise<GuideAttachment[]>;
 }
