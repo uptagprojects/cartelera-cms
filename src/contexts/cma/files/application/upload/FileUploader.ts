@@ -8,9 +8,11 @@ export class FileUploader {
 		private readonly repository: FileRepository
 	) {}
 
-	async upload(content: Buffer, extension: string): Promise<string> {
-		const file = File.create(await this.uuidGenerator.generate(), extension, content);
+	async upload(content: Buffer, extension: string): Promise<File> {
+		const file = File.create(await this.uuidGenerator.generate(), content, extension);
 
-		return this.repository.save(file);
+		await this.repository.save(file);
+
+		return file;
 	}
 }

@@ -1,5 +1,5 @@
 import { File } from "./File";
 
 export interface FileRepository {
-	save(file: File): Promise<string>;
+	save(file: File): Promise<void>;
 }

@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
 import { Dropbox, DropboxAuth } from "dropbox";
+import fetch from "node-fetch";
 
 export interface DropboxFileMetadata {
 	id: string;
@@ -15,19 +15,18 @@ export class DropboxConnection {
 	private get dbx(): Dropbox {
 		if (!this.dropboxAuth) {
 			this.dropboxAuth = new DropboxAuth({
-                fetch,
+				fetch,
 				clientId: process.env.DROPBOX_API_KEY ?? "dropbox-api-key",
 				clientSecret: process.env.DROPBOX_API_SECRET ?? "dropbox-api-secret",
-                refreshToken: process.env.DROPBOX_REFRESH_TOKEN ?? "refresh-token"
+				refreshToken: process.env.DROPBOX_REFRESH_TOKEN ?? "refresh-token"
 			});
 		}
 
-        
-        this.dropboxAuth.checkAndRefreshAccessToken();
+		this.dropboxAuth.checkAndRefreshAccessToken();
 
 		if (!this.dropboxInstance) {
 			this.dropboxInstance = new Dropbox({
-                fetch,
+				fetch,
 				auth: this.dropboxAuth
 			});
 		}
@@ -49,32 +48,21 @@ export class DropboxConnection {
 		};
 	}
 
-	private async refreshAccess(): Promise<void> {
-        return new Promise((res, _) => {
-            setTimeout(() => {
-                this.dropboxAuth?.refreshAccessToken();
-                res();
-            }, 5000);
-        });
-	}
-
-	async listFolder(path: string): Promise<DropboxFileMetadata[]> {
-		const res = await this.dbx.filesListFolder({
+	async search(path: string): Promise<DropboxFileMetadata | null> {
+		const res = await this.dbx.filesGetMetadata({
 			path
 		});
 
-		const files = res.result.entries.filter(f => f[".tag"] === "file");
+		if (res.result[".tag"] !== "file") {
+			return null;
+		}
 
-		return files.map(
-			f =>
-				({
-					id: f.id,
-					name: f.name,
-					size: f.size,
-					revision: f.rev,
-					previewUrl: f.preview_url
-				}) as DropboxFileMetadata
-		);
+		return {
+			id: res.result.id,
+			size: res.result.size,
+			revision: res.result.rev,
+			previewUrl: res.result.preview_url as string
+		};
 	}
 
 	async remove(path: string): Promise<void> {
@@ -85,5 +73,19 @@ export class DropboxConnection {
 				}
 			]
 		});
+	}
+
+	async share(path: string): Promise<string> {
+		const res = await this.dbx.sharingCreateSharedLinkWithSettings({
+			path,
+			settings: {
+				access: { ".tag": "viewer" },
+				allow_download: true,
+				audience: { ".tag": "public" },
+				requested_visibility: { ".tag": "public" }
+			}
+		});
+
+		return res.result.url;
 	}
 }

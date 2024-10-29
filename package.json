@@ -33,6 +33,7 @@
     "@types/react-dom": "^18.2.0",
     "amqplib": "^0.10.4",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.5.1",
     "diod": "^3.0.0",
     "dropbox": "^10.34.0",
     "hono": "^4.5.8",
