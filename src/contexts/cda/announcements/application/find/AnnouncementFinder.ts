@@ -3,7 +3,7 @@ import { AnnouncementDoesNotExists } from "../../domain/AnnouncementDoesNotExist
 import { AnnouncementId } from "../../domain/AnnouncementId";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
 
-export class AoonucementFinder {
+export class AnnouncementFinder {
 	constructor(private readonly repository: AnnouncementRepository) {}
 	async find(id: string): Promise<Announcement> {
 		const announcement = await this.repository.search(new AnnouncementId(id));
