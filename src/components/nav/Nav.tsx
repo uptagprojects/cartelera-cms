@@ -5,12 +5,15 @@ import { Navbar, NavItem } from "octagon-ui";
 import { Brand } from "../brand/Brand";
 
 export const Nav = () => (
-	<Navbar brand={<Brand />} hideSearch={false}>
+	<Navbar brand={<Brand />}>
 		<NavItem>
-			<Link href="/horario">horarios</Link>
+			<Link href="/schedules">horarios</Link>
 		</NavItem>
 		<NavItem>
 			<Link href="/news">Noticias</Link>
+		</NavItem>
+		<NavItem>
+			<Link href="/guides">Guias</Link>
 		</NavItem>
 	</Navbar>
 );

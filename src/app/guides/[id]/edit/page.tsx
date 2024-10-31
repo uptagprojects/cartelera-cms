@@ -1,39 +1,47 @@
-"use client";
-import { Button, TextArea, TextInput } from "octagon-ui";
 import React from "react";
 
-const guide = {
-	title: "Guia 1",
-	content: "## markdown content\nhello world",
-	date: "2021-08-01",
-	uc: "ingles"
-};
+export interface IUC {
+	id: string;
+	name: string;
+}
 
-const EditGuidePage: React.FC = () => {
-	const [title, setTitle] = React.useState(guide.title);
-	const [content, setContent] = React.useState(guide.content);
+export interface IGuide {
+	id: string;
+	title: string;
+	content: string;
+	uc: IUC;
+	status: string;
+}
 
-	return (
-		<article>
-			<form>
-				<header>
-					<TextInput
-						size="large"
-						label="titulo"
-						value={title}
-						onChange={e => setTitle(e.target.value)}
-					/>
-				</header>
-				<TextArea
-					size="medium"
-					label="contenido"
-					value={content}
-					onChange={e => setContent(e.target.value)}
-				/>
-				<Button variant="primary" label="Guardar" />
-			</form>
-		</article>
-	);
+export interface IAttachment {
+	id: string;
+	url: string;
+	size: string;
+}
+
+interface EditGuidePageProps {
+	params: {
+		id: string;
+	};
+}
+
+const EditGuidePage: React.FC<EditGuidePageProps> = async ({ params }) => {
+	const guide: IGuide = await fetch(`/api/guides/${params.id}`).then(res => res.json());
+	const ucs = await fetch("/api/uc").then(res => res.json());
+
+	const handleUploadFiles = (files: File[]): void => {
+		const formData = new FormData();
+		files.forEach(file => {
+			formData.append("files", file);
+		});
+		fetch("/api/attachments", {
+			method: "POST",
+			body: formData
+		})
+			.then(res => res.json())
+			.then(res => setAttachments(state => [...state, ...res]))
+			.catch(err => setUploadError(err.message));
+	};
 };
 
 export default EditGuidePage;
