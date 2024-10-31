@@ -2,18 +2,11 @@ CREATE TABLE IF NOT EXISTS cda__courses (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     abstract TEXT,
-    start_date DATE,
-    finish_date DATE,
-    duration_hours NUMERIC, /* there is a posibility of half hours */
+    instructor JSON,
     picture TEXT,
     location TEXT,
+    duration JSON,
     price NUMERIC,
-    available_seats INT,
-    online BOOLEAN,
-    instructor_name VARCHAR(120),
-    instructor_badge VARCHAR(120),
-    instructor_avatar TEXT,
-    instructor_related_url TEXT,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

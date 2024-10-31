@@ -1,51 +1,65 @@
-import { CourseDuration } from "./CourseDuration";
+
+import { pl } from "@faker-js/faker";
+import { CourseDuration, CourseDurationPrimitives } from "./CourseDuration/CourseDuration";
 import { CourseId } from "./CourseId";
-import { CourseInstructorName } from "./CourseInstructorName";
+import { CourseInstructor, CourseInstructorPrimitives } from "./CourseInstructor/CourseInstructor";
 import { CourseLocation } from "./CourseLocation";
 import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
+import { CourseAbstract } from "./CourseAbstract";
+import { CoursePrice } from "./CoursePrice";
 
 export interface CdaCoursePrimitives {
 	id: string;
 	name: string;
-	duration: number;
-	instructorName: string;
+	abstract: string;
+	instructor: CourseInstructorPrimitives;
 	picture: string;
 	location: string;
+	duration: CourseDurationPrimitives;
+	price: number;
 }
 
 export class Course {
 	readonly id: CourseId;
 	readonly name: CourseName;
-	readonly duration: CourseDuration;
-	readonly instructorName: CourseInstructorName;
+	readonly abstract : CourseAbstract;
+	readonly instructor: CourseInstructor;
 	readonly picture: CoursePicture;
 	readonly location: CourseLocation;
+	readonly duration: CourseDuration;
+	readonly price: CoursePrice;
 
 	constructor(
 		id: CourseId,
 		name: CourseName,
-		duration: CourseDuration,
-		instructorName: CourseInstructorName,
+		abstract: CourseAbstract,
+		instructor: CourseInstructor,
 		picture: CoursePicture,
-		location: CourseLocation
+		location: CourseLocation,
+		duration: CourseDuration,
+		price: CoursePrice
 	) {
 		this.id = id;
 		this.name = name;
-		this.duration = duration;
-		this.instructorName = instructorName;
+		this.abstract = abstract;
+		this.instructor = instructor;
 		this.picture = picture;
 		this.location = location;
+		this.duration = duration;
+		this.price = price;
 	}
 
 	static fromPrimitives(plainData: CdaCoursePrimitives): Course {
 		return new Course(
 			new CourseId(plainData.id),
 			new CourseName(plainData.name),
-			new CourseDuration(plainData.duration),
-			new CourseInstructorName(plainData.instructorName),
+			new CourseAbstract(plainData.abstract),
+			CourseInstructor.fromPrimitives(plainData.instructor),
 			new CoursePicture(plainData.picture),
-			new CourseLocation(plainData.location)
+			new CourseLocation(plainData.location),
+			CourseDuration.fromPrimitives(plainData.duration),
+			new CoursePrice(plainData.price),
 		);
 	}
 
@@ -53,10 +67,12 @@ export class Course {
 		return {
 			id: this.id.value,
 			name: this.name.value,
-			duration: this.duration.value,
-			instructorName: this.instructorName.value,
+			abstract : this.abstract.value,
+			instructor: this.instructor.toPrimitives(),
 			picture: this.picture.value,
-			location: this.location.value
+			location: this.location.value,
+			duration: this.duration.toPrimitives(),
+			price: this.price.value,
 		};
 	}
 }
