@@ -7,5 +7,9 @@ export interface AnnouncementRepository {
 
 	search(id: AnnouncementId): Promise<Announcement | null>;
 
+	searchAll(): Promise<Announcement[]>;
+
 	matching(criteria: Criteria): Promise<Announcement[]>;
+
+	remove(announcement: Announcement): Promise<void>;
 }

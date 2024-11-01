@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS cda__announcements (
     title VARCHAR(200),
     content TEXT,
     area_id UUID,
+    professor JSON,
     status VARCHAR(64),
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

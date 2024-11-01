@@ -11,4 +11,6 @@ export interface EventRepository {
     searchAll(): Promise<Event[]>;
 
     matching(criteria: Criteria): Promise<Event[]>;
+
+    remove(event: Event): Promise<void>;
 }

@@ -7,5 +7,9 @@ export interface CourseRepository {
 
 	search(id: CourseId): Promise<Course | null>;
 
+	searchAll(): Promise<Course[]>;
+
 	matching(criteria: Criteria): Promise<Course[]>;
+
+	remove(id: Course): Promise<void>;
 }

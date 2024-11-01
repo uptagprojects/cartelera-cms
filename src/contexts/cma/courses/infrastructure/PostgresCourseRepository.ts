@@ -60,7 +60,7 @@ export class PostgresCourseRepository implements CourseRepository {
 
 	async searchAll(): Promise<Course[]> {
 		const res = await this.connection.searchAll<DatabaseCourse>(
-			"SELECT id, title, content, publish_date, type, active FROM cma__announcements",
+			"id, name, abstract, instructor, picture, location, duration, price, stored_creation_timestamp AS 'creation', stored_update_timestamp AS 'lastUpdate' FROM cma__courses",
 			[]
 		);
 
