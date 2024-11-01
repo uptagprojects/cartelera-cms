@@ -1,11 +1,11 @@
 import { Criteria } from "../../../../shared/domain/criteria/Criteria";
 import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
-import { Event } from "../../domain/Event";
-import { EventRepository } from "../../domain/EventRepository";
+import { Course } from "../../domain/Course";
+import { CourseRepository } from "../../domain/CourseRepository";
 
-export class EventByCriteriaSearcher {
+export class CourseByCriteriaSearcher {
     constructor(
-        private readonly repository: EventRepository
+        private readonly repository: CourseRepository
     ) {}
 
     async searchByCriteria(
@@ -14,7 +14,7 @@ export class EventByCriteriaSearcher {
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-    ): Promise<Event[]> {
+    ): Promise<Course[]> {
         const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
         return this.repository.matching(criteria);
