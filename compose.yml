@@ -55,9 +55,12 @@ services:
       - "5672:5672"
       - "15672:15672"
       - "15692:15692"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=cartelera
       - RABBITMQ_DEFAULT_PASS=cartelera
 volumes:
   db_data:
   openfga_data:
+  rabbitmq_data:
