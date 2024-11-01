@@ -1,0 +1,36 @@
+import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
+import { AnnouncementDomainEvent } from "./AnnouncementDomainEvent";
+
+export class AnnouncementContentUpdatedDomainEvent extends AnnouncementDomainEvent {
+	static eventName: string = "pnfi.cma.event.location.updated";
+
+	constructor(
+		public readonly id: string,
+		public readonly content: string,
+		eventId?: string,
+		occurredOn?: Date
+	) {
+		super(AnnouncementContentUpdatedDomainEvent.eventName, id, eventId, occurredOn);
+	}
+
+	static fromPrimitives(
+		aggregateId: string,
+		eventId: string,
+		occurredOn: Date,
+		attributes: DomainEventAttributes
+	): AnnouncementContentUpdatedDomainEvent {
+		return new AnnouncementContentUpdatedDomainEvent(
+			aggregateId,
+			attributes.content as string,
+			eventId,
+			occurredOn
+		);
+	}
+
+	toPrimitives(): DomainEventAttributes {
+		return {
+			id: this.id,
+			content: this.content
+		};
+	}
+}

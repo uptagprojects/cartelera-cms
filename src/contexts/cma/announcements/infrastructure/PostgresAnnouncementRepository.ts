@@ -14,11 +14,22 @@ interface DatabaseAnnouncement {
 	active: boolean;
 }
 export class PostgresAnnouncementRepository implements AnnouncementRepository {
-	constructor(private readonly connection: PostgresConnection) {}
+	constructor(private readonly connection: PostgresConnection) { }
+
+	async save(announcement: Announcement): Promise<void> {
+		const announcementPrimitives = announcement.toPrimitives();
+
+		const params = [announcementPrimitives.id, announcementPrimitives.title, announcementPrimitives.content, announcementPrimitives.publishDate, announcementPrimitives.type, announcementPrimitives.active];
+
+		await this.connection.execute(
+			`INSERT INTO cma__announcements (id, title, content, publish_date, type, active) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2`,
+			params
+		);
+	}
 
 	async search(id: AnnouncementId): Promise<Announcement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
-			"SELECT id, title, content, publish_date, type, active FROM cda__announcements WHERE id = $1 LIMIT 1",
+			"SELECT id, title, content, publish_date, type, active FROM cma__announcements WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 
@@ -34,6 +45,15 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			type: res.type,
 			active: res.active
 		});
+	}
+
+	async searchAll(): Promise<Announcement[]> {
+		const res = await this.connection.searchAll<DatabaseAnnouncement>(
+			"SELECT id, title, content, publish_date, type, active FROM cma__announcements",
+			[]
+		);
+
+		return res.map(r => Announcement.fromPrimitives(r));
 	}
 
 	async matching(criteria: Criteria): Promise<Announcement[]> {
@@ -57,4 +77,15 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			})
 		);
 	}
+
+	async remove(announcement: Announcement): Promise<void> {
+		const { id } = announcement.toPrimitives();
+
+		await this.connection.execute(
+			"DELETE FROM cma__announcements WHERE id = $1",
+			[id]
+		);
+	}
+
+
 }

@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { EventLocationUpdatedDomainEvent } from "./event/EventLocationUpdatedDomainEvent";
-import { EventPostedDomainEvent } from "./event/EventPostedDomainEvent";
+import { EventPublishedDomainEvent } from "./event/EventPublishedDomainEvent";
 import { EventNameUpdatedDomainEvent } from "./event/EventNameUpdatedDomainEvent";
 import { EventEndDate } from "./EventEndDate";
 import { EventId } from "./EventId";
@@ -40,7 +40,7 @@ export class Event extends AggregateRoot {
             new EventEndDate(endDate),
         );
 
-        event.record(new EventPostedDomainEvent(id, name, location, startDate, endDate));
+        event.record(new EventPublishedDomainEvent(id, name, location, startDate, endDate));
         return event;
     }
 

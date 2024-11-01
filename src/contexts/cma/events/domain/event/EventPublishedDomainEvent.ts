@@ -1,8 +1,8 @@
 import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
 import { EventDomainEvent } from "./EventDomainEvent";
 
-export class EventPostedDomainEvent extends EventDomainEvent {
-	static eventName = "pnfi.cma.event.posted";
+export class EventPublishedDomainEvent extends EventDomainEvent {
+	static eventName = "pnfi.cma.event.published";
 	constructor(
 		public readonly id: string,
 		public readonly name: string,
@@ -12,7 +12,7 @@ export class EventPostedDomainEvent extends EventDomainEvent {
 		eventId?: string,
 		occurredOn?: Date
 	) {
-		super(EventPostedDomainEvent.eventName, id, eventId, occurredOn);
+		super(EventPublishedDomainEvent.eventName, id, eventId, occurredOn);
 	}
 
 	static fromPrimitives(
@@ -20,8 +20,8 @@ export class EventPostedDomainEvent extends EventDomainEvent {
 		eventId: string,
 		occurredOn: Date,
 		attributes: DomainEventAttributes
-	): EventPostedDomainEvent {
-		return new EventPostedDomainEvent(
+	): EventPublishedDomainEvent {
+		return new EventPublishedDomainEvent(
 			aggregateId,
 			attributes.name as string,
             attributes.location as string,
