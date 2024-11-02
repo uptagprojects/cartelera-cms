@@ -20,7 +20,7 @@ export class PostgresGuideRepository implements GuideRepository {
 	async save(guide: Guide): Promise<void> {
 		const guidePrimitives = guide.toPrimitives();
 
-		const params = [guidePrimitives.id, guidePrimitives.title, guidePrimitives.content, guidePrimitives.areaId.toString(), guidePrimitives.authorId, guidePrimitives.status];
+		const params = [guidePrimitives.id, guidePrimitives.title, guidePrimitives.content, guidePrimitives.ucId.toString(), guidePrimitives.authorId, guidePrimitives.status];
 
 		await this.connection.execute(
 			`INSERT INTO cma__guides (id, title, content, areaId, authorId, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2`,
@@ -42,7 +42,7 @@ export class PostgresGuideRepository implements GuideRepository {
 			id: res.id,
 			title: res.title,
 			content: res.content,
-			areaId: res.areaId,
+			ucId: res.areaId,
 			authorId: res.authorId,
 			status: res.status
 		});

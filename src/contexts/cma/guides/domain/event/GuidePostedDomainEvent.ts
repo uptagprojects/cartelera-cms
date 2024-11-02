@@ -7,7 +7,7 @@ export class GuidePostedDomainEvent extends GuideDomainEvent {
 		public readonly id: string,
 		public readonly title: string,
 		public readonly content: string,
-		public readonly areaId: string,
+		public readonly ucId: string,
 		public readonly authorId: string,
 		public readonly status: string,
 		eventId?: string,
@@ -26,7 +26,7 @@ export class GuidePostedDomainEvent extends GuideDomainEvent {
 			aggregateId,
 			attributes.title as string,
 			attributes.content as string,
-			attributes.areaId as string,
+			attributes.ucId as string,
 			attributes.authorId as string,
 			attributes.status as string,
 			eventId,
@@ -39,7 +39,7 @@ export class GuidePostedDomainEvent extends GuideDomainEvent {
 			id: this.id,
 			title: this.title,
 			content: this.content,
-			areaId: this.areaId,
+			ucId: this.ucId,
 			authorId: this.authorId,
 			status: this.status
 		};

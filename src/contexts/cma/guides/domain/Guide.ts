@@ -15,7 +15,7 @@ export interface GuidePrimitives {
 	id: string;
 	title: string;
 	content: string;
-	areaId: string;
+	ucId: string;
 	authorId: string;
 	status: string;
 }
@@ -25,7 +25,7 @@ export class Guide extends AggregateRoot {
 		private readonly id: GuideId,
 		private title: GuideTitle,
 		private content: GuideContent,
-		private readonly areaId: UCId,
+		private readonly ucId: UCId,
 		private readonly authorId: UserId,
 		private status: GuideStatus
 	) {
@@ -36,7 +36,7 @@ export class Guide extends AggregateRoot {
 		id: string,
 		title: string,
 		content: string,
-		areaId: string,
+		ucId: string,
 		authorId: string
 	): Guide {
 		const defaultGuideStatus = GuideStatus.DRAFT;
@@ -45,13 +45,13 @@ export class Guide extends AggregateRoot {
 			new GuideId(id),
 			new GuideTitle(title),
 			new GuideContent(content),
-			new UCId(areaId),
+			new UCId(ucId),
 			new UserId(authorId),
 			defaultGuideStatus
 		);
 
 		guide.record(
-			new GuidePostedDomainEvent(id, title, content, areaId, authorId, defaultGuideStatus)
+			new GuidePostedDomainEvent(id, title, content, ucId, authorId, defaultGuideStatus)
 		);
 
 		return guide;
@@ -62,7 +62,7 @@ export class Guide extends AggregateRoot {
 			new GuideId(primitives.id),
 			new GuideTitle(primitives.title),
 			new GuideContent(primitives.content),
-			new UCId(primitives.areaId),
+			new UCId(primitives.ucId),
 			new UserId(primitives.authorId),
 			primitives.status as GuideStatus
 		);
@@ -73,7 +73,7 @@ export class Guide extends AggregateRoot {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			areaId: this.areaId.value,
+			ucId: this.ucId.value,
 			authorId: this.authorId.value,
 			status: this.status
 		};

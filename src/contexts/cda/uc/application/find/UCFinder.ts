@@ -1,5 +1,5 @@
 import { UC } from "../../domain/UC";
-import { UCDoesNotExists } from "../../domain/UCDoesNotExists";
+import { UCDoesNotExists } from "../../domain/UCDoesNotExist";
 import { UCId } from "../../domain/UCId";
 import { UCRepository } from "../../domain/UCRepository";
 

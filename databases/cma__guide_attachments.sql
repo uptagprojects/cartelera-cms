@@ -1,11 +1,8 @@
-CREATE TABLE IF NOT EXISTS cda__guides (
+CREATE TABLE IF NOT EXISTS cma__guide_attachments (
     id UUID PRIMARY KEY,
-    title VARCHAR(200),
-    content TEXT,
-    area_id UUID,
-    professor JSON,
-    attachments JSON,
+    guide_id UUID,
+    url TEXT,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+)

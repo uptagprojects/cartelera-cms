@@ -4,7 +4,7 @@ import { PostgresConnection } from "../../../../contexts/shared/infrastructure/P
 import { CourseDoesNotExists } from "../../../../contexts/cda/courses/domain/CourseDoesNotExists";
 import { PostgresUCRepository } from "../../../../contexts/cda/uc/infrastructure/PostgresUCRepository";
 import { UCFinder } from "../../../../contexts/cda/uc/application/find/UCFinder";
-import { UCDoesNotExists } from "../../../../contexts/cda/uc/domain/UCDoesNotExists";
+import { UCDoesNotExists } from "../../../../contexts/cda/uc/domain/UCDoesNotExist";
 
 export async function GET(
     _: NextRequest,
