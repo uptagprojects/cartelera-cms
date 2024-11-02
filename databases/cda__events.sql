@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cda__courses (
+CREATE TABLE IF NOT EXISTS cda__events (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     location TEXT,

@@ -7,5 +7,14 @@ export interface GuideRepository {
 
 	search(id: GuideId): Promise<Guide | null>;
 
+<<<<<<< HEAD
 	matching(criteria: Criteria): Promise<Guide[]>;
 }
+=======
+    matching(criteria: Criteria): Promise<Guide[]>;
+
+    searchAll(): Promise<Guide[]>;
+
+    remove(guide: Guide): Promise<void>;
+}
+>>>>>>> feature/cda-domain
