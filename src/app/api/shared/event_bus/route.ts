@@ -5,7 +5,7 @@ import { RabbitMQConnection } from "../../../../contexts/shared/infrastructure/e
 import { RabbitMQEventBus } from "../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
-export async function POST(request: NextRequest): Promise<Response> {
+export async function POST(_request: NextRequest): Promise<Response> {
 	const eventBus = new RabbitMQEventBus(
 		new RabbitMQConnection(),
 		new DomainEventFailover(new PostgresConnection())
