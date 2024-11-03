@@ -1,11 +1,14 @@
-body {
+.tv-layout {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 5px auto;
   grid-template-areas: "progress progress" "cards cards";
   place-content: stretch;
   place-items: stretch;
   gap: 0px 1fr;
-  background-color: var(--gray-700);
+  background-color: var(--cyan-800);
   color: var(--orange-000);
 }
 
@@ -41,4 +44,9 @@ nextjs-portal {
   100% {
     transform:  translateX(100%) scaleX(0.5);
   }
+}
+
+
+.tv-layout .oct-progress__bar::-webkit-progress-value {
+  transition: all 0.5s linear;
 }

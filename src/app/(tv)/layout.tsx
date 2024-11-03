@@ -13,11 +13,11 @@ export default function TVLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<>
+		<div className="tv-layout">
 			<div role="progressbar" className="indicator">
 				<div className="indicator-value" />
 			</div>
 			{children}
-		</>
+		</div>
 	);
 }

@@ -36,9 +36,16 @@ export const TV: FC<TVModeProps> = ({ activities }) => {
 	};
 
 	return (
-		<div className={styles.tvMode}>
+		<div
+			className={styles.tvMode}
+			style={{
+				backgroundImage: URL.canParse(activity.image)
+					? `url(${activity.image})`
+					: "var(--sunset-gradient)"
+			}}
+		>
 			<TVContent title={activity.event} subtitle={""} content={activity.content} />
-			<TVCardSlides activities={activities} />
+			<TVCardSlides activities={activities} currentIndex={currentActivity} />
 		</div>
 	);
 };

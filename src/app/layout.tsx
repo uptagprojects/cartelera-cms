@@ -1,4 +1,5 @@
 import "octagon-ui/dist/index.css";
+import "./rootLayout.css";
 
 export default function RootLayout({
 	children

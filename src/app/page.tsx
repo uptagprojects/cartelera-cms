@@ -12,13 +12,14 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+	"use server";
 	const week = await useGetCurrentWeek();
 	const schedules = await useGetPublishedSchedules();
 
 	return (
 		<>
 			<Nav />
-			<main>
+			<main className="tv">
 				<Home week={week} schedule={schedules[0]?.id} />
 			</main>
 			<PageFooter />

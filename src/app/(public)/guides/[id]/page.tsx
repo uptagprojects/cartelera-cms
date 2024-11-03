@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 
 import { GuideReader } from "./GuideReader";
+import { useGetGuide } from "./services/useGetGuide";
 
 interface GuidePageProps {
 	params: Promise<{ id: string }>;
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function GuidePage({ params }: GuidePageProps) {
 	const { id } = await params;
-	const guide = await fetch(`http://127.0.0.1:3000/api/guides/${id}`).then(res => res.json());
+	const guide = await useGetGuide(id);
 
 	return <GuideReader {...guide} />;
 }
