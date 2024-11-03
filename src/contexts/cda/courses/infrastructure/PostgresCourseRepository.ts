@@ -11,15 +11,16 @@ interface DatabaseCourse {
 	id: string;
 	name: string;
 	abstract: string;
-	instructor: CourseInstructorPrimitives;
+	instructor: string;
 	picture: string;
 	location: string;
-	duration: CourseDurationPrimitives;
+	duration: string;
 	price: number;
 }
 
 export class PostgresCourseRepository implements CourseRepository {
-	constructor(private readonly connection: PostgresConnection) { }
+	constructor(private readonly connection: PostgresConnection) {}
+
 	async search(id: CourseId): Promise<Course | null> {
 		const res = await this.connection.searchOne<DatabaseCourse>(
 			"SELECT id, name, abstract, instructor, picture, location, duration, price FROM cda__courses WHERE id = $1 LIMIT 1",
@@ -30,7 +31,16 @@ export class PostgresCourseRepository implements CourseRepository {
 			return null;
 		}
 
-		return Course.fromPrimitives(res);
+		return Course.fromPrimitives({
+			id: res.id,
+			name: res.name,
+			abstract: res.abstract,
+			instructor: JSON.parse(res.instructor) as CourseInstructorPrimitives,
+			picture: res.picture,
+			location: res.location,
+			duration: JSON.parse(res.duration) as CourseDurationPrimitives,
+			price: res.price
+		});
 	}
 
 	async matching(criteria: Criteria): Promise<Course[]> {
@@ -48,10 +58,10 @@ export class PostgresCourseRepository implements CourseRepository {
 				id: a.id,
 				name: a.name,
 				abstract: a.abstract,
-				instructor: a.instructor,
+				instructor: JSON.parse(a.instructor) as CourseInstructorPrimitives,
 				picture: a.picture,
 				location: a.location,
-				duration: a.duration,
+				duration: JSON.parse(a.duration) as CourseDurationPrimitives,
 				price: a.price
 			})
 		);

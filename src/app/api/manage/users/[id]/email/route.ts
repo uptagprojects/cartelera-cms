@@ -16,8 +16,9 @@ const validator = z.object({
 
 export async function PUT(
 	request: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const json = await request.json();
 	const parsed = validator.safeParse(json);
 

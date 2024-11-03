@@ -5,25 +5,36 @@ import { CourseInstructorPrimitives } from "../../domain/CourseInstructor/Course
 import { CourseRepository } from "../../domain/CourseRepository";
 
 export class CoursePoster {
-    constructor(
-        private readonly repository: CourseRepository,
-        private readonly eventBus: EventBus
-    ) { }
+	constructor(
+		private readonly repository: CourseRepository,
+		private readonly eventBus: EventBus
+	) {}
 
-    async post(
-        id: string,
-        name: string,
-        abstract: string,
-        picture: string,
-        instructor: CourseInstructorPrimitives,
-        location: string,
-        duration: CourseDurationPrimitives,
-        price: number,
-        creation: string,
-        lastUpdate: string): Promise<void> {
-
-        const course = Course.create(id, name, abstract, picture, instructor, location, duration, price, creation, lastUpdate);
-        await this.repository.save(course);
-        await this.eventBus.publish(course.pullDomainEvents());
-    }
+	async post(
+		id: string,
+		name: string,
+		abstract: string,
+		picture: string,
+		instructor: CourseInstructorPrimitives,
+		location: string,
+		duration: CourseDurationPrimitives,
+		price: number,
+		creation: string,
+		lastUpdate: string
+	): Promise<void> {
+		const course = Course.create(
+			id,
+			name,
+			abstract,
+			picture,
+			instructor,
+			location,
+			duration,
+			price,
+			creation,
+			lastUpdate
+		);
+		await this.repository.save(course);
+		await this.eventBus.publish(course.pullDomainEvents());
+	}
 }

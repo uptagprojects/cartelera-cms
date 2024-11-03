@@ -1,12 +1,15 @@
-import { TV } from "../../../components/tv/TV";
-import { IGuide } from "../../../lib/guides/IGuide";
+import { Metadata } from "next";
+
+import { TV } from "./components/TV";
+import { useGetActivities } from "./services/useGetActivities";
+
+export const metadata: Metadata = {
+	title: "PNFi | TV",
+	description: "Programa Nacional de Formacion en Informatica"
+};
 
 export default async function TVPage() {
-	const guides = await fetch("http://localhost:3000/api/guides/").then(
-		res => res.json() as Promise<IGuide[]>
-	);
+	const activities = await useGetActivities();
 
-	console.log(guides);
-
-	return <TV guides={guides} />;
+	return <TV activities={activities} />;
 }

@@ -79,6 +79,11 @@ export class PostgresConnection {
 		await this.execute(`TRUNCATE TABLE ${table}`, []);
 	}
 
+	async truncateAll(): Promise<void> {
+		await this.execute(`SELECT truncate_tables($1)`, ["cma"]);
+		await this.execute(`SELECT truncate_tables($1)`, ["cda"]);
+	}
+
 	async close(): Promise<void> {
 		if (this.poolInstance !== null) {
 			await this.poolInstance.end();

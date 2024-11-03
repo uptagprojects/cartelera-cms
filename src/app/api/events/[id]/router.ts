@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresEventRepository } from "../../../../contexts/cda/events/infrastructure/PostgresEventRepository";
 import { EventFinder } from "../../../../contexts/cda/events/application/find/EventFinder";
 import { EventDoesNotExists } from "../../../../contexts/cda/events/domain/EventDoesNotExists";
+import { PostgresEventRepository } from "../../../../contexts/cda/events/infrastructure/PostgresEventRepository";
+import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 	let event = null;
 	try {

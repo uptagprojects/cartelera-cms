@@ -6,5 +6,4 @@ export interface CourseRepository {
 	search(id: CourseId): Promise<Course | null>;
 
 	matching(criteria: Criteria): Promise<Course[]>;
-
 }

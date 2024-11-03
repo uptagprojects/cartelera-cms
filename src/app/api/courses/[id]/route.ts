@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresCourseRepository } from "../../../../contexts/cda/courses/infrastructure/PostgresCourseRepository";
-import { CourseDoesNotExists } from "../../../../contexts/cda/courses/domain/CourseDoesNotExists";
 import { CourseFinder } from "../../../../contexts/cda/courses/application/find/CourseFinder";
+import { CourseDoesNotExists } from "../../../../contexts/cda/courses/domain/CourseDoesNotExists";
+import { PostgresCourseRepository } from "../../../../contexts/cda/courses/infrastructure/PostgresCourseRepository";
+import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 	let course = null;
 	try {

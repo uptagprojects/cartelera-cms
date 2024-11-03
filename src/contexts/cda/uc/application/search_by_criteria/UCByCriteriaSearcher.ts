@@ -3,8 +3,7 @@ import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
 import { UC } from "../../domain/UC";
 import { UCRepository } from "../../domain/UCRepository";
 
-
-export class CourseByCriteriaSearcher {
+export class UCByCriteriaSearcher {
 	constructor(private readonly repository: UCRepository) {}
 
 	async search(

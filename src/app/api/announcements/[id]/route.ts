@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { PostgresAnnouncementRepository } from "../../../../contexts/cda/announcements/infrastructure/PostgresAnnouncementRepository";
 import { AnnouncementFinder } from "../../../../contexts/cda/announcements/application/find/AnnouncementFinder";
 import { AnnouncementDoesNotExists } from "../../../../contexts/cda/announcements/domain/AnnouncementDoesNotExists";
+import { PostgresAnnouncementRepository } from "../../../../contexts/cda/announcements/infrastructure/PostgresAnnouncementRepository";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 	let announcement = null;
 	try {

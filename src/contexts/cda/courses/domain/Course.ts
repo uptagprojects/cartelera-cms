@@ -1,12 +1,10 @@
-
-import { pl } from "@faker-js/faker";
+import { CourseAbstract } from "./CourseAbstract";
 import { CourseDuration, CourseDurationPrimitives } from "./CourseDuration/CourseDuration";
 import { CourseId } from "./CourseId";
 import { CourseInstructor, CourseInstructorPrimitives } from "./CourseInstructor/CourseInstructor";
 import { CourseLocation } from "./CourseLocation";
 import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
-import { CourseAbstract } from "./CourseAbstract";
 import { CoursePrice } from "./CoursePrice";
 
 export interface CdaCoursePrimitives {
@@ -23,7 +21,7 @@ export interface CdaCoursePrimitives {
 export class Course {
 	readonly id: CourseId;
 	readonly name: CourseName;
-	readonly abstract : CourseAbstract;
+	readonly abstract: CourseAbstract;
 	readonly instructor: CourseInstructor;
 	readonly picture: CoursePicture;
 	readonly location: CourseLocation;
@@ -59,7 +57,7 @@ export class Course {
 			new CoursePicture(plainData.picture),
 			new CourseLocation(plainData.location),
 			CourseDuration.fromPrimitives(plainData.duration),
-			new CoursePrice(plainData.price),
+			new CoursePrice(plainData.price)
 		);
 	}
 
@@ -67,12 +65,12 @@ export class Course {
 		return {
 			id: this.id.value,
 			name: this.name.value,
-			abstract : this.abstract.value,
+			abstract: this.abstract.value,
 			instructor: this.instructor.toPrimitives(),
 			picture: this.picture.value,
 			location: this.location.value,
 			duration: this.duration.toPrimitives(),
-			price: this.price.value,
+			price: this.price.value
 		};
 	}
 }

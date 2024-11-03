@@ -7,9 +7,9 @@ export interface GuideRepository {
 
 	search(id: GuideId): Promise<Guide | null>;
 
-    matching(criteria: Criteria): Promise<Guide[]>;
+	matching(criteria: Criteria): Promise<Guide[]>;
 
-    searchAll(): Promise<Guide[]>;
+	searchAll(): Promise<Guide[]>;
 
-    remove(guide: Guide): Promise<void>;
+	remove(guide: Guide): Promise<void>;
 }

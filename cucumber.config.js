@@ -4,8 +4,8 @@ module.exports = {
 		require: ["tests/features/step_definitions/*.steps.ts", "test/features/**/*.steps.ts"],
 		paths: ["tests/features/**/*.feature"],
 		formatOptions: {
-            "snippetInterface": "async-await"
-        },
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],
@@ -20,8 +20,8 @@ module.exports = {
 		],
 		paths: ["tests/features/cda/**/*.feature"],
 		formatOptions: {
-            "snippetInterface": "async-await"
-        },
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],
@@ -36,8 +36,8 @@ module.exports = {
 		],
 		paths: ["tests/features/cma/**/*.feature"],
 		formatOptions: {
-            "snippetInterface": "async-await"
-        },
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],

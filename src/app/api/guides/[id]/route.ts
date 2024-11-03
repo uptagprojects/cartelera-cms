@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresGuideRepository } from "../../../../contexts/cda/guides/infrastructure/PostgresGuideRepository";
 import { GuideFinder } from "../../../../contexts/cda/guides/application/find/GuideFinder";
 import { GuideDoesNotExists } from "../../../../contexts/cda/guides/domain/GuideDoesNotExists";
+import { PostgresGuideRepository } from "../../../../contexts/cda/guides/infrastructure/PostgresGuideRepository";
+import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 	let guide = null;
 	try {

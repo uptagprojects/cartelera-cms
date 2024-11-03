@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const LocalAuthenticationFormSchema = z.object({
@@ -15,7 +16,11 @@ export type LocalAuthenticationFormState =
 	  }
 	| undefined;
 
-export async function localAuthentication(state: LocalAuthenticationFormState, formData: FormData) {
+export async function localAuthentication(
+	_state: LocalAuthenticationFormState,
+	formData: FormData
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
 	const validatedFields = LocalAuthenticationFormSchema.safeParse({
 		email: formData.get("email"),
 		password: formData.get("password")
@@ -27,7 +32,7 @@ export async function localAuthentication(state: LocalAuthenticationFormState, f
 		};
 	}
 
-	fetch("/api/manage/auth/local", {
+	await fetch("http://127.0.0.1:3000/api/auth/local", {
 		headers: {
 			"Content-Type": "application/json"
 		},
@@ -37,4 +42,6 @@ export async function localAuthentication(state: LocalAuthenticationFormState, f
 			password: validatedFields.data.password
 		})
 	});
+
+	redirect("/");
 }

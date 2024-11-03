@@ -4,6 +4,7 @@ import { PostgresConnection } from "../../../shared/infrastructure/PostgresConne
 import { Event } from "../domain/Event";
 import { EventId } from "../domain/EventId";
 import { EventRepository } from "../domain/EventRepository";
+
 interface DatabaseEvent {
 	id: string;
 	name: string;
@@ -12,7 +13,7 @@ interface DatabaseEvent {
 	endDate: string;
 }
 export class PostgresEventRepository implements EventRepository {
-	constructor(private readonly connection: PostgresConnection) { }
+	constructor(private readonly connection: PostgresConnection) {}
 
 	async search(id: EventId): Promise<Event | null> {
 		const res = await this.connection.searchOne<DatabaseEvent>(
@@ -43,7 +44,7 @@ export class PostgresEventRepository implements EventRepository {
 				name: a.name,
 				location: a.location,
 				startDate: a.startDate,
-				endDate: a.endDate,
+				endDate: a.endDate
 			})
 		);
 	}

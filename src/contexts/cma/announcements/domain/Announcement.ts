@@ -19,32 +19,39 @@ export interface AnnouncementPrimitives {
 	active: boolean;
 }
 
-
 export class Announcement extends AggregateRoot {
-	
 	constructor(
-		private id: AnnouncementId,
+		private readonly id: AnnouncementId,
 		private title: AnnouncementTitle,
 		private content: AnnouncementContent,
-		private publishDate: AnnouncementPublishDate,
-		private type: AnnouncementType,
-		private active: AnnouncementActive,
+		private readonly publishDate: AnnouncementPublishDate,
+		private readonly type: AnnouncementType,
+		private active: AnnouncementActive
 	) {
-		super()
+		super();
 	}
 
-	static create(id: string, title: string, content: string, publishDate: string, type: string, active: boolean): Announcement {
-
+	static create(
+		id: string,
+		title: string,
+		content: string,
+		publishDate: string,
+		type: string,
+		active: boolean
+	): Announcement {
 		const announcement = new Announcement(
 			new AnnouncementId(id),
 			new AnnouncementTitle(title),
 			new AnnouncementContent(content),
 			new AnnouncementPublishDate(publishDate),
 			type as AnnouncementType,
-			new AnnouncementActive(active),
+			new AnnouncementActive(active)
 		);
 
-		announcement.record(new AnnouncementPublishedDomainEvent(id, title, content, publishDate, type, active));
+		announcement.record(
+			new AnnouncementPublishedDomainEvent(id, title, content, publishDate, type, active)
+		);
+
 		return announcement;
 	}
 
@@ -55,7 +62,7 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementContent(plainData.content),
 			new AnnouncementPublishDate(plainData.publishDate),
 			plainData.type as AnnouncementType,
-			new AnnouncementActive(plainData.active),
+			new AnnouncementActive(plainData.active)
 		);
 	}
 
@@ -89,5 +96,4 @@ export class Announcement extends AggregateRoot {
 		this.active = new AnnouncementActive(false);
 		this.record(new AnnouncementDeactivatedDomainEvent(this.id.value, false));
 	}
-
 }

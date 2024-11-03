@@ -21,8 +21,8 @@
     "test": "npm run test:unit && npm run test:integration && npm run test:acceptance",
     "test:unit": "npm run test:jest tests/contexts/**/*/application",
     "test:integration": "npm run test:jest tests/contexts/**/*/infrastructure",
-    "test:acceptance": "npm run test:features",
-    "test:features": "TS_NODE_PROJECT=tsconfig.steps.json NODE_ENV=test cucumber-js -c cucumber.config.js",
+    "test:acceptance": "npm run build && npm run configure-rabbitmq && npm run test:features",
+    "test:features": "NODE_ENV=test cucumber-js -c cucumber.config.js",
     "test:jest": "NODE_ENV=test jest"
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "diod": "^3.0.0",
     "dropbox": "^10.34.0",
     "jose": "^5.9.6",
+    "lucide-react": "^0.454.0",
     "migrate": "^2.1.0",
     "next": "^15.0.2",
     "node-fetch": "^3.3.2",
@@ -56,6 +57,7 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@cucumber/cucumber": "^10.8.0",
     "@faker-js/faker": "^8.4.1",
+    "@playwright/test": "^1.48.2",
     "@types/amqplib": "^0.10.5",
     "@types/bcrypt": "^5.0.2",
     "@types/jest": "^29.5.12",

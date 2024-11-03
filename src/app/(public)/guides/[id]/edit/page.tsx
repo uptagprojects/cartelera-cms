@@ -1,47 +1,44 @@
-import React from "react";
+import { Metadata } from "next";
 
-export interface IUC {
-	id: string;
-	name: string;
-}
-
-export interface IGuide {
-	id: string;
-	title: string;
-	content: string;
-	uc: IUC;
-	status: string;
-}
-
-export interface IAttachment {
-	id: string;
-	url: string;
-	size: string;
-}
+import { IAttachment } from "../../../../../lib/attachments/IAttachment";
+import { IEditableGuide } from "../../../../../lib/guides/IEditableGuide";
+import { GuideEditor } from "./GuideEditor";
 
 interface EditGuidePageProps {
-	params: {
-		id: string;
-	};
+	params: Promise<{ id: string }>;
 }
 
-const EditGuidePage: React.FC<EditGuidePageProps> = async ({ params }) => {
-	const guide: IGuide = await fetch(`/api/guides/${params.id}`).then(res => res.json());
-	const ucs = await fetch("/api/uc").then(res => res.json());
+export const metadata: Metadata = {
+	title: "PNFi | Editar Guia",
+	description: "Programa Nacional de Formacion en Informatica"
+};
 
+export default async function EditGuidePage({ params }: EditGuidePageProps) {
+	const { id } = await params;
+	const guide: IEditableGuide = await fetch(`/api/manage/guides/${id}`).then(res => res.json());
+	const ucs = await fetch("/api/manage/uc").then(res => res.json());
+	//const attachments = await fetch(`/api/manange/guide/${id}/attachments`).then(res => res.json());
+
+	/*
 	const handleUploadFiles = (files: File[]): void => {
 		const formData = new FormData();
 		files.forEach(file => {
 			formData.append("files", file);
 		});
-		fetch("/api/attachments", {
+		fetch(`/api/files`, {
 			method: "POST",
 			body: formData
 		})
 			.then(res => res.json())
 			.then(res => setAttachments(state => [...state, ...res]))
 			.catch(err => setUploadError(err.message));
-	};
-};
+	};*/
 
-export default EditGuidePage;
+	return (
+		<GuideEditor
+			guide={guide}
+			ucs={ucs}
+			onUploadFilesAction={() => Promise.resolve([] as IAttachment[])}
+		/>
+	);
+}

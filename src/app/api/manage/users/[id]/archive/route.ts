@@ -11,8 +11,9 @@ import { PostgresConnection } from "../../../../../../contexts/shared/infrastruc
 
 export async function PUT(
 	_request: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 
 	try {

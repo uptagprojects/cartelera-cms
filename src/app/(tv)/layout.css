@@ -1,11 +1,16 @@
 body {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 5px max-content;
-  grid-template-areas: "progress progress" "content cards";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 5px auto;
+  grid-template-areas: "progress progress" "cards cards";
   place-content: stretch;
   place-items: stretch;
-  gap: 1rem 1fr;
-  background-color: var(--gray-500);
+  gap: 0px 1fr;
+  background-color: var(--gray-700);
+  color: var(--orange-000);
+}
+
+nextjs-portal {
+  display: none;
 }
 
 .indicator {

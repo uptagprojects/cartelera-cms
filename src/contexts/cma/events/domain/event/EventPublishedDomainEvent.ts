@@ -8,7 +8,7 @@ export class EventPublishedDomainEvent extends EventDomainEvent {
 		public readonly name: string,
 		public readonly location: string,
 		public readonly startDate: string,
-        public readonly endDate: string,
+		public readonly endDate: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -24,9 +24,9 @@ export class EventPublishedDomainEvent extends EventDomainEvent {
 		return new EventPublishedDomainEvent(
 			aggregateId,
 			attributes.name as string,
-            attributes.location as string,
-            attributes.startDate as string,
-            attributes.endDate as string,
+			attributes.location as string,
+			attributes.startDate as string,
+			attributes.endDate as string,
 			eventId,
 			occurredOn
 		);
@@ -36,9 +36,9 @@ export class EventPublishedDomainEvent extends EventDomainEvent {
 		return {
 			id: this.id,
 			name: this.name,
-            location: this.location,
-            startDate: this.startDate.toString(),
-            endDate: this.endDate.toString(),
+			location: this.location,
+			startDate: this.startDate.toString(),
+			endDate: this.endDate.toString()
 		};
 	}
 }

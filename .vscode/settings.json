@@ -10,7 +10,7 @@
         "tests/features/**/*.steps.ts"
     ],
     "prettier.configPath": ".prettierrc",
-//    "eslint.format.enable": true,
+    "eslint.format.enable": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
     },

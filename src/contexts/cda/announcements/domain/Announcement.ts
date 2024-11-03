@@ -22,23 +22,20 @@ export class Announcement {
 	readonly type: AnnouncementType;
 	readonly active: AnnouncementActive;
 
-
 	constructor(
 		id: AnnouncementId,
 		title: AnnouncementTitle,
 		content: AnnouncementContent,
 		publishDate: AnnouncementPublishDate,
 		type: AnnouncementType,
-		active: AnnouncementActive,
-
+		active: AnnouncementActive
 	) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.publishDate = publishDate;
 		this.type = type;
-		this.active = active
-
+		this.active = active;
 	}
 
 	static fromPrimitives(plainData: AnnouncementPrimitives): Announcement {
@@ -48,8 +45,7 @@ export class Announcement {
 			new AnnouncementContent(plainData.content),
 			new AnnouncementPublishDate(plainData.publishDate),
 			plainData.type as AnnouncementType,
-			new AnnouncementActive(plainData.active),
-
+			new AnnouncementActive(plainData.active)
 		);
 	}
 

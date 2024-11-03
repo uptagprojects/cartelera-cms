@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { AnnouncementsByCriteriaSearcher } from "../../../contexts/cda/announcements/application/search_by_criteria/AnnouncementsByCriteriaSearcher";
 import { PostgresAnnouncementRepository } from "../../../contexts/cda/announcements/infrastructure/PostgresAnnouncementRepository";
-import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 import { SearchParamsCriteriaFiltersParser } from "../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
+import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
-const searcher = new AnnouncementsByCriteriaSearcher(new PostgresAnnouncementRepository(new PostgresConnection()));
+const searcher = new AnnouncementsByCriteriaSearcher(
+	new PostgresAnnouncementRepository(new PostgresConnection())
+);
 
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);
