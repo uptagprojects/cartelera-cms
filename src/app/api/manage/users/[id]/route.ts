@@ -20,8 +20,9 @@ const userValidator = z.object({
 
 export async function PUT(
 	request: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const json = await request.json();
 	const parsed = userValidator.safeParse(json);
 	if (!parsed.success) {
@@ -101,8 +102,9 @@ export async function PUT(
 
 export async function GET(
 	_: NextRequest,
-	{ params: { id } }: { params: { id: string } }
+	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
 	let user = null;
 	try {

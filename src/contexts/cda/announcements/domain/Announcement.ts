@@ -1,41 +1,41 @@
-import { Attachment, AttachmentPrimitives } from "../../attachments/domain/Attachment";
-import { AnnouncementAuthorId } from "./AnnouncementAuthorId";
+import { AnnouncementActive } from "./AnnouncementActive";
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
 import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
 import { AnnouncementTitle } from "./AnnouncementTitle";
+import { AnnouncementType } from "./AnnouncementType";
 
 export interface AnnouncementPrimitives {
 	id: string;
 	title: string;
 	content: string;
-	authorId: string;
 	publishDate: string;
-	attachments: AttachmentPrimitives[];
+	type: string;
+	active: boolean;
 }
 
 export class Announcement {
 	readonly id: AnnouncementId;
 	readonly title: AnnouncementTitle;
 	readonly content: AnnouncementContent;
-	readonly authorId: AnnouncementAuthorId;
 	readonly publishDate: AnnouncementPublishDate;
-	readonly attachements: Attachment[];
+	readonly type: AnnouncementType;
+	readonly active: AnnouncementActive;
 
 	constructor(
 		id: AnnouncementId,
 		title: AnnouncementTitle,
 		content: AnnouncementContent,
-		authorId: AnnouncementAuthorId,
 		publishDate: AnnouncementPublishDate,
-		attachements: Attachment[]
+		type: AnnouncementType,
+		active: AnnouncementActive
 	) {
 		this.id = id;
 		this.title = title;
 		this.content = content;
-		this.authorId = authorId;
 		this.publishDate = publishDate;
-		this.attachements = attachements;
+		this.type = type;
+		this.active = active;
 	}
 
 	static fromPrimitives(plainData: AnnouncementPrimitives): Announcement {
@@ -43,9 +43,9 @@ export class Announcement {
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
 			new AnnouncementContent(plainData.content),
-			new AnnouncementAuthorId(plainData.authorId),
 			new AnnouncementPublishDate(plainData.publishDate),
-			plainData.attachments.map(v => Attachment.fromPrimitives(v))
+			plainData.type as AnnouncementType,
+			new AnnouncementActive(plainData.active)
 		);
 	}
 
@@ -54,9 +54,9 @@ export class Announcement {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			authorId: this.authorId.value,
-			publishDate: this.publishDate.value.toISOString(),
-			attachments: this.attachements.map(v => v.toPrimitives())
+			publishDate: this.publishDate.value.toString(),
+			type: this.type,
+			active: this.active.value
 		};
 	}
 }

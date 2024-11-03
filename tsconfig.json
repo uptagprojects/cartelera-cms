@@ -32,26 +32,15 @@
   },
   "include": [
     "next-env.d.ts",
-    "tests/cypress.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tests/**/*.test.ts",
-    "tests/modules.d.ts",
-    "tests/contexts/**/*.ts",
-    "tests/features/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts",
+    "tests/modules.d.ts",
     "jest.config.js"
   ],
   "exclude": [
-    "tests/components/",
-    "tests/e2e/",
-    "**/*.cy.ts",
-    "**/*.cy.tsx",
-    "**/*.steps.ts",
-    "./cypress.config.ts",
-    "./cypress.config.js",
-    "cypress",
     "./node_modules",
-    ".github"
+    ".github",
+    "./coverage"
   ]
 }

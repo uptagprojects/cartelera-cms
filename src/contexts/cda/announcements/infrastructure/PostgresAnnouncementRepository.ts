@@ -1,7 +1,6 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { AttachmentPrimitives } from "../../attachments/domain/Attachment";
 import { Announcement } from "../domain/Announcement";
 import { AnnouncementId } from "../domain/AnnouncementId";
 import { AnnouncementRepository } from "../domain/AnnouncementRepository";
@@ -10,16 +9,16 @@ interface DatabaseAnnouncement {
 	id: string;
 	title: string;
 	content: string;
-	authorId: string;
 	publishDate: string;
-	attachments: AttachmentPrimitives[];
+	type: string;
+	active: boolean;
 }
 export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
 	async search(id: AnnouncementId): Promise<Announcement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
-			"SELECT id, title, content, author_id, publish_date, attachments FROM cda__announcements WHERE id = $1 LIMIT 1",
+			"SELECT id, title, content, publish_date, type, active FROM cda__announcements WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 
@@ -31,16 +30,16 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			id: res.id,
 			title: res.title,
 			content: res.content,
-			authorId: res.authorId,
 			publishDate: res.publishDate,
-			attachments: res.attachments
+			type: res.type,
+			active: res.active
 		});
 	}
 
 	async matching(criteria: Criteria): Promise<Announcement[]> {
 		const converter = new CriteriaToPostgresSqlConverter();
 		const { query, params } = converter.convert(
-			["id", "title", "content", "authorId", "publishDate"],
+			["id", "title", "content", "publish_date AS publishDate", "type", "active"],
 			"cda__announcements",
 			criteria
 		);
@@ -52,9 +51,9 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 				id: a.id,
 				title: a.title,
 				content: a.content,
-				authorId: a.authorId,
 				publishDate: a.publishDate,
-				attachments: a.attachments
+				type: a.type,
+				active: a.active
 			})
 		);
 	}

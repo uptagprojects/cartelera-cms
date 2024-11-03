@@ -1,3 +1,5 @@
+import { Criteria } from "../../../shared/domain/criteria/Criteria";
+import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Event } from "../domain/Event";
 import { EventId } from "../domain/EventId";
@@ -10,7 +12,6 @@ interface DatabaseEvent {
 	startDate: string;
 	endDate: string;
 }
-
 export class PostgresEventRepository implements EventRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
@@ -25,5 +26,26 @@ export class PostgresEventRepository implements EventRepository {
 		}
 
 		return Event.fromPrimitives(res);
+	}
+
+	async matching(criteria: Criteria): Promise<Event[]> {
+		const converter = new CriteriaToPostgresSqlConverter();
+		const { query, params } = converter.convert(
+			["id", "name", "location", "start_date", "end_date"],
+			"cma__events",
+			criteria
+		);
+
+		const results = await this.connection.searchAll<DatabaseEvent>(query, params);
+
+		return results.map(a =>
+			Event.fromPrimitives({
+				id: a.id,
+				name: a.name,
+				location: a.location,
+				startDate: a.startDate,
+				endDate: a.endDate
+			})
+		);
 	}
 }

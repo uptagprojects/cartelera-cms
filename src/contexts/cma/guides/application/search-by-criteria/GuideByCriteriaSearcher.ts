@@ -4,19 +4,17 @@ import { Guide } from "../../domain/Guide";
 import { GuideRepository } from "../../domain/GuideRepository";
 
 export class GuideByCriteriaSearcher {
-    constructor(
-        private readonly repository: GuideRepository
-    ) {}
+	constructor(private readonly repository: GuideRepository) {}
 
-    async searchByCriteria(
-        filters: FiltersPrimitives[],
+	async searchByCriteria(
+		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-    ): Promise<Guide[]> {
-        const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
+	): Promise<Guide[]> {
+		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
-        return this.repository.matching(criteria);
-    }
+		return this.repository.matching(criteria);
+	}
 }

@@ -1,16 +1,15 @@
 import { UC } from "../../domain/UC";
-import { UCDoesNotExists } from "../../domain/UCDoesNotExists";
-import { UCId } from "../../domain/UCId";
+import { UCFinder as DomainUCFinder } from "../../domain/UCFinder";
 import { UCRepository } from "../../domain/UCRepository";
 
 export class UCFinder {
-	constructor(private readonly repository: UCRepository) {}
-	async find(id: string): Promise<UC> {
-		const uc = await this.repository.search(new UCId(id));
-		if (!uc) {
-			throw new UCDoesNotExists(id);
-		}
+	private readonly finder: DomainUCFinder;
 
-		return uc;
+	constructor(private readonly repository: UCRepository) {
+		this.finder = new DomainUCFinder(repository);
+	}
+
+	async find(id: string): Promise<UC> {
+		return this.finder.find(id);
 	}
 }

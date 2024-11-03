@@ -1,0 +1,62 @@
+.tvMode {
+    --background-image: var(--sunset-gradient);
+    grid-area: cards;
+    display: grid;
+    grid-template-areas: "content" "slides";
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    background-image: var(--background-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.tvContent {
+    font-size: var(--scale-6);
+    padding: var(--scale-8) var(--scale-6);
+    box-sizing: border-box;
+    grid-area: content;
+    max-height: 60dvh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+    align-self: end;
+}
+
+.tvCardSlides {
+    display: grid;
+    grid-template-columns: 4em 4em auto;
+    grid-template-rows: auto 4em;
+    place-content: stretch;
+    place-items: start;
+    width: 100%;
+    max-height: 60dvh;
+}
+
+.tvCardSlidesWrapper {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 10dvw);
+    grid-template-rows: 1fr;
+    place-content: start;
+    place-items: start;
+    width: 100%;
+}
+
+.tvCardSlidesNavigation {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    place-content: center;
+    place-items: center;
+}
+
+.tvCardSlidesNavigationIcon {
+    width: 85%;
+    height: 85%;
+    color: var(--cyan-500);
+}

@@ -1,41 +1,74 @@
+import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { Attachment, AttachmentPrimitives } from "../../attachments/domain/Attachment";
+import { UCName } from "../../uc/domain/UCName";
+import { CdaGuidePostedDomainEvent } from "./event/CdaGuidePostedDomainEvent";
 import { GuideContent } from "./GuideContent";
+import { GuideContentWrapped } from "./GuideContentWrapped";
 import { GuideId } from "./GuideId";
 import { GuidePublishDate } from "./GuidePublishDate";
 import { GuideTitle } from "./GuideTitle";
-import { ProfessorId } from "./ProfessorId";
+import { Professor, ProfessorPrimitives } from "./Professor/Professor";
 
 export interface GuidePrimitives {
 	id: string;
 	title: string;
 	content: string;
-	professorId: string;
+	contentWrapped: string;
+	area: string;
+	professor: ProfessorPrimitives;
 	publishDate: string;
 	attachments: AttachmentPrimitives[];
 }
 
-export class Guide {
-	readonly id: GuideId;
-	readonly title: GuideTitle;
-	readonly content: GuideContent;
-	readonly professorId: ProfessorId;
-	readonly publishDate: GuidePublishDate;
-	readonly attachements: Attachment[];
-
+export class Guide extends AggregateRoot {
 	constructor(
-		id: GuideId,
-		title: GuideTitle,
-		content: GuideContent,
-		professorId: ProfessorId,
-		publishDate: GuidePublishDate,
-		attachements: Attachment[]
+		private readonly id: GuideId,
+		private readonly title: GuideTitle,
+		private readonly content: GuideContent,
+		private readonly contentWrapped: GuideContentWrapped,
+		private readonly area: UCName,
+		private readonly professor: Professor,
+		private readonly publishDate: GuidePublishDate,
+		private readonly attachments: Attachment[]
 	) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.professorId = professorId;
-		this.publishDate = publishDate;
-		this.attachements = attachements;
+		super();
+	}
+
+	static create(
+		id: string,
+		title: string,
+		content: string,
+		contentWrapped: string,
+		area: string,
+		professor: ProfessorPrimitives,
+		publishDate: string,
+		attachments: AttachmentPrimitives[]
+	): Guide {
+		const guide = new Guide(
+			new GuideId(id),
+			new GuideTitle(title),
+			new GuideContent(content),
+			new GuideContentWrapped(contentWrapped),
+			new UCName(area),
+			Professor.fromPrimitives(professor),
+			new GuidePublishDate(publishDate),
+			attachments.map(v => Attachment.fromPrimitives(v))
+		);
+
+		guide.record(
+			new CdaGuidePostedDomainEvent(
+				id,
+				title,
+				content,
+				contentWrapped,
+				area,
+				professor,
+				publishDate,
+				attachments
+			)
+		);
+
+		return guide;
 	}
 
 	static fromPrimitives(plainData: GuidePrimitives): Guide {
@@ -43,7 +76,9 @@ export class Guide {
 			new GuideId(plainData.id),
 			new GuideTitle(plainData.title),
 			new GuideContent(plainData.content),
-			new ProfessorId(plainData.professorId),
+			new GuideContentWrapped(plainData.contentWrapped),
+			new UCName(plainData.area),
+			Professor.fromPrimitives(plainData.professor),
 			new GuidePublishDate(plainData.publishDate),
 			plainData.attachments.map(v => Attachment.fromPrimitives(v))
 		);
@@ -54,9 +89,11 @@ export class Guide {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			professorId: this.professorId.value,
+			contentWrapped: this.contentWrapped.value,
+			area: this.area.value,
+			professor: this.professor.toPrimitives(),
 			publishDate: this.publishDate.value.toString(),
-			attachments: this.attachements
+			attachments: this.attachments.map(v => v.toPrimitives())
 		};
 	}
 }

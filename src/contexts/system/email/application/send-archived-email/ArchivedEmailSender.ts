@@ -2,8 +2,8 @@ import { Service } from "diod";
 
 import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { UuidGenerator } from "../../../../shared/domain/UuidGenerator";
-import { EmailSender } from "../../domain/EmailSender";
 import { ArchivedEmail } from "../../domain/ArchivedEmail";
+import { EmailSender } from "../../domain/EmailSender";
 
 @Service()
 export class ArchivedEmailSender {
@@ -13,11 +13,7 @@ export class ArchivedEmailSender {
 		private readonly eventBus: EventBus
 	) {}
 
-	async send(
-		userId: string,
-		name: string,
-		emailAddress: string
-	): Promise<void> {
+	async send(userId: string, name: string, emailAddress: string): Promise<void> {
 		const email = ArchivedEmail.send(
 			await this.uuidGenerator.generate(),
 			userId,

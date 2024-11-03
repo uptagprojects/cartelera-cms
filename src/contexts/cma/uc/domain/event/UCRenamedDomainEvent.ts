@@ -2,9 +2,9 @@ import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEve
 import { UCDomainEvent } from "./UCDomainEvent";
 
 export class UCRenamedDomainEvent extends UCDomainEvent {
-    static eventName = "pnfi.cma.uc.renamed";
+	static eventName = "pnfi.cma.uc.renamed";
 
-    constructor(
+	constructor(
 		public readonly id: string,
 		public readonly name: string,
 		eventId?: string,
