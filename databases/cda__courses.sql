@@ -3,8 +3,6 @@ CREATE TABLE IF NOT EXISTS cda__courses (
     name VARCHAR(200),
     abstract TEXT,
     instructor JSON,
-    picture TEXT,
-    location TEXT,
     duration JSON,
     price NUMERIC,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

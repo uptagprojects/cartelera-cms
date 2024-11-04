@@ -13,24 +13,31 @@ export interface EventPrimitives {
 }
 
 export class Event {
-	readonly id: EventId;
-	readonly name: EventName;
-	readonly location: EventLocation;
-	readonly startDate: EventStartDate;
-	readonly endDate: EventEndDate;
 
 	constructor(
-		id: EventId,
-		name: EventName,
-		location: EventLocation,
-		startDate: EventStartDate,
-		endDate: EventEndDate
-	) {
-		this.id = id;
-		this.name = name;
-		this.location = location;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		private readonly id: EventId,
+		private name: EventName,
+		private location: EventLocation,
+		private startDate: EventStartDate,
+		private endDate: EventEndDate
+	) {}
+
+	static create(
+		id: string,
+		name: string,
+		location: string,
+		startDate: string,
+		endDate: string
+	): Event {
+		const event = new Event(
+			new EventId(id),
+			new EventName(name),
+			new EventLocation(location),
+			new EventStartDate(startDate),
+			new EventEndDate(endDate)
+		);
+
+		return event;
 	}
 
 	static fromPrimitives(plainData: EventPrimitives): Event {
@@ -48,8 +55,24 @@ export class Event {
 			id: this.id.value,
 			name: this.name.value,
 			location: this.location.value,
-			startDate: this.startDate.value.toString(),
-			endDate: this.endDate.value.toString()
+			startDate: this.startDate.value.toISOString(),
+			endDate: this.endDate.value.toISOString()
 		};
+	}
+
+	updateName(name: string): void {
+		this.name = new EventName(name);
+	}
+
+	updateLocation(location: string): void {
+		this.location = new EventLocation(location);
+	}
+
+	updateStartDate(startDate: string): void {
+		this.startDate = new EventStartDate(startDate);
+	}
+
+	updateEndDate(endDate: string): void {
+		this.endDate = new EventEndDate(endDate);
 	}
 }

@@ -13,6 +13,19 @@ interface DatabaseAnnouncement {
 export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
+	async save(announcement: Announcement): Promise<void> {
+		const primitives = announcement.toPrimitives();
+		await this.connection.execute(
+			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4)",
+			[
+				announcement.id.value,
+				primitives.title,
+				primitives.content,
+				primitives.type
+			]
+		);
+	}
+
 	async search(id: AnnouncementId): Promise<Announcement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
 			"SELECT id, title, content, type FROM cda__announcements WHERE id = $1 LIMIT 1",

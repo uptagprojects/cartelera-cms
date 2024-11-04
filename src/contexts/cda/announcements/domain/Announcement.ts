@@ -11,21 +11,27 @@ export interface AnnouncementPrimitives {
 }
 
 export class Announcement {
-	readonly id: AnnouncementId;
-	readonly title: AnnouncementTitle;
-	readonly content: AnnouncementContent;
-	readonly type: AnnouncementType;
 
 	constructor(
-		id: AnnouncementId,
-		title: AnnouncementTitle,
-		content: AnnouncementContent,
-		type: AnnouncementType,
+		public readonly id: AnnouncementId,
+		private title: AnnouncementTitle,
+		private content: AnnouncementContent,
+		private readonly type: AnnouncementType,
 	) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.type = type;
+	}
+
+	static create(
+		id: string,
+		title: string,
+		content: string,
+		type: string,
+	): Announcement {
+		return new Announcement(
+			new AnnouncementId(id),
+			new AnnouncementTitle(title),
+			new AnnouncementContent(content),
+			type as AnnouncementType,
+		);
 	}
 
 	static fromPrimitives(plainData: AnnouncementPrimitives): Announcement {
@@ -44,5 +50,13 @@ export class Announcement {
 			content: this.content.value,
 			type: this.type
 		};
+	}
+
+	updateTitle(title: string): void {
+		this.title = new AnnouncementTitle(title);
+	}
+
+	updateContent(content: string): void {
+		this.content = new AnnouncementContent(content);
 	}
 }

@@ -1,11 +1,9 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { AttachmentPrimitives } from "../../attachments/domain/Attachment";
 import { Guide } from "../domain/Guide";
 import { GuideId } from "../domain/GuideId";
 import { GuideRepository } from "../domain/GuideRepository";
-import { ProfessorPrimitives } from "../domain/Professor/Professor";
 
 interface DatabaseGuide {
 	id: string;
@@ -13,13 +11,31 @@ interface DatabaseGuide {
 	content: string;
 	content_wrapped: string;
 	area: string;
-	professor: ProfessorPrimitives;
+	professor: string;
 	stored_creation_timestamp: string;
-	attachments: AttachmentPrimitives[];
+	attachments: string;
 }
 
 export class PostgresGuideRepository implements GuideRepository {
 	constructor(private readonly connection: PostgresConnection) {}
+
+	async save(guide: Guide): Promise<void> {
+		const primitives = guide.toPrimitives();
+
+		await this.connection.execute(
+			"INSERT INTO cda__guides (id, title, content, content_wrapped, area, professor, published_date, attachments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			[
+				primitives.id,
+				primitives.title,
+				primitives.content,
+				primitives.contentWrapped,
+				primitives.area,
+				JSON.stringify(primitives.professor),
+				primitives.publishDate,
+				JSON.stringify(primitives.attachments)
+			]
+		);
+	}
 
 	async search(id: GuideId): Promise<Guide | null> {
 		const res = await this.connection.searchOne<DatabaseGuide>(
@@ -37,9 +53,9 @@ export class PostgresGuideRepository implements GuideRepository {
 			content: res.content,
 			contentWrapped: res.content_wrapped,
 			area: res.area,
-			professor: res.professor,
+			professor: JSON.parse(res.professor),
 			publishDate: res.stored_creation_timestamp,
-			attachments: res.attachments
+			attachments: JSON.parse(res.attachments)
 		});
 	}
 
@@ -68,9 +84,9 @@ export class PostgresGuideRepository implements GuideRepository {
 				content: a.content,
 				contentWrapped: a.content_wrapped,
 				area: a.area,
-				professor: a.professor,
+				professor: JSON.parse(a.professor),
 				publishDate: a.stored_creation_timestamp,
-				attachments: a.attachments
+				attachments: JSON.parse(a.attachments)
 			})
 		);
 	}

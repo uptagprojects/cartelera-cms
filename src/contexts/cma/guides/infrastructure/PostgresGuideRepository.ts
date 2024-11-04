@@ -1,6 +1,7 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
+import { GuideRemovedDomainEvent } from "../domain/event/GuideRemovedDomainEvent";
 import { Guide } from "../domain/Guide";
 import { GuideId } from "../domain/GuideId";
 import { GuideRepository } from "../domain/GuideRepository";
@@ -97,6 +98,8 @@ export class PostgresGuideRepository implements GuideRepository {
 
 	async remove(guide: Guide): Promise<void> {
 		const { id } = guide.toPrimitives();
+
+		guide.record(new GuideRemovedDomainEvent(id));
 
 		await this.connection.execute("DELETE FROM cma__guides WHERE id = $1", [id]);
 	}

@@ -13,7 +13,7 @@ type DatabaseActivity = {
     published_date: Date;
 }
 
-export class PorgresActivityRepository implements ActivityRepository {
+export class PostgresActivityRepository implements ActivityRepository {
 
     constructor(private readonly connection: PostgresConnection) {}
 

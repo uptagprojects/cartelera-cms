@@ -372,13 +372,18 @@ components:
       properties:
         id:
           type: string
-        event:
+        type:
           type: string
-        content:
+          enum:
+            - announcement
+            - guide
+            - event
+            - course
+        title:
           type: string
-        image:
+        context:
           type: string
-        date:
+        publishedDate:
           type: string
 
     Guide:
@@ -393,8 +398,6 @@ components:
         content:
           type: string
         contentWrapped:
-          type: string
-        image:
           type: string
         publishDate:
           type: string
@@ -435,6 +438,8 @@ components:
           type: string
         abstract:
           type: string
+        price:
+          type: number
         duration:
           type: object
           properties:
@@ -442,7 +447,7 @@ components:
               type: string
             finishDate:
               type: string
-            totalHours:
+            academicHours:
               type: integer
         instructor:
           type: object
@@ -450,15 +455,6 @@ components:
             name:
               type: string
             badge:
-              type: string
-            avatar:
-              type: string
-        professor:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
               type: string
             avatar:
               type: string

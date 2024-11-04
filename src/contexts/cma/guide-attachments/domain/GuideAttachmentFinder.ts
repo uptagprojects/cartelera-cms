@@ -1,3 +1,4 @@
+import { GuideId } from "../../guides/domain/GuideId";
 import { GuideAttachment } from "./GuideAttachment";
 import { GuideAttachmentDoesNotExist } from "./GuideAttachmentDoesNotExist";
 import { GuideAttachmentId } from "./GuideAttachmentId";
@@ -13,5 +14,9 @@ export class GuideAttachmentFinder {
 		}
 
 		return guideAttachment;
+	}
+
+	async searchAllByGuideId(guideId: string): Promise<GuideAttachment[]> {
+		return this.repository.searchAllByGuideId(new GuideId(guideId));
 	}
 }

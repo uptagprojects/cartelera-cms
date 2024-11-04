@@ -5,7 +5,7 @@ import { UCRepository } from "../../domain/UCRepository";
 export class UCFinder {
 	private readonly finder: DomainUCFinder;
 
-	constructor(private readonly repository: UCRepository) {
+	constructor(repository: UCRepository) {
 		this.finder = new DomainUCFinder(repository);
 	}
 
