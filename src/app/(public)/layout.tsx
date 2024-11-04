@@ -9,12 +9,10 @@ export default function PublicLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="es-ES">
-			<body>
-				<Nav />
-				<main>{children}</main>
-				<PageFooter />
-			</body>
-		</html>
+		<>
+			<Nav />
+			<main>{children}</main>
+			<PageFooter />
+		</>
 	);
 }

@@ -2,8 +2,10 @@ import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { Announcement } from "./Announcement";
 import { AnnouncementId } from "./AnnouncementId";
 
-export interface AnnouncementRepository {
-	search(id: AnnouncementId): Promise<Announcement | null>;
+export abstract class AnnouncementRepository {
+	abstract search(id: AnnouncementId): Promise<Announcement | null>;
 
-	matching(criteria: Criteria): Promise<Announcement[]>;
+	abstract searchAll(): Promise<Announcement[]>;
+
+	abstract remove(Announcement: Announcement): Promise<void>;
 }

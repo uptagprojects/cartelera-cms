@@ -2,7 +2,7 @@ import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEve
 import { AnnouncementDomainEvent } from "./AnnouncementDomainEvent";
 
 export class AnnouncementContentUpdatedDomainEvent extends AnnouncementDomainEvent {
-	static eventName: string = "pnfi.cma.event.location.updated";
+	static eventName: string = "pnfi.cma.announcement.content.updated";
 
 	constructor(
 		public readonly id: string,

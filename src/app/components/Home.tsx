@@ -1,6 +1,7 @@
 "use client";
 
 import { Container } from "octagon-ui";
+
 import { HomeGuidesBlock } from "./HomeGuidesBlock";
 import { HomeHeadingBlock } from "./HomeHeadingBlock";
 import { HomeScheduleBlock } from "./HomeScheduleBlock";
@@ -19,7 +20,7 @@ export function Home({ week, schedule }: HomeProps) {
 				<HomeHeadingBlock />
 				<HomeScrollSVG />
 				<HomeScheduleBlock schedule={schedule} />
-				<HomeWeekBlock week={week}  />
+				<HomeWeekBlock week={week} />
 				<HomeGuidesBlock />
 			</Container>
 		</>
