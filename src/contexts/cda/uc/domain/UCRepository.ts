@@ -9,7 +9,5 @@ export abstract class UCRepository {
 
 	abstract searchAll(): Promise<UC[]>;
 
-	abstract matching(criteria: Criteria): Promise<UC[]>;
-
 	abstract remove(uc: UC): Promise<void>;
 }
