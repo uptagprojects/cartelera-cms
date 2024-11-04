@@ -1,0 +1,488 @@
+openapi: '3.0.3'
+info:
+  title: Cartelera PNFI Public API
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:3000/api
+    description: Development server
+  - url: https://pnfi.alwaysdata.net/api
+    description: Production server
+tags:
+  - name: Announcements
+    description: alerts from admin
+  - name: Activities
+    description: updates from everything
+  - name: Guides
+    description: professor publications
+  - name: Events
+    description: events to attend to
+  - name: Courses
+    description: includes a certificate
+  - name: UC
+    description: area of knowledge
+  - name: Schedules
+    description: a couple of PDFs, published twice a year at least
+paths:
+  /announcements:
+    get:
+      summary: Get all announcements
+      operationId: getAnnouncements
+      tags:
+        - Announcements
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Announcement'
+
+  /activities:
+    get:
+      summary: Get latest activities
+      operationId: getActivities
+      tags:
+        - Activities
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+  /guides:
+    get:
+      summary: Get all guides matching the criteria
+      operationId: getGuides
+      tags:
+        - Guides
+      parameters:
+        - name: filters
+          in: query
+          description: Filters to apply to the guides
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                operator:
+                  type: string
+                value:
+                  type: string
+        - name: orderBy
+          in: query
+          description: Field to sort the guides by
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: Number of guides per page
+          schema:
+            type: integer
+        - name: pageNumber
+          in: query
+          description: Page number
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Guide'
+  
+  /guides/{id}:
+    get:
+      summary: Get a guide by ID
+      operationId: getGuideById
+      tags:
+        - Guides
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID of the guide to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Guide'
+        '404':
+          description: Not found
+  
+  /events:
+    get:
+      summary: Get all events matching the criteria
+      operationId: getEvents
+      tags:
+        - Events
+      parameters:
+        - name: filters
+          in: query
+          description: Filters to apply to the events
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                operator:
+                  type: string
+                value:
+                  type: string
+        - name: orderBy
+          in: query
+          description: Field to sort the events by
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: Number of events per page
+          schema:
+            type: integer
+        - name: pageNumber
+          in: query
+          description: Page number
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+
+  /events/{id}:
+    get:
+      summary: Get an event by ID
+      operationId: getEventById
+      tags:
+        - Events
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID of the event to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '404':
+          description: Not found
+  
+  /courses:
+    get:
+      summary: Get all courses matching the criteria
+      operationId: getCourses
+      tags:
+        - Courses
+      parameters:
+        - name: filters
+          in: query
+          description: Filters to apply to the courses
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                operator:
+                  type: string
+                value:
+                  type: string
+        - name: orderBy
+          in: query
+          description: Field to sort the courses by
+          schema:
+            type: string
+        - name: orderType
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+        - name: pageSize
+          in: query
+          description: Number of courses per page
+          schema:
+            type: integer
+        - name: pageNumber
+          in: query
+          description: Page number
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+  
+  /courses/{id}:
+    get:
+      summary: Get a course by ID
+      operationId: getCourseById
+      tags:
+        - Courses
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID of the course to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '404':
+          description: Not found
+
+  /uc:
+    get:
+      summary: Get all UCs
+      operationId: getUCs
+      tags:
+        - UC
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UC'
+  
+  /schedules/current:
+    get:
+      summary: Get the current schedule
+      operationId: getCurrentSchedule
+      tags:
+        - Schedules
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+  
+  /schedules/week:
+    get:
+      summary: Get the current week
+      operationId: getCurrentWeek
+      tags:
+        - Schedules
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  week:
+                    type: integer
+                  scheduleId:
+                    type: string
+  
+  /schedules/{id}:
+    get:
+      summary: Get a schedule by ID
+      operationId: getScheduleById
+      tags:
+        - Schedules
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: UUID of the schedule to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+        '404':
+          description: Not found
+components:
+  schemas:
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        type:
+          type: string
+          enum:
+            - success
+            - info
+            - warning
+            - error
+    
+    Activity:
+      type: object
+      properties:
+        id:
+          type: string
+        event:
+          type: string
+        content:
+          type: string
+        image:
+          type: string
+        date:
+          type: string
+
+    Guide:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        area:
+          type: string
+        content:
+          type: string
+        contentWrapped:
+          type: string
+        image:
+          type: string
+        publishDate:
+          type: string
+        professor:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            avatar:
+              type: string
+        attachments:
+          type: array
+          items:
+            type: string
+    
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        abstract:
+          type: string
+        duration:
+          type: object
+          properties:
+            startDate:
+              type: string
+            finishDate:
+              type: string
+            totalHours:
+              type: integer
+        instructor:
+          type: object
+          properties:
+            name:
+              type: string
+            badge:
+              type: string
+            avatar:
+              type: string
+        professor:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            avatar:
+              type: string
+
+    UC:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        totalGuides:
+          type: integer
+    
+    Schedule:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        files:
+          type: string
+        semester:
+          type: string
+        year:
+          type: integer
