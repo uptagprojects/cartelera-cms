@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cma__schedules (
+CREATE TABLE IF NOT EXISTS cda__schedules (
     id UUID PRIMARY KEY,
     start_date DATE,
     end_date DATE,
