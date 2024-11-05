@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.21.0",
+    "@github/webauthn-json": "^2.1.1",
     "@gsap/react": "^2.1.1",
     "@openfga/sdk": "^0.7.0",
     "@sendgrid/mail": "^8.1.4",
@@ -38,6 +39,7 @@
     "diod": "^3.0.0",
     "dropbox": "^10.34.0",
     "gsap": "^3.12.5",
+    "iron-session": "^8.0.3",
     "jose": "^5.9.6",
     "lucide-react": "^0.454.0",
     "migrate": "^2.1.0",
