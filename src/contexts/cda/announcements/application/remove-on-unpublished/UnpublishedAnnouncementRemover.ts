@@ -1,6 +1,8 @@
+import { Service } from "diod";
 import { AnnouncementId } from "../../domain/AnnouncementId";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
 
+@Service()
 export class UnpublishedAnnouncementRemover {
     constructor(private readonly repository: AnnouncementRepository) {}
 

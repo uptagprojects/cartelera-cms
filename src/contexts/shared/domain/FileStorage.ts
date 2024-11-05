@@ -1,5 +1,5 @@
-export interface FileStorage {
-	save(path: string, file: File): Promise<string>;
+export abstract class FileStorage {
+	abstract save(path: string, file: File): Promise<string>;
 
-	remove(path: string): Promise<void>;
+	abstract remove(path: string): Promise<void>;
 }

@@ -84,6 +84,10 @@ export class Guide extends AggregateRoot {
 		};
 	}
 
+	getId(): GuideId {
+		return this.id;
+	}
+
 	updateTitle(title: string): void {
 		this.title = new GuideTitle(title);
 	}

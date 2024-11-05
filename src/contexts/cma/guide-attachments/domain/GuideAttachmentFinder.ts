@@ -1,4 +1,3 @@
-import { GuideId } from "../../guides/domain/GuideId";
 import { GuideAttachment } from "./GuideAttachment";
 import { GuideAttachmentDoesNotExist } from "./GuideAttachmentDoesNotExist";
 import { GuideAttachmentId } from "./GuideAttachmentId";
@@ -8,15 +7,11 @@ export class GuideAttachmentFinder {
 	constructor(private readonly repository: GuideAttachmentRepository) {}
 
 	async find(id: string): Promise<GuideAttachment> {
-		const guideAttachment = await this.repository.search(new GuideAttachmentId(id));
-		if (!guideAttachment) {
+		const attachment = await this.repository.search(new GuideAttachmentId(id));
+		if (!attachment) {
 			throw new GuideAttachmentDoesNotExist(id);
 		}
 
-		return guideAttachment;
-	}
-
-	async searchAllByGuideId(guideId: string): Promise<GuideAttachment[]> {
-		return this.repository.searchAllByGuideId(new GuideId(guideId));
+		return attachment;
 	}
 }

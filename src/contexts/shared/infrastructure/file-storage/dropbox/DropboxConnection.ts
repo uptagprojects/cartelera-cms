@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { Dropbox, DropboxAuth } from "dropbox";
 import fetch from "node-fetch";
 
@@ -8,6 +9,7 @@ export interface DropboxFileMetadata {
 	previewUrl: string;
 }
 
+@Service()
 export class DropboxConnection {
 	private dropboxInstance: Dropbox | null = null;
 	private dropboxAuth: DropboxAuth | null = null;
@@ -41,8 +43,6 @@ export class DropboxConnection {
 			mode: { ".tag": "overwrite" },
 			contents
 		});
-
-		console.log(uploadedFile);
 
 		return {
 			id: uploadedFile.result.id,

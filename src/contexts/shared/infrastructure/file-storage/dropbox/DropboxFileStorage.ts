@@ -1,6 +1,8 @@
+import { Service } from "diod";
 import { FileStorage } from "../../../domain/FileStorage";
 import { DropboxConnection } from "./DropboxConnection";
 
+@Service()
 export class DropboxFileStorage implements FileStorage {
 	constructor(private readonly connection: DropboxConnection) {}
 

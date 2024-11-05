@@ -6,4 +6,5 @@ export abstract class GuideRepository {
 	abstract save(guide: Guide): Promise<void>;
 	abstract search(id: GuideId): Promise<Guide | null>;
 	abstract matching(criteria: Criteria): Promise<Guide[]>;
+	abstract remove(guide: Guide): Promise<void>;
 }
