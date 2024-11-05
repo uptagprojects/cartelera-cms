@@ -29,7 +29,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 		];
 
 		await this.connection.execute(
-			`INSERT INTO cma__announcements (id, title, content, publish_date, type, active) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3, publish_date = $4, type = $5, active = $6`,
+			`INSERT INTO cma__announcements (id, title, content, publish_date, type, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3, publish_date = $4, type = $5, status = $6`,
 			params
 		);
 	}

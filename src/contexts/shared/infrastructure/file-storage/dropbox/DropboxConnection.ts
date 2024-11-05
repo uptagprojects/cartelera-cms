@@ -37,8 +37,12 @@ export class DropboxConnection {
 	async upload(path: string, contents: Buffer): Promise<DropboxFileMetadata> {
 		const uploadedFile = await this.dbx.filesUpload({
 			path: `${path}`,
+			autorename: false,
+			mode: { ".tag": "overwrite" },
 			contents
 		});
+
+		console.log(uploadedFile);
 
 		return {
 			id: uploadedFile.result.id,
@@ -76,13 +80,21 @@ export class DropboxConnection {
 	}
 
 	async share(path: string): Promise<string> {
+		const links = await this.dbx.sharingListSharedLinks({
+			path
+		});
+
+		if (links.result.links.length > 0) {
+			return links.result.links[0].url;
+		}
+
 		const res = await this.dbx.sharingCreateSharedLinkWithSettings({
 			path,
 			settings: {
+				require_password: false,
 				access: { ".tag": "viewer" },
 				allow_download: true,
 				audience: { ".tag": "public" },
-				requested_visibility: { ".tag": "public" }
 			}
 		});
 

@@ -31,7 +31,7 @@ export class PostgresGuideRepository implements GuideRepository {
 		];
 
 		await this.connection.execute(
-			`INSERT INTO cma__guides (id, title, content, uc_id, author_id, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3`,
+			`INSERT INTO cma__guides (id, title, content, uc_id, author_id, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3, uc_id =$4, status = $6`,
 			params
 		);
 	}

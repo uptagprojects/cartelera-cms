@@ -3,7 +3,7 @@ import path from "path";
 
 import { FileUploader } from "../../../../../contexts/cma/files/application/upload/FileUploader";
 import { DropboxFileRepository } from "../../../../../contexts/cma/files/infrastructure/DropboxFileRepository";
-import { DropboxConnection } from "../../../../../contexts/shared/infrastructure/DropboxConnection";
+import { DropboxConnection } from "../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxConnection";
 import { OfficialUuidGenerator } from "../../../../../contexts/shared/infrastructure/OfficialUuidGenerator";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {

@@ -23,7 +23,7 @@ export class PostgresGuideRepository implements GuideRepository {
 		const primitives = guide.toPrimitives();
 
 		await this.connection.execute(
-			"INSERT INTO cda__guides (id, title, content, content_wrapped, area, professor, published_date, attachments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			"INSERT INTO cda__guides (id, title, content, content_wrapped, area, professor, published_date, attachments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) ON CONFLICT (id) DO UPDATE SET title=$2, content=$3, content_wrapped=$4, area=$5, professor=$6, published_date=$7, attachments=$8",
 			[
 				primitives.id,
 				primitives.title,

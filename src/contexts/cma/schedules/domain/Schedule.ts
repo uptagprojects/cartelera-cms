@@ -1,105 +1,105 @@
-import { AggregateRoot } from "../../../shared/domain/AggregateRoot"
+import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
+import { ScheduleArchivedDomainEvent } from "./event/ScheduleArchivedDomainEvent";
+import { SchedulePostedDomainEvent } from "./event/ScheduledPostedDomainEvent";
+import { ScheduleRestoredDomainEvent } from "./event/ScheduleRestoredDomainEvent";
 import { ScheduleFinishDate } from "./ScheduleFinishDate";
 import { ScheduleId } from "./ScheduleId";
 import { ScheduleName } from "./ScheduleName";
 import { ScheduleStartDate } from "./ScheduleStartDate";
 import { ScheduleStatus } from "./ScheduleStatus";
-import { ScheduleArchivedDomainEvent } from "./event/ScheduleArchivedDomainEvent";
-import { ScheduleRestoredDomainEvent } from "./event/ScheduleRestoredDomainEvent";
-import { SchedulePostedDomainEvent } from "./event/ScheduledPostedDomainEvent";
-
 
 export interface SchedulePrimitives {
-    id: string;
-    name: string;
-    startDate: string;
-    finishDate: string;
-    status: string;
+	id: string;
+	name: string;
+	startDate: string;
+	finishDate: string;
+	status: string;
 }
 
 export class Schedule extends AggregateRoot {
-    constructor(
-        private readonly id: ScheduleId,
-        private name: ScheduleName,
-        private startDate: ScheduleStartDate,
-        private finishDate: ScheduleFinishDate,
-        private status: ScheduleStatus
-    ) {
-        super();
-    }
+	constructor(
+		private readonly id: ScheduleId,
+		private name: ScheduleName,
+		private startDate: ScheduleStartDate,
+		private finishDate: ScheduleFinishDate,
+		private status: ScheduleStatus
+	) {
+		super();
+	}
 
-    static create(id: string, name: string, startDate: string, finishDate: string): Schedule {
-        const defaultGuideStatus = ScheduleStatus.DRAFT;
-        const schedule = new Schedule(
-            new ScheduleId(id),
-            new ScheduleName(name),
-            new ScheduleStartDate(startDate),
-            new ScheduleFinishDate(finishDate),
-            defaultGuideStatus
-        );
-        
-        schedule.record(new SchedulePostedDomainEvent(id, name, startDate, finishDate, defaultGuideStatus));
+	static create(id: string, name: string, startDate: string, finishDate: string): Schedule {
+		const defaultGuideStatus = ScheduleStatus.DRAFT;
+		const schedule = new Schedule(
+			new ScheduleId(id),
+			new ScheduleName(name),
+			new ScheduleStartDate(startDate),
+			new ScheduleFinishDate(finishDate),
+			defaultGuideStatus
+		);
 
-        return schedule;
-    }
+		schedule.record(
+			new SchedulePostedDomainEvent(id, name, startDate, finishDate, defaultGuideStatus)
+		);
 
-    static fromPrimitives(primitives: SchedulePrimitives): Schedule {
-        return new Schedule(
-            new ScheduleId(primitives.id),
-            new ScheduleName(primitives.name),
-            new ScheduleStartDate(primitives.startDate),
-            new ScheduleFinishDate(primitives.finishDate),
-            primitives.status as ScheduleStatus
-        );
-    }
+		return schedule;
+	}
 
-    toPrimitives(): SchedulePrimitives {
-        return {
-            id: this.id.value,
-            name: this.name.value,
-            startDate: this.startDate.value.toISOString(),
-            finishDate: this.finishDate.value.toISOString(),
-            status: this.status
-        };
-    }
+	static fromPrimitives(primitives: SchedulePrimitives): Schedule {
+		return new Schedule(
+			new ScheduleId(primitives.id),
+			new ScheduleName(primitives.name),
+			new ScheduleStartDate(primitives.startDate),
+			new ScheduleFinishDate(primitives.finishDate),
+			primitives.status as ScheduleStatus
+		);
+	}
 
-    getId(): ScheduleId {
-        return this.id;
-    }
+	toPrimitives(): SchedulePrimitives {
+		return {
+			id: this.id.value,
+			name: this.name.value,
+			startDate: this.startDate.value.toISOString(),
+			finishDate: this.finishDate.value.toISOString(),
+			status: this.status
+		};
+	}
 
-    publish(): void {
-        this.status = ScheduleStatus.PUBLISHED;
-        this.record(
-            new SchedulePostedDomainEvent(
-                this.id.value,
-                this.name.value,
-                this.startDate.value.toISOString(),
-                this.finishDate.value.toISOString(),
-                this.status
-            )
-        );
-    }
+	getId(): ScheduleId {
+		return this.id;
+	}
 
-    archive(): void {
-        this.status = ScheduleStatus.ARCHIVED;
-        this.record(new ScheduleArchivedDomainEvent(this.id.value));
-    }
+	publish(): void {
+		this.status = ScheduleStatus.PUBLISHED;
+		this.record(
+			new SchedulePostedDomainEvent(
+				this.id.value,
+				this.name.value,
+				this.startDate.value.toISOString(),
+				this.finishDate.value.toISOString(),
+				this.status
+			)
+		);
+	}
 
-    restore(): void {
-        this.status = ScheduleStatus.PUBLISHED;
-        this.record(new ScheduleRestoredDomainEvent(this.id.value));
-    }
+	archive(): void {
+		this.status = ScheduleStatus.ARCHIVED;
+		this.record(new ScheduleArchivedDomainEvent(this.id.value));
+	}
 
-    updateName(name: string): void {
-        this.name = new ScheduleName(name);
-    }
+	restore(): void {
+		this.status = ScheduleStatus.PUBLISHED;
+		this.record(new ScheduleRestoredDomainEvent(this.id.value));
+	}
 
-    updateStartDate(startDate: string): void {
-        this.startDate = new ScheduleStartDate(startDate);
-    }
+	updateName(name: string): void {
+		this.name = new ScheduleName(name);
+	}
 
-    updateFinishDate(finishDate: string): void {
-        this.finishDate = new ScheduleFinishDate(finishDate);
-    }
+	updateStartDate(startDate: string): void {
+		this.startDate = new ScheduleStartDate(startDate);
+	}
 
+	updateFinishDate(finishDate: string): void {
+		this.finishDate = new ScheduleFinishDate(finishDate);
+	}
 }

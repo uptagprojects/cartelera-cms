@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS cda__guides (
+CREATE TABLE IF NOT EXISTS cma__schedule_attachments (
     id UUID PRIMARY KEY,
-    title VARCHAR(200),
-    area VARCHAR(200),
-    content TEXT,
-    professor JSON,
-    attachments JSON,
-    published_date TIMESTAMP,
+    name VARCHAR(200),
+    schedule_id UUID,
+    url TEXT,
+    size INT,
+    mime_type VARCHAR(64),
+    storage_path TEXT,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP

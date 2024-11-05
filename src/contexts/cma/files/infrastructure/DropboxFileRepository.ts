@@ -1,6 +1,6 @@
 import path from "path";
 
-import { DropboxConnection } from "../../../shared/infrastructure/DropboxConnection";
+import { DropboxConnection } from "../../../shared/infrastructure/file-storage/dropbox/DropboxConnection";
 import { File as DomainFile } from "../domain/File";
 import { FileRepository } from "../domain/FileRepository";
 

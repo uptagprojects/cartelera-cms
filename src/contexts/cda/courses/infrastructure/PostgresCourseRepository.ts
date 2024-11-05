@@ -23,7 +23,7 @@ export class PostgresCourseRepository implements CourseRepository {
 		const primitives = course.toPrimitives();
 
 		await this.connection.execute(
-			"INSERT INTO cda__courses (id, name, abstract, instructor, duration, price) VALUES ($1, $2, $3, $4, $5, $6)",
+			"INSERT INTO cda__courses (id, name, abstract, instructor, duration, price) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET name=$2, abstract=$3, instructor=$4, duration=$5, price=$6",
 			[
 				course.id.value,
 				primitives.name,

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresGuideRepository } from "../../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
-import { GuideFinder } from "../../../../../contexts/cma/guides/application/find/GuideFinder";
+
 import { GuideDoesNotExists } from "../../../../../contexts/cda/guides/domain/GuideDoesNotExists";
+import { GuideFinder } from "../../../../../contexts/cma/guides/application/find/GuideFinder";
+import { PostgresGuideRepository } from "../../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
+import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,

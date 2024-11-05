@@ -61,7 +61,7 @@ export class PostgresActivityRepository implements ActivityRepository {
     async save(activity: Activity): Promise<void> {
         const primitives = activity.toPrimitives();
 
-        await this.connection.execute("INSERT INTO cda__activities (id, type, title, context, published_date) VALUES ($1, $2, $3, $4, $5)", [
+        await this.connection.execute("INSERT INTO cda__activities (id, type, title, context, published_date) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET title=$3, context=$4", [
             primitives.id,
             primitives.type,
             primitives.title,

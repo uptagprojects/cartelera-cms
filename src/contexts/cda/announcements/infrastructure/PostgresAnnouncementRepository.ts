@@ -16,7 +16,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	async save(announcement: Announcement): Promise<void> {
 		const primitives = announcement.toPrimitives();
 		await this.connection.execute(
-			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4)",
+			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET title=$2, content=$3, type=$4",
 			[
 				announcement.id.value,
 				primitives.title,
