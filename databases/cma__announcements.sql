@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS cda__announcements (
+CREATE TABLE IF NOT EXISTS cma__announcements (
     id UUID PRIMARY KEY,
     title VARCHAR(200),
     content TEXT,

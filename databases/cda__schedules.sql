@@ -1,9 +1,8 @@
-CREATE TABLE IF NOT EXISTS cda__events (
+CREATE TABLE IF NOT EXISTS cda__schedules (
     id UUID PRIMARY KEY,
-    name VARCHAR(200),
-    location TEXT,
-    start_date date,
-    end_date date,
+    start_date DATE,
+    end_date DATE,
+    update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+)
