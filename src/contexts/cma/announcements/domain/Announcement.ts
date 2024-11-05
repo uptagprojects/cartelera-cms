@@ -1,14 +1,16 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { AnnouncementActive } from "./AnnouncementActive";
+import { AnnouncementStatus } from "./AnnouncementStatus";
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
 import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
 import { AnnouncementTitle } from "./AnnouncementTitle";
 import { AnnouncementType } from "./AnnouncementType";
 import { AnnouncementContentUpdatedDomainEvent } from "./event/AnnouncementContentUpdatedDomainEvent";
-import { AnnouncementDeactivatedDomainEvent } from "./event/AnnouncementDeactivatedDomainEvent";
-import { AnnouncementPublishedDomainEvent } from "./event/AnnouncementPublishedDomainEvent";
+import { AnnouncementPostedDomainEvent } from "./event/AnnouncementPostedDomainEvent";
 import { AnnouncementTitleUpdatedDomainEvent } from "./event/AnnouncementTitleUpdatedDomainEvent";
+import { AnnouncementPublishedDomainEvent } from "./event/AnnouncementPublishedDomainEvent";
+import { AnnouncementArchivedDomainEvent } from "./event/AnnouncementArchivedDomainEvent";
+import { AnnouncementRestoredDomainEvent } from "./event/AnnouncementRestoredDomainEvent";
 
 export interface AnnouncementPrimitives {
 	id: string;
@@ -16,35 +18,41 @@ export interface AnnouncementPrimitives {
 	content: string;
 	publishDate: string;
 	type: string;
-	active: boolean;
+	status: string;
 }
 
-
 export class Announcement extends AggregateRoot {
-	
 	constructor(
-		private id: AnnouncementId,
+		private readonly id: AnnouncementId,
 		private title: AnnouncementTitle,
 		private content: AnnouncementContent,
-		private publishDate: AnnouncementPublishDate,
-		private type: AnnouncementType,
-		private active: AnnouncementActive,
+		private readonly publishDate: AnnouncementPublishDate,
+		private readonly type: AnnouncementType,
+		private status: AnnouncementStatus
 	) {
-		super()
+		super();
 	}
 
-	static create(id: string, title: string, content: string, publishDate: string, type: string, active: boolean): Announcement {
-
+	static create(
+		id: string,
+		title: string,
+		content: string,
+		publishDate: string,
+		type: string,
+	): Announcement {
 		const announcement = new Announcement(
 			new AnnouncementId(id),
 			new AnnouncementTitle(title),
 			new AnnouncementContent(content),
 			new AnnouncementPublishDate(publishDate),
 			type as AnnouncementType,
-			new AnnouncementActive(active),
+			AnnouncementStatus.DRAFT
 		);
 
-		announcement.record(new AnnouncementPublishedDomainEvent(id, title, content, publishDate, type, active));
+		announcement.record(
+			new AnnouncementPostedDomainEvent(id, title, content, publishDate, type)
+		);
+
 		return announcement;
 	}
 
@@ -55,7 +63,7 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementContent(plainData.content),
 			new AnnouncementPublishDate(plainData.publishDate),
 			plainData.type as AnnouncementType,
-			new AnnouncementActive(plainData.active),
+			plainData.status as AnnouncementStatus
 		);
 	}
 
@@ -64,9 +72,9 @@ export class Announcement extends AggregateRoot {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			publishDate: this.publishDate.value.toString(),
+			publishDate: this.publishDate.value.toISOString(),
 			type: this.type,
-			active: this.active.value
+			status: this.status
 		};
 	}
 
@@ -80,14 +88,26 @@ export class Announcement extends AggregateRoot {
 		this.record(new AnnouncementContentUpdatedDomainEvent(this.id.value, content));
 	}
 
-	activateAnnouncement(): void {
-		this.active = new AnnouncementActive(true);
-		this.record(new AnnouncementDeactivatedDomainEvent(this.id.value, true));
+	publish(): void {
+		this.status = AnnouncementStatus.PUBLISHED;
+		this.record(new AnnouncementPublishedDomainEvent(
+			this.id.value,
+			this.title.value,
+			this.content.value,
+			this.publishDate.value.toISOString(),
+			this.type
+		));
 	}
 
-	deactivateAnnouncement(): void {
-		this.active = new AnnouncementActive(false);
-		this.record(new AnnouncementDeactivatedDomainEvent(this.id.value, false));
+	archive(): void {
+		this.status = AnnouncementStatus.ARCHIVED;
+		this.record(new AnnouncementArchivedDomainEvent(this.id.value));
 	}
 
+	restore(): void {
+		this.status = AnnouncementStatus.DRAFT;
+		this.record(
+			new AnnouncementRestoredDomainEvent(this.id.value)
+		);
+	}
 }

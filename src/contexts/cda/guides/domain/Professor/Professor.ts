@@ -1,5 +1,5 @@
-import { ProfessorAvatar } from './ProfessorAvatar';
-import { ProfessorId } from './ProfessorId';
+import { ProfessorAvatar } from "./ProfessorAvatar";
+import { ProfessorId } from "./ProfessorId";
 import { ProfessorName } from "./ProfessorName";
 
 export type ProfessorPrimitives = {
@@ -12,14 +12,14 @@ export class Professor {
 	constructor(
 		readonly id: ProfessorId,
 		readonly name: ProfessorName,
-		readonly avatar: ProfessorAvatar,
-	) { }
+		readonly avatar: ProfessorAvatar
+	) {}
 
 	static fromPrimitives(plainData: ProfessorPrimitives): Professor {
 		return new Professor(
 			new ProfessorId(plainData.id),
 			new ProfessorName(plainData.name),
-			new ProfessorAvatar(plainData.avatar),
+			new ProfessorAvatar(plainData.avatar)
 		);
 	}
 
@@ -27,7 +27,7 @@ export class Professor {
 		return {
 			id: this.id.value,
 			name: this.name.value,
-			avatar: this.avatar.value.toString(),
+			avatar: this.avatar.value.toString()
 		};
 	}
 }

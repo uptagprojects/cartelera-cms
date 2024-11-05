@@ -1,13 +1,13 @@
 import { Event } from "../../domain/Event";
-import { EventRepository } from "../../domain/EventRepository";
 import { EventFinder as DomainEventFinder } from "../../domain/EventFinder";
+import { EventRepository } from "../../domain/EventRepository";
 
 export class EventFinder {
-    constructor(private readonly repository: EventRepository) {}
+	constructor(private readonly repository: EventRepository) {}
 
-    async find(id: string): Promise<Event> {
-        const finder = new DomainEventFinder(this.repository);
+	async find(id: string): Promise<Event> {
+		const finder = new DomainEventFinder(this.repository);
 
-        return finder.find(id);
-    }
+		return finder.find(id);
+	}
 }

@@ -1,27 +1,28 @@
-import Link from "next/link";
-import { Button, Container } from "octagon-ui";
+import { Metadata } from "next";
 
-export default function Home() {
+import { PageFooter } from "../components/footer/PageFooter";
+import { Nav } from "../components/nav/Nav";
+import { Home } from "./components/Home";
+import { useGetCurrentWeek } from "./services/useGetCurrentWeek";
+import { useGetPublishedSchedules } from "./services/useGetPublishedSchedules";
+
+export const metadata: Metadata = {
+	title: "Cartelera PNFi-UPTAG",
+	description: "Programa Nacional de Formacion en Informatica"
+};
+
+export default async function HomePage() {
+	"use server";
+	const week = await useGetCurrentWeek();
+	const schedules = await useGetPublishedSchedules();
+
 	return (
 		<>
-			<Container center={true}>
-				<h2>Somos tecnologia</h2>
-				<Link href="/news">
-					<Button variant="primary" label="revisa la cartelera" />
-				</Link>
-			</Container>
-			<Container>
-				<h3>Aun no tenemos horarios disponibles</h3>
-				<Button variant="tertiary" label="" />
-			</Container>
-			<Container>
-				<h3>Estamos en la semana</h3>
-				<span>1</span>
-			</Container>
-			<Container>
-				<h3>Sigamos aprendiendo</h3>
-				<Button variant="primary" label="buscar cursos" />
-			</Container>
+			<Nav />
+			<main className="tv">
+				<Home week={week} schedule={schedules[0]?.id} />
+			</main>
+			<PageFooter />
 		</>
 	);
 }

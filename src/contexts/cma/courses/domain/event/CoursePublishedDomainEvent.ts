@@ -3,20 +3,19 @@ import { CourseDurationPrimitives } from "../CourseDuration/CourseDuration";
 import { CourseInstructorPrimitives } from "../CourseInstructor/CourseInstructor";
 import { CourseDomainEvent } from "./CourseDomainEvent";
 
-
 export class CoursePublishedDomainEvent extends CourseDomainEvent {
 	static eventName = "pnfi.cma.course.published";
 	constructor(
-	public readonly	id: string,
-	public readonly	name: string,
-	public readonly	abstract: string,
-	public readonly	picture: string,
-	public readonly	instructor: CourseInstructorPrimitives,
-	public readonly	location: string,
-	public readonly	duration: CourseDurationPrimitives,
-	public readonly	price: number,
-	public readonly	creation: string,
-	public readonly	lastUpdate: string,
+		public readonly id: string,
+		public readonly name: string,
+		public readonly abstract: string,
+		public readonly picture: string,
+		public readonly instructor: CourseInstructorPrimitives,
+		public readonly location: string,
+		public readonly duration: CourseDurationPrimitives,
+		public readonly price: number,
+		public readonly creation: string,
+		public readonly lastUpdate: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -39,7 +38,7 @@ export class CoursePublishedDomainEvent extends CourseDomainEvent {
 			attributes.duration as CourseDurationPrimitives,
 			attributes.price as number,
 			attributes.creation as string,
-			attributes.lasUpdate as string,
+			attributes.lastUpdate as string,
 			eventId,
 			occurredOn
 		);
@@ -51,12 +50,12 @@ export class CoursePublishedDomainEvent extends CourseDomainEvent {
 			name: this.name,
 			abstract: this.abstract,
 			picture: this.picture,
-			instructor: this.instructor.toString(),
+			instructor: this.instructor,
 			location: this.location,
-			duration: this.duration.toString(),
+			duration: this.duration,
 			price: this.price,
-			creation: this.creation.toString(),
-			lastUpdate: this.lastUpdate.toString()
+			creation: this.creation,
+			lastUpdate: this.lastUpdate
 		};
 	}
 }

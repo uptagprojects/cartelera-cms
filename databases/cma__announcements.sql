@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS cma__announcements (
     content TEXT,
     publish_date DATE,
     type VARCHAR(70),
-    active BOOLEAN,
+    status VARCHAR(70),
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

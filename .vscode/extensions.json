@@ -2,6 +2,6 @@
 	"recommendations": [
 		"dbaeumer.vscode-eslint",
         "cucumberopen.cucumber-official",
-        "andrew-codes.cypress-snippets"
+		"openfga.openfga-vscode"
 	]
 }

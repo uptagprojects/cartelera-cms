@@ -1,15 +1,6 @@
 import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
 import { AnnouncementDomainEvent } from "./AnnouncementDomainEvent";
 
-export interface AnnouncementPrimitives {
-	id: string;
-	title: string;
-	content: string;
-	publishDate: string;
-	type: string;
-	active: boolean;
-}
-
 export class AnnouncementPublishedDomainEvent extends AnnouncementDomainEvent {
 	static eventName = "pnfi.cma.announcement.published";
 	constructor(
@@ -18,7 +9,6 @@ export class AnnouncementPublishedDomainEvent extends AnnouncementDomainEvent {
 		public readonly content: string,
 		public readonly publishDate: string,
 		public readonly type: string,
-		public readonly active: boolean,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -37,7 +27,6 @@ export class AnnouncementPublishedDomainEvent extends AnnouncementDomainEvent {
 			attributes.content as string,
 			attributes.publishDate as string,
 			attributes.type as string,
-			attributes.activo as boolean,
 			eventId,
 			occurredOn
 		);
@@ -48,9 +37,8 @@ export class AnnouncementPublishedDomainEvent extends AnnouncementDomainEvent {
 			id: this.id,
 			title: this.title,
 			content: this.content,
-			publishDate: this.publishDate.toString(),
+			publishDate: this.publishDate,
 			type: this.type,
-			active: this.active
 		};
 	}
 }

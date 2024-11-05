@@ -31,18 +31,18 @@ export type CoursePrimitives = {
 
 export class Course extends AggregateRoot {
 	constructor(
-		private id: CourseId,
+		private readonly id: CourseId,
 		private name: CourseName,
 		private abstract: CourseAbstract,
 		private picture: CoursePicture,
-		private instructor: CourseInstructor,
+		private readonly instructor: CourseInstructor,
 		private location: CourseLocation,
-		private duration: CourseDuration,
+		private readonly duration: CourseDuration,
 		private price: CoursePrice,
-		private creation: CourseCreation,
-		private lastUpdate: CourseUpdate
+		private readonly creation: CourseCreation,
+		private readonly lastUpdate: CourseUpdate
 	) {
-		super()
+		super();
 	}
 
 	static create(
@@ -55,8 +55,8 @@ export class Course extends AggregateRoot {
 		duration: CourseDurationPrimitives,
 		price: number,
 		creation: string,
-		lastUpdate: string): Course {
-
+		lastUpdate: string
+	): Course {
 		const course = new Course(
 			new CourseId(id),
 			new CourseName(name),
@@ -70,7 +70,21 @@ export class Course extends AggregateRoot {
 			new CourseUpdate(new Date(lastUpdate))
 		);
 
-		course.record(new CoursePublishedDomainEvent(id, name, abstract, picture, instructor, location, duration, price, creation, lastUpdate));
+		course.record(
+			new CoursePublishedDomainEvent(
+				id,
+				name,
+				abstract,
+				picture,
+				instructor,
+				location,
+				duration,
+				price,
+				creation,
+				lastUpdate
+			)
+		);
+
 		return course;
 	}
 
@@ -112,8 +126,8 @@ export class Course extends AggregateRoot {
 	updateAbstract(abstract: string): void {
 		this.abstract = new CourseAbstract(abstract);
 		this.record(new CourseAbstractUpdatedDomainEvent(this.id.value, abstract));
-
 	}
+
 	updatePicture(picture: string): void {
 		this.picture = new CoursePicture(picture);
 		this.record(new CoursePictureUpdatedDomainEvent(this.id.value, picture));
@@ -128,5 +142,4 @@ export class Course extends AggregateRoot {
 		this.price = new CoursePrice(price);
 		this.record(new CoursePriceUpdatedDomainEvent(this.id.value, price));
 	}
-
 }

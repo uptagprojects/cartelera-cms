@@ -3,6 +3,9 @@ module.exports = {
 		requireModule: ["ts-node/register"],
 		require: ["tests/features/step_definitions/*.steps.ts", "test/features/**/*.steps.ts"],
 		paths: ["tests/features/**/*.feature"],
+		formatOptions: {
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],
@@ -16,6 +19,9 @@ module.exports = {
 			"test/features/cda/step_definitions/*.steps.ts"
 		],
 		paths: ["tests/features/cda/**/*.feature"],
+		formatOptions: {
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],
@@ -29,6 +35,9 @@ module.exports = {
 			"test/features/cma/step_definitions/*.steps.ts"
 		],
 		paths: ["tests/features/cma/**/*.feature"],
+		formatOptions: {
+			snippetInterface: "async-await"
+		},
 		format: [
 			"progress-bar",
 			["junit", "coverage/junit.xml"],
