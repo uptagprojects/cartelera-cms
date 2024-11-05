@@ -1,7 +1,6 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { Attachment, AttachmentPrimitives } from "../../attachments/domain/Attachment";
 import { UCName } from "../../uc/domain/UCName";
-import { CdaGuidePostedDomainEvent } from "./event/CdaGuidePostedDomainEvent";
+import { GuideAttachment } from "./GuideAttachment";
 import { GuideContent } from "./GuideContent";
 import { GuideContentWrapped } from "./GuideContentWrapped";
 import { GuideId } from "./GuideId";
@@ -17,19 +16,19 @@ export interface GuidePrimitives {
 	area: string;
 	professor: ProfessorPrimitives;
 	publishDate: string;
-	attachments: AttachmentPrimitives[];
+	attachments: string[];
 }
 
 export class Guide extends AggregateRoot {
 	constructor(
 		private readonly id: GuideId,
-		private readonly title: GuideTitle,
-		private readonly content: GuideContent,
-		private readonly contentWrapped: GuideContentWrapped,
-		private readonly area: UCName,
+		private title: GuideTitle,
+		private content: GuideContent,
+		private contentWrapped: GuideContentWrapped,
+		private area: UCName,
 		private readonly professor: Professor,
 		private readonly publishDate: GuidePublishDate,
-		private readonly attachments: Attachment[]
+		private attachments: GuideAttachment[]
 	) {
 		super();
 	}
@@ -42,7 +41,7 @@ export class Guide extends AggregateRoot {
 		area: string,
 		professor: ProfessorPrimitives,
 		publishDate: string,
-		attachments: AttachmentPrimitives[]
+		attachments: string[]
 	): Guide {
 		const guide = new Guide(
 			new GuideId(id),
@@ -52,21 +51,9 @@ export class Guide extends AggregateRoot {
 			new UCName(area),
 			Professor.fromPrimitives(professor),
 			new GuidePublishDate(publishDate),
-			attachments.map(v => Attachment.fromPrimitives(v))
+			attachments.map(v => new GuideAttachment(v))
 		);
 
-		guide.record(
-			new CdaGuidePostedDomainEvent(
-				id,
-				title,
-				content,
-				contentWrapped,
-				area,
-				professor,
-				publishDate,
-				attachments
-			)
-		);
 
 		return guide;
 	}
@@ -80,7 +67,7 @@ export class Guide extends AggregateRoot {
 			new UCName(plainData.area),
 			Professor.fromPrimitives(plainData.professor),
 			new GuidePublishDate(plainData.publishDate),
-			plainData.attachments.map(v => Attachment.fromPrimitives(v))
+			plainData.attachments.map(v => new GuideAttachment(v))
 		);
 	}
 
@@ -93,7 +80,31 @@ export class Guide extends AggregateRoot {
 			area: this.area.value,
 			professor: this.professor.toPrimitives(),
 			publishDate: this.publishDate.value.toString(),
-			attachments: this.attachments.map(v => v.toPrimitives())
+			attachments: this.attachments.map(v => v.value)
 		};
+	}
+
+	getId(): GuideId {
+		return this.id;
+	}
+
+	updateTitle(title: string): void {
+		this.title = new GuideTitle(title);
+	}
+
+	updateContent(content: string): void {
+		this.content = new GuideContent(content);
+	}
+
+	updateContentWrapped(contentWrapped: string): void {
+		this.contentWrapped = new GuideContentWrapped(contentWrapped);
+	}
+
+	updateArea(area: string): void {
+		this.area = new UCName(area);
+	}
+
+	updateAttachments(attachments: string[]): void {
+		this.attachments = attachments.map(v => new GuideAttachment(v));
 	}
 }

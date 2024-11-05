@@ -2,6 +2,7 @@ import { PostgresConnection } from "../../../shared/infrastructure/PostgresConne
 import { UC } from "../domain/UC";
 import { UCId } from "../domain/UCId";
 import { UCRepository } from "../domain/UCRepository";
+import { UCRemovedDomainEvent } from "../domain/event/UCRemovedDomainEvent";
 
 export type DatabaseUC = {
 	id: string;
@@ -43,7 +44,7 @@ export class PostgresUCRepository implements UCRepository {
 
 	async remove(uc: UC): Promise<void> {
 		const { id } = uc.toPrimitives();
-
+		uc.record(new UCRemovedDomainEvent(id));
 		await this.connection.execute("DELETE FROM cma__uc WHERE id = $1", [id]);
 	}
 }

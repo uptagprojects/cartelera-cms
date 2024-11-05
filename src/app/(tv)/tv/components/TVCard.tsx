@@ -7,8 +7,6 @@ type TVCardProps = {
 };
 
 export const TVCard: FC<TVCardProps> = ({ title, image }) => {
-	const valid = URL.canParse(image);
-
 	return (
 		<Card image={image} aspectRatio="portrait">
 			<p>{title}</p>

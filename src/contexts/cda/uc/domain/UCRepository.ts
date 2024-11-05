@@ -2,8 +2,12 @@ import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { UC } from "./UC";
 import { UCId } from "./UCId";
 
-export interface UCRepository {
-	search(id: UCId): Promise<UC | null>;
+export abstract class UCRepository {
+	abstract save(uc: UC): Promise<void>;
+	
+	abstract search(id: UCId): Promise<UC | null>;
 
-	matching(criteria: Criteria): Promise<UC[]>;
+	abstract searchAll(): Promise<UC[]>;
+
+	abstract remove(uc: UC): Promise<void>;
 }

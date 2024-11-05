@@ -1,14 +1,16 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { AnnouncementActive } from "./AnnouncementActive";
+import { AnnouncementStatus } from "./AnnouncementStatus";
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
 import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
 import { AnnouncementTitle } from "./AnnouncementTitle";
 import { AnnouncementType } from "./AnnouncementType";
 import { AnnouncementContentUpdatedDomainEvent } from "./event/AnnouncementContentUpdatedDomainEvent";
-import { AnnouncementDeactivatedDomainEvent } from "./event/AnnouncementDeactivatedDomainEvent";
-import { AnnouncementPublishedDomainEvent } from "./event/AnnouncementPublishedDomainEvent";
+import { AnnouncementPostedDomainEvent } from "./event/AnnouncementPostedDomainEvent";
 import { AnnouncementTitleUpdatedDomainEvent } from "./event/AnnouncementTitleUpdatedDomainEvent";
+import { AnnouncementPublishedDomainEvent } from "./event/AnnouncementPublishedDomainEvent";
+import { AnnouncementArchivedDomainEvent } from "./event/AnnouncementArchivedDomainEvent";
+import { AnnouncementRestoredDomainEvent } from "./event/AnnouncementRestoredDomainEvent";
 
 export interface AnnouncementPrimitives {
 	id: string;
@@ -16,7 +18,7 @@ export interface AnnouncementPrimitives {
 	content: string;
 	publishDate: string;
 	type: string;
-	active: boolean;
+	status: string;
 }
 
 export class Announcement extends AggregateRoot {
@@ -26,7 +28,7 @@ export class Announcement extends AggregateRoot {
 		private content: AnnouncementContent,
 		private readonly publishDate: AnnouncementPublishDate,
 		private readonly type: AnnouncementType,
-		private active: AnnouncementActive
+		private status: AnnouncementStatus
 	) {
 		super();
 	}
@@ -37,7 +39,6 @@ export class Announcement extends AggregateRoot {
 		content: string,
 		publishDate: string,
 		type: string,
-		active: boolean
 	): Announcement {
 		const announcement = new Announcement(
 			new AnnouncementId(id),
@@ -45,11 +46,11 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementContent(content),
 			new AnnouncementPublishDate(publishDate),
 			type as AnnouncementType,
-			new AnnouncementActive(active)
+			AnnouncementStatus.DRAFT
 		);
 
 		announcement.record(
-			new AnnouncementPublishedDomainEvent(id, title, content, publishDate, type, active)
+			new AnnouncementPostedDomainEvent(id, title, content, publishDate, type)
 		);
 
 		return announcement;
@@ -62,7 +63,7 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementContent(plainData.content),
 			new AnnouncementPublishDate(plainData.publishDate),
 			plainData.type as AnnouncementType,
-			new AnnouncementActive(plainData.active)
+			plainData.status as AnnouncementStatus
 		);
 	}
 
@@ -71,9 +72,9 @@ export class Announcement extends AggregateRoot {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			publishDate: this.publishDate.value.toString(),
+			publishDate: this.publishDate.value.toISOString(),
 			type: this.type,
-			active: this.active.value
+			status: this.status
 		};
 	}
 
@@ -87,13 +88,26 @@ export class Announcement extends AggregateRoot {
 		this.record(new AnnouncementContentUpdatedDomainEvent(this.id.value, content));
 	}
 
-	activateAnnouncement(): void {
-		this.active = new AnnouncementActive(true);
-		this.record(new AnnouncementDeactivatedDomainEvent(this.id.value, true));
+	publish(): void {
+		this.status = AnnouncementStatus.PUBLISHED;
+		this.record(new AnnouncementPublishedDomainEvent(
+			this.id.value,
+			this.title.value,
+			this.content.value,
+			this.publishDate.value.toISOString(),
+			this.type
+		));
 	}
 
-	deactivateAnnouncement(): void {
-		this.active = new AnnouncementActive(false);
-		this.record(new AnnouncementDeactivatedDomainEvent(this.id.value, false));
+	archive(): void {
+		this.status = AnnouncementStatus.ARCHIVED;
+		this.record(new AnnouncementArchivedDomainEvent(this.id.value));
+	}
+
+	restore(): void {
+		this.status = AnnouncementStatus.DRAFT;
+		this.record(
+			new AnnouncementRestoredDomainEvent(this.id.value)
+		);
 	}
 }

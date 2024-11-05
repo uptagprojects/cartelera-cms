@@ -5,6 +5,7 @@ import { GuideArchivedDomainEvent } from "./event/GuideArchivedDomainEvent";
 import { GuideContentUpdatedDomainEvent } from "./event/GuideContentUpdatedDomainEvent";
 import { GuidePostedDomainEvent } from "./event/GuidePostedDomainEvent";
 import { GuidePublishedDomainEvent } from "./event/GuidePublishedDomainEvent";
+import { GuideRestoredDomainEvent } from "./event/GuideRestoredDomainEvent";
 import { GuideTitleUpdatedDomainEvent } from "./event/GuideTitleUpdatedDomainEvent";
 import { GuideContent } from "./GuideContent";
 import { GuideId } from "./GuideId";
@@ -86,7 +87,18 @@ export class Guide extends AggregateRoot {
 
 	publish(): void {
 		this.status = GuideStatus.PUBLISHED;
-		this.record(new GuidePublishedDomainEvent(this.id.value));
+		this.record(new GuidePublishedDomainEvent(
+			this.id.value,
+			this.title.value,
+			this.content.value,
+			this.ucId.value,
+			this.authorId.value
+		));
+	}
+
+	restore(): void {
+		this.status = GuideStatus.DRAFT;
+		this.record(new GuideRestoredDomainEvent(this.id.value));
 	}
 
 	updateTitle(title: string): void {

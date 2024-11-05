@@ -9,15 +9,24 @@ interface DatabaseEvent {
 	id: string;
 	name: string;
 	location: string;
-	startDate: string;
-	endDate: string;
+	start_date: string;
+	end_date: string;
 }
 export class PostgresEventRepository implements EventRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
+	async save(event: Event): Promise<void> {
+		const primitives = event.toPrimitives();
+
+		await this.connection.execute(
+			"INSERT INTO cda__events (id, name, location, start_date, end_date) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name=$2, location=$3, start_date=$4, end_date=$5",
+			[primitives.id, primitives.name, primitives.location, primitives.startDate, primitives.endDate]
+		);
+	}
+
 	async search(id: EventId): Promise<Event | null> {
 		const res = await this.connection.searchOne<DatabaseEvent>(
-			"SELECT *** insert PARAMETROS *** FROM cda__events WHERE id = $1 LIMIT 1",
+			"SELECT id, name, location, start_date, end_date FROM cda__events WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 
@@ -25,14 +34,20 @@ export class PostgresEventRepository implements EventRepository {
 			return null;
 		}
 
-		return Event.fromPrimitives(res);
+		return Event.fromPrimitives({
+			id: res.id,
+			name: res.name,
+			location: res.location,
+			startDate: res.start_date,
+			endDate: res.end_date
+		});
 	}
 
 	async matching(criteria: Criteria): Promise<Event[]> {
 		const converter = new CriteriaToPostgresSqlConverter();
 		const { query, params } = converter.convert(
 			["id", "name", "location", "start_date", "end_date"],
-			"cma__events",
+			"cda__events",
 			criteria
 		);
 
@@ -43,9 +58,14 @@ export class PostgresEventRepository implements EventRepository {
 				id: a.id,
 				name: a.name,
 				location: a.location,
-				startDate: a.startDate,
-				endDate: a.endDate
+				startDate: a.start_date,
+				endDate: a.end_date
 			})
 		);
+	}
+
+	async remove(event: Event): Promise<void> {
+		const { id } = event.toPrimitives();
+		await this.connection.execute("DELETE FROM cda__events WHERE id = $1", [id]);
 	}
 }

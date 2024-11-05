@@ -1,7 +1,5 @@
-import { AnnouncementActive } from "./AnnouncementActive";
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
-import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
 import { AnnouncementTitle } from "./AnnouncementTitle";
 import { AnnouncementType } from "./AnnouncementType";
 
@@ -9,33 +7,31 @@ export interface AnnouncementPrimitives {
 	id: string;
 	title: string;
 	content: string;
-	publishDate: string;
 	type: string;
-	active: boolean;
 }
 
 export class Announcement {
-	readonly id: AnnouncementId;
-	readonly title: AnnouncementTitle;
-	readonly content: AnnouncementContent;
-	readonly publishDate: AnnouncementPublishDate;
-	readonly type: AnnouncementType;
-	readonly active: AnnouncementActive;
 
 	constructor(
-		id: AnnouncementId,
-		title: AnnouncementTitle,
-		content: AnnouncementContent,
-		publishDate: AnnouncementPublishDate,
-		type: AnnouncementType,
-		active: AnnouncementActive
+		public readonly id: AnnouncementId,
+		private title: AnnouncementTitle,
+		private content: AnnouncementContent,
+		private readonly type: AnnouncementType,
 	) {
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.publishDate = publishDate;
-		this.type = type;
-		this.active = active;
+	}
+
+	static create(
+		id: string,
+		title: string,
+		content: string,
+		type: string,
+	): Announcement {
+		return new Announcement(
+			new AnnouncementId(id),
+			new AnnouncementTitle(title),
+			new AnnouncementContent(content),
+			type as AnnouncementType,
+		);
 	}
 
 	static fromPrimitives(plainData: AnnouncementPrimitives): Announcement {
@@ -43,9 +39,7 @@ export class Announcement {
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
 			new AnnouncementContent(plainData.content),
-			new AnnouncementPublishDate(plainData.publishDate),
 			plainData.type as AnnouncementType,
-			new AnnouncementActive(plainData.active)
 		);
 	}
 
@@ -54,9 +48,15 @@ export class Announcement {
 			id: this.id.value,
 			title: this.title.value,
 			content: this.content.value,
-			publishDate: this.publishDate.value.toString(),
-			type: this.type,
-			active: this.active.value
+			type: this.type
 		};
+	}
+
+	updateTitle(title: string): void {
+		this.title = new AnnouncementTitle(title);
+	}
+
+	updateContent(content: string): void {
+		this.content = new AnnouncementContent(content);
 	}
 }

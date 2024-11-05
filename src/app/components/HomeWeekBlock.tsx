@@ -1,5 +1,5 @@
 import { Container } from "octagon-ui";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 type HomeWeekNumberBlockProps = {
 	week: number;

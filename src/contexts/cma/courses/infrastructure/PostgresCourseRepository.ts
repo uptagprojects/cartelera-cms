@@ -6,6 +6,7 @@ import { CourseDurationPrimitives } from "../domain/CourseDuration/CourseDuratio
 import { CourseId } from "../domain/CourseId";
 import { CourseInstructorPrimitives } from "../domain/CourseInstructor/CourseInstructor";
 import { CourseRepository } from "../domain/CourseRepository";
+import { CourseRemovedDomainEvent } from "../domain/event/CourseRemovedDomainEvent";
 
 interface DatabaseCourse {
 	id: string;
@@ -19,6 +20,7 @@ interface DatabaseCourse {
 	creation: string;
 	lastUpdate: string;
 }
+
 export class PostgresCourseRepository implements CourseRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
@@ -128,6 +130,7 @@ export class PostgresCourseRepository implements CourseRepository {
 	async remove(course: Course): Promise<void> {
 		const { id } = course.toPrimitives();
 
+		course.record(new CourseRemovedDomainEvent(id));
 		await this.connection.execute("DELETE FROM cma__courses WHERE id = $1", [id]);
 	}
 }

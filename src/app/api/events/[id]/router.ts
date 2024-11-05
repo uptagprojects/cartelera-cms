@@ -10,10 +10,11 @@ export async function GET(
 	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
 	const { id } = await params;
-	const postgresConnection = new PostgresConnection();
 	let event = null;
 	try {
-		const eventRepository = new PostgresEventRepository(postgresConnection);
+		const eventRepository = new PostgresEventRepository(
+			new PostgresConnection()
+		);
 		const eventFinder = new EventFinder(eventRepository);
 		event = await eventFinder.find(id);
 	} catch (error) {

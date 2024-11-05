@@ -1,32 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ActivitiesByCriteriaSearcher } from "../../../contexts/cda/activities/application/search-all-by-criteria/ActivitiesByCriteriaSearcher";
+import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
+import { PostgresActivityRepository } from "../../../contexts/cda/activities/infrastructure/PostgresActivityRepository";
+import { SearchParamsCriteriaFiltersParser } from "../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 
-import { OfficialUuidGenerator } from "../../../contexts/shared/infrastructure/OfficialUuidGenerator";
+export async function GET(request: NextRequest): Promise<Response> {
+	const { searchParams } = new URL(request.url);
+	const searcher = new ActivitiesByCriteriaSearcher(
+		new PostgresActivityRepository(new PostgresConnection())
+	);
+	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
 
-const uuidGenerator = new OfficialUuidGenerator();
+	const activities = await searcher.search(
+		filters,
+		searchParams.get("orderBy"),
+		searchParams.get("orderType"),
+		searchParams.get("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : null,
+		searchParams.get("pageNumber")
+			? parseInt(searchParams.get("pageNumber") as string, 10)
+			: null
+	);
 
-export async function GET(_req: NextRequest): Promise<Response> {
 	return NextResponse.json(
-		[
-			{
-				id: uuidGenerator.generate(),
-				event: "Curso de PHP",
-				content: "Desde el 1 al 12 de enero",
-				image: "https://www.php.net/images/logos/new-php-logo.svg"
-			},
-			{
-				id: uuidGenerator.generate(),
-				event: "Nueva guia: uso de Hooks en React",
-				content:
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc nec ultricies.",
-				image: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
-			},
-			{
-				id: uuidGenerator.generate(),
-				event: "Pycon 2025",
-				content: "Desde el 1 al 12 de febrero en la ciudad de Caracas",
-				image: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg"
-			}
-		],
+		activities.map(activities => activities.toPrimitives()),
 		{
 			status: 200
 		}

@@ -2,7 +2,7 @@ import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEve
 import { GuideDomainEvent } from "./GuideDomainEvent";
 
 export class GuideTitleUpdatedDomainEvent extends GuideDomainEvent {
-	static eventName: string = "pnfi.cma.user.title.updated";
+	static eventName: string = "pnfi.cma.guide.title.updated";
 
 	constructor(
 		public readonly id: string,

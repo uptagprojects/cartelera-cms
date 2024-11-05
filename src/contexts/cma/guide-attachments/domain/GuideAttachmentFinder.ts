@@ -7,11 +7,11 @@ export class GuideAttachmentFinder {
 	constructor(private readonly repository: GuideAttachmentRepository) {}
 
 	async find(id: string): Promise<GuideAttachment> {
-		const guideAttachment = await this.repository.search(new GuideAttachmentId(id));
-		if (!guideAttachment) {
+		const attachment = await this.repository.search(new GuideAttachmentId(id));
+		if (!attachment) {
 			throw new GuideAttachmentDoesNotExist(id);
 		}
 
-		return guideAttachment;
+		return attachment;
 	}
 }

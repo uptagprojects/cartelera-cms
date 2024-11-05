@@ -2,8 +2,12 @@ import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { Event } from "./Event";
 import { EventId } from "./EventId";
 
-export interface EventRepository {
-	search(id: EventId): Promise<Event | null>;
+export abstract class EventRepository {
+	abstract save(event: Event): Promise<void>;
 
-	matching(criteria: Criteria): Promise<Event[]>;
+	abstract search(id: EventId): Promise<Event | null>;
+
+	abstract matching(criteria: Criteria): Promise<Event[]>;
+
+	abstract remove(event: Event): Promise<void>;
 }

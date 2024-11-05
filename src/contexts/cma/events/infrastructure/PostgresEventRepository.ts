@@ -3,6 +3,7 @@ import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/c
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Event } from "../domain/Event";
 import { EventId } from "../domain/EventId";
+import { EventRemovedDomainEvent } from "../domain/event/EventRemovedDomainEvent";
 import { EventRepository } from "../domain/EventRepository";
 
 export type DatabaseEvent = {
@@ -78,6 +79,8 @@ export class PostgresEventRepository implements EventRepository {
 
 	async remove(event: Event): Promise<void> {
 		const { id } = event.toPrimitives();
+
+		event.record(new EventRemovedDomainEvent(id));
 
 		await this.connection.execute("DELETE FROM cma__events WHERE id = $1", [id]);
 	}

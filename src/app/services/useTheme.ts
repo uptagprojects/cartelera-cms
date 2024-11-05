@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function calculateThemeFromSystem() {
-	const localStorageTheme = global.localStorage.getItem("theme");
+	const localStorageTheme = globalThis.localStorage?.getItem("theme") || null;
 	const systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
 	if (localStorageTheme !== null) {
 		return localStorageTheme;
@@ -15,11 +15,15 @@ function calculateThemeFromSystem() {
 }
 
 export function useTheme(): { theme: string; toggleTheme: () => void } {
-	const [theme, setTheme] = useState<string>(calculateThemeFromSystem());
+	const [theme, setTheme] = useState<string>("light");
+
+	useEffect(() => {
+		setTheme(calculateThemeFromSystem());
+	}, []);
 
 	useEffect(() => {
 		document.body.dataset.theme = theme;
-		global.localStorage.setItem("theme", theme);
+		globalThis.localStorage.setItem("theme", theme);
 	}, [theme]);
 
 	return {

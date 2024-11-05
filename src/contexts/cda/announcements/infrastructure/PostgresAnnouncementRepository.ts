@@ -1,5 +1,3 @@
-import { Criteria } from "../../../shared/domain/criteria/Criteria";
-import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Announcement } from "../domain/Announcement";
 import { AnnouncementId } from "../domain/AnnouncementId";
@@ -9,16 +7,28 @@ interface DatabaseAnnouncement {
 	id: string;
 	title: string;
 	content: string;
-	publishDate: string;
 	type: string;
-	active: boolean;
 }
+
 export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
+	async save(announcement: Announcement): Promise<void> {
+		const primitives = announcement.toPrimitives();
+		await this.connection.execute(
+			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET title=$2, content=$3, type=$4",
+			[
+				announcement.id.value,
+				primitives.title,
+				primitives.content,
+				primitives.type
+			]
+		);
+	}
+
 	async search(id: AnnouncementId): Promise<Announcement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
-			"SELECT id, title, content, publish_date, type, active FROM cda__announcements WHERE id = $1 LIMIT 1",
+			"SELECT id, title, content, type FROM cda__announcements WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 
@@ -30,31 +40,26 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			id: res.id,
 			title: res.title,
 			content: res.content,
-			publishDate: res.publishDate,
-			type: res.type,
-			active: res.active
+			type: res.type
 		});
 	}
 
-	async matching(criteria: Criteria): Promise<Announcement[]> {
-		const converter = new CriteriaToPostgresSqlConverter();
-		const { query, params } = converter.convert(
-			["id", "title", "content", "publish_date AS publishDate", "type", "active"],
-			"cda__announcements",
-			criteria
+	async searchAll(): Promise<Announcement[]> {
+		const results = await this.connection.searchAll<DatabaseAnnouncement>(
+			"SELECT id, title, content, type FROM cda__announcements ORDER BY stored_creation_timestamp",
 		);
-
-		const results = await this.connection.searchAll<DatabaseAnnouncement>(query, params);
 
 		return results.map(a =>
 			Announcement.fromPrimitives({
 				id: a.id,
 				title: a.title,
 				content: a.content,
-				publishDate: a.publishDate,
-				type: a.type,
-				active: a.active
+				type: a.type
 			})
 		);
+	}
+
+	async remove(announcement: Announcement): Promise<void> {
+		await this.connection.execute("DELETE FROM cda__announcements WHERE id = $1", [announcement.id.value]);
 	}
 }

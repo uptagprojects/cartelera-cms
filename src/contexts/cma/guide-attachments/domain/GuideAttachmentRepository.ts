@@ -9,5 +9,5 @@ export interface GuideAttachmentRepository {
 
 	searchAllByGuideId(guideId: GuideId): Promise<GuideAttachment[]>;
 
-	remove(attachment: GuideAttachment): Promise<void>;
+	remove(guideAttachment: GuideAttachment): Promise<void>;
 }
