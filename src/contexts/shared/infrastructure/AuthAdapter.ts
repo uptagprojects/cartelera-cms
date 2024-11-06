@@ -1,4 +1,4 @@
-import { Adapter, AdapterUser, VerificationToken } from "@auth/core/adapters";
+import { Adapter, AdapterSession, AdapterUser, VerificationToken } from "@auth/core/adapters";
 
 import { User } from "../../cma/users/domain/User";
 import { UserDoesNotExist } from "../../cma/users/domain/UserDoesNotExist";
@@ -6,8 +6,15 @@ import { UserEmail } from "../../cma/users/domain/UserEmail";
 import { UserId } from "../../cma/users/domain/UserId";
 import { PostgresUserRepository } from "../../cma/users/infrastructure/PostgresUserRepository";
 import { InvalidIdentifierError } from "../domain/InvalidIdentifierError";
-import { PostgresConnection } from "./PostgresConnection";
 import { UuidGenerator } from "../domain/UuidGenerator";
+import { PostgresConnection } from "./PostgresConnection";
+
+type DatabaseSession = {
+	id: string;
+	userId: string;
+	expires: Date;
+	sessionToken: string;
+};
 
 export class AuthAdapter implements Adapter {
 	private readonly userRepository: PostgresUserRepository;
@@ -169,7 +176,6 @@ export class AuthAdapter implements Adapter {
 		};
 	}
 
-
 	async linkAccount(account) {
 		const id = await this.uuidGenerator.generate();
 		const sql = `
@@ -189,39 +195,146 @@ export class AuthAdapter implements Adapter {
 		  token_type
 		)
 		values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-		`
-  
+		`;
+
 		const params = [
 			id,
-		  account.userId,
-		  account.provider,
-		  account.type,
-		  account.providerAccountId,
-		  account.access_token,
-		  account.expires_at,
-		  account.refresh_token,
-		  account.id_token,
-		  account.scope,
-		  account.session_state,
-		  account.token_type
+			account.userId,
+			account.provider,
+			account.type,
+			account.providerAccountId,
+			account.access_token,
+			account.expires_at,
+			account.refresh_token,
+			account.id_token,
+			account.scope,
+			account.session_state,
+			account.token_type
 		];
 
-		await this.connection.execute(sql, params)
+		await this.connection.execute(sql, params);
 
+		const expires_at: number = parseInt(account.expires_at);
 
-  
-		const result = await client.query(sql, params)
-		return this.mapExpiresAt({
-
-		})
-	  },
-
-	  
-	private mapExpiresAt(account: any): any {
-		const expires_at: number = parseInt(account.expires_at)
 		return {
 			...account,
-			expires_at,
+			id,
+			expires_at
+		};
+	}
+
+	async createSession({ sessionToken, userId, expires }: AdapterSession) {
+		const id = await this.uuidGenerator.generate();
+
+		if (userId === undefined) {
+			throw Error(`userId is undef in createSession`);
 		}
+
+		await this.connection.execute(
+			"INSERT INTO cma__sessions (id, user_id, expires, session_token) VALUES ($1, $2, $3, $4)",
+			[id, userId, expires, sessionToken]
+		);
+
+		return {
+			id,
+			userId,
+			expires,
+			sessionToken
+		};
+	}
+
+	async getSessionAndUser(sessionToken: string | undefined): Promise<{
+		session: AdapterSession;
+		user: AdapterUser;
+	} | null> {
+		if (sessionToken === undefined) {
+			return null;
+		}
+
+		const result = await this.connection.searchOne<DatabaseSession>(
+			"SELECT id, user_id as userId, expires, session_token as sessionToken FROM cma__sessions WHERE session_token = $1",
+			[sessionToken]
+		);
+
+		if (!result) {
+			return null;
+		}
+
+		const user = await this.userRepository.search(new UserId(result.userId));
+
+		if (!user) {
+			return null;
+		}
+
+		const primitives = user.toPrimitives();
+
+		const adapterUser = {
+			id: primitives.id,
+			name: primitives.name,
+			email: primitives.email,
+			emailVerified: primitives.emailVerified,
+			image: primitives.avatar
+		};
+
+		return {
+			session: {
+				id: result.id,
+				userId: result.userId,
+				expires: result.expires,
+				sessionToken: result.sessionToken
+			},
+			user: adapterUser
+		};
+	}
+
+	async updateSession(
+		session: Partial<AdapterSession> & Pick<AdapterSession, "sessionToken">
+	): Promise<AdapterSession | null | undefined> {
+		const { sessionToken } = session;
+
+		const savedSession = await this.connection.searchOne<DatabaseSession>(
+			"SELECT id, user_id, expires, session_token FROM cma__sessions WHERE session_token = $1",
+			[sessionToken]
+		);
+
+		if (!savedSession) {
+			return null;
+		}
+
+		const newSession: AdapterSession = {
+			...savedSession,
+			...session
+		};
+
+		await this.connection.execute(
+			"UPDATE cma__sessions SET expires = $2 WHERE session_token = $1",
+			[newSession.sessionToken, newSession.expires]
+		);
+
+		return newSession;
+	}
+
+	async deleteSession(sessionToken: string): Promise<void> {
+		await this.connection.execute("DELETE FROM cma__sessions WHERE session_token = $1", [
+			sessionToken
+		]);
+	}
+
+	async unlinkAccount(partialAccount): Promise<void> {
+		const { provider, providerAccountId } = partialAccount;
+		await this.connection.execute(
+			"DELETE FROM cma__accounts WHERE provider_account_id = $1 AND provider = $2",
+			[providerAccountId, provider]
+		);
+	}
+
+	async deleteUser(userId: string): Promise<void> {
+		const user = await this.userRepository.search(new UserId(userId));
+		if (user) {
+			user.archive();
+			await this.userRepository.save(user);
+		}
+		await this.connection.execute("DELETE FROM cma__sessions WHERE user_id = $1", [userId]);
+		await this.connection.execute("DELETE FROM cma__accounts WHERE user_id = $1", [userId]);
 	}
 }
