@@ -1,77 +1,70 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
-import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
+import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { Schedule } from "../domain/Schedule";
 import { ScheduleId } from "../domain/ScheduleId";
 import { ScheduleRepository } from "../domain/ScheduleRepository";
-
-export type DatabaseSchedule = {
-    id: string;
-    startDate: string;
-    endDate: string;
+import { ScheduleRemovedDomainEvent } from "../domain/event/ScheduleRemovedDomainEvent";
+interface DatabaseSchedule {
+	id: string;
+    name: string;
+    start_date: string;
+    finish_date: string;
+    status: string;
 }
-
 export class PostgresScheduleRepository implements ScheduleRepository {
-    constructor(private readonly connection: PostgresConnection) { }
-
+    constructor(private readonly connection: PostgresConnection) {}
     async save(schedule: Schedule): Promise<void> {
-        const schedulePrimitives = schedule.toPrimitives();
-
-        const params = [schedulePrimitives.id, schedulePrimitives.startDate, schedulePrimitives.endDate];
-
-        await this.connection.execute(
-            `INSERT INTO cma__schedule(id, start_date, end_date) VALUES ($1, $2, $3) ON CONFLICT (id) DO UPDATE SET start_date = $2`,
-            params
-        );
+        const primitives = schedule.toPrimitives();
+        const query = "INSERT INTO cma__schedules (id, name, start_date, finish_date, status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name = $2, start_date = $3, finish_date = $4, status = $5";
+        const values = [
+            primitives.id,
+            primitives.name,
+            primitives.startDate,
+            primitives.finishDate,
+            primitives.status
+        ];
+        await this.connection.execute(query, values);
     }
-
     async search(id: ScheduleId): Promise<Schedule | null> {
-        const res = await this.connection.searchOne<DatabaseSchedule>(
-            "SELECT id, start_date, end_date FROM cma__schedules WHERE id = $1 LIMIT 1",
-            [id.value]
-        );
-
-        if (!res) {
+        const res = await this.connection.searchOne<DatabaseSchedule>("SELECT id, name, start_date, finish_date, status FROM cma__schedules WHERE id = $1 LIMIT 1", [id.value]);
+        
+        if(!res) {
             return null;
         }
-
-        return Schedule.fromPrimitives(res);
+        return Schedule.fromPrimitives({
+            id: res.id,
+            name: res.name,
+            startDate: res.start_date,
+            finishDate: res.finish_date,
+            status: res.status
+        });
     }
-
-    async searchAll(): Promise<Schedule[]> {
-        const res = await this.connection.searchAll<DatabaseSchedule>(
-            "SELECT id, start_date, end_date FROM cma__schedules",
-            []
-        );
-
-        return res.map(r => Schedule.fromPrimitives(r));
-    }
-
+    
     async matching(criteria: Criteria): Promise<Schedule[]> {
         const converter = new CriteriaToPostgresSqlConverter();
-        const { query, params } = converter.convert(
-            ["id", "start_date", "end_date"],
-            "cma__schedules",
-            criteria
-        );
-
-        const results = await this.connection.searchAll<DatabaseSchedule>(query, params);
-
-        return results.map(a =>
-            Schedule.fromPrimitives({
-                id: a.id,
-                startDate: a.startDate,
-                endDate: a.endDate,
-            })
-        );
+		const { query, params } = converter.convert(
+			["id", "name", "start_date", "finish_date", "status"],
+			"cma__schedules",
+			criteria
+		);
+		const results = await this.connection.searchAll<DatabaseSchedule>(query, params);
+		return results.map(row =>
+			Schedule.fromPrimitives({
+				id: row.id,
+                name: row.name,
+                startDate: row.start_date,
+                finishDate: row.finish_date,
+                status: row.status
+			})
+		);
     }
 
-    async remove(schedule: Schedule): Promise<void> {
-        const { id } = schedule.toPrimitives();
+    async remove(guide: Schedule): Promise<void> {
+		const { id } = guide.toPrimitives();
 
-        await this.connection.execute(
-            "DELETE FROM cma__schedules WHERE id = $1",
-            [id]
-        );
-    }
+		guide.record(new ScheduleRemovedDomainEvent(id));
+
+		await this.connection.execute("DELETE FROM cma__schedules WHERE id = $1", [id]);
+	}
 }

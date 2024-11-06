@@ -7,16 +7,33 @@ import { ScheduleRepository } from "../domain/ScheduleRepository";
 
 export type DatabaseSchedule = {
     id: string;
-    startDate: string;
-    endDate: string;
+    name: string;
+    start_date: string;
+    finish_date: string;
+    attachments: string;
 }
 
 export class PostgresScheduleRepository implements ScheduleRepository {
     constructor(private readonly connection: PostgresConnection) { }
 
+    async save(schedule: Schedule): Promise<void> {
+        const primitives = schedule.toPrimitives();
+
+        await this.connection.execute(
+            "INSERT INTO cda__schedule (id, name, start_date, finish_date, attachments) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name=$2, start_date=$3, finish_date=$4, attachments=$5",
+            [
+                primitives.id,
+                primitives.name,
+                primitives.startDate,
+                primitives.finishDate,
+                JSON.stringify(primitives.attachments)
+            ]
+        );
+    }
+
     async search(id: ScheduleId): Promise<Schedule | null> {
         const res = await this.connection.searchOne<DatabaseSchedule>(
-            "SELECT id, start_date, end_date FROM cda__schedules WHERE id = $1 LIMIT 1",
+            "SELECT id, name, start_date, finish_date, attachments FROM cda__schedules WHERE id = $1 LIMIT 1",
             [id.value]
         );
 
@@ -24,22 +41,19 @@ export class PostgresScheduleRepository implements ScheduleRepository {
             return null;
         }
 
-        return Schedule.fromPrimitives(res);
-    }
-
-    async searchAll(): Promise<Schedule[]> {
-        const res = await this.connection.searchAll<DatabaseSchedule>(
-            "SELECT id, start_date, end_date FROM cda__schedules",
-            []
-        );
-
-        return res.map(r => Schedule.fromPrimitives(r));
+        return Schedule.fromPrimitives({
+            id: res.id,
+            name: res.name,
+            startDate: res.start_date,
+            finishDate: res.finish_date,
+            attachments: JSON.parse(res.attachments)
+        });
     }
 
     async matching(criteria: Criteria): Promise<Schedule[]> {
         const converter = new CriteriaToPostgresSqlConverter();
         const { query, params } = converter.convert(
-            ["id", "start_date", "end_date"],
+            ["id", "name", "start_date", "finish_date"],
             "cda__schedules",
             criteria
         );
@@ -49,9 +63,20 @@ export class PostgresScheduleRepository implements ScheduleRepository {
         return results.map(a =>
             Schedule.fromPrimitives({
                 id: a.id,
-                startDate: a.startDate,
-                endDate: a.endDate,
+                name: a.name,
+                startDate: a.start_date,
+                finishDate: a.finish_date,
+                attachments: JSON.parse(a.attachments)
             })
+        );
+    }
+
+    async remove(schedule: Schedule): Promise<void> {
+        const { id } = schedule.toPrimitives();
+
+        await this.connection.execute(
+            "DELETE FROM cda__schedules WHERE id = $1",
+            [id]
         );
     }
 

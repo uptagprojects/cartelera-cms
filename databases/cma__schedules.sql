@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS cma__schedules (
     id UUID PRIMARY KEY,
+    name VARCHAR(200),
     start_date DATE,
     end_date DATE,
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

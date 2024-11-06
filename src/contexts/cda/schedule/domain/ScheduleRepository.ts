@@ -3,8 +3,9 @@ import { Schedule } from "./Schedule";
 import { ScheduleId } from "./ScheduleId";
 
 
-export interface ScheduleRepository {
-    search(id: ScheduleId): Promise<Schedule | null>;
-    searchAll(): Promise<Schedule[]>;
-    matching(criteria: Criteria): Promise<Schedule[]>;
+export abstract class ScheduleRepository {
+    abstract save(schedule: Schedule): Promise<void>;
+    abstract search(id: ScheduleId): Promise<Schedule | null>;
+    abstract matching(criteria: Criteria): Promise<Schedule[]>;
+    abstract remove(schedule: Schedule): Promise<void>;
 }
