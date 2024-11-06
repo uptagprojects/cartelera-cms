@@ -1,4 +1,10 @@
-import { Adapter, AdapterSession, AdapterUser, VerificationToken } from "@auth/core/adapters";
+import {
+	Adapter,
+	AdapterAccount,
+	AdapterSession,
+	AdapterUser,
+	VerificationToken
+} from "@auth/core/adapters";
 
 import { User } from "../../cma/users/domain/User";
 import { UserDoesNotExist } from "../../cma/users/domain/UserDoesNotExist";
@@ -73,6 +79,24 @@ export class AuthAdapter implements Adapter {
 		await this.userRepository.save(savedUser);
 
 		const primitives = savedUser.toPrimitives();
+
+		return {
+			id: primitives.id,
+			name: primitives.name,
+			email: primitives.email,
+			emailVerified: primitives.emailVerified,
+			image: primitives.avatar
+		};
+	}
+
+	async getUser(id: string): Promise<AdapterUser | null> {
+		const user = await this.userRepository.search(new UserId(id));
+
+		if (!user) {
+			return null;
+		}
+
+		const primitives = user.toPrimitives();
 
 		return {
 			id: primitives.id,
@@ -176,7 +200,7 @@ export class AuthAdapter implements Adapter {
 		};
 	}
 
-	async linkAccount(account) {
+	async linkAccount(account: AdapterAccount): Promise<void> {
 		const id = await this.uuidGenerator.generate();
 		const sql = `
 		insert into cma__accounts 
@@ -197,38 +221,28 @@ export class AuthAdapter implements Adapter {
 		values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
 		`;
 
-		const params = [
+		await this.connection.execute(sql, [
 			id,
 			account.userId,
 			account.provider,
 			account.type,
 			account.providerAccountId,
-			account.access_token,
-			account.expires_at,
-			account.refresh_token,
-			account.id_token,
-			account.scope,
-			account.session_state,
-			account.token_type
-		];
-
-		await this.connection.execute(sql, params);
-
-		const expires_at: number = parseInt(account.expires_at);
-
-		return {
-			...account,
-			id,
-			expires_at
-		};
+			account.access_token ?? null,
+			account.expires_at ?? null,
+			account.refresh_token ?? null,
+			account.id_token ?? null,
+			account.scope ?? null,
+			account.session_state?.toString() ?? null,
+			account.token_type ?? null
+		]);
 	}
 
-	async createSession({ sessionToken, userId, expires }: AdapterSession) {
+	async createSession({
+		sessionToken,
+		userId,
+		expires
+	}: AdapterSession): Promise<AdapterSession> {
 		const id = await this.uuidGenerator.generate();
-
-		if (userId === undefined) {
-			throw Error(`userId is undef in createSession`);
-		}
 
 		await this.connection.execute(
 			"INSERT INTO cma__sessions (id, user_id, expires, session_token) VALUES ($1, $2, $3, $4)",
@@ -236,7 +250,6 @@ export class AuthAdapter implements Adapter {
 		);
 
 		return {
-			id,
 			userId,
 			expires,
 			sessionToken
@@ -278,7 +291,6 @@ export class AuthAdapter implements Adapter {
 
 		return {
 			session: {
-				id: result.id,
 				userId: result.userId,
 				expires: result.expires,
 				sessionToken: result.sessionToken
@@ -320,11 +332,11 @@ export class AuthAdapter implements Adapter {
 		]);
 	}
 
-	async unlinkAccount(partialAccount): Promise<void> {
+	async unlinkAccount(partialAccount: Partial<AdapterAccount>): Promise<void> {
 		const { provider, providerAccountId } = partialAccount;
 		await this.connection.execute(
 			"DELETE FROM cma__accounts WHERE provider_account_id = $1 AND provider = $2",
-			[providerAccountId, provider]
+			[providerAccountId as string, provider as string]
 		);
 	}
 
