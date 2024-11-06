@@ -3,8 +3,7 @@ import { Metadata } from "next";
 import { PageFooter } from "../components/footer/PageFooter";
 import { Nav } from "../components/nav/Nav";
 import { Home } from "./components/Home";
-import { useGetCurrentWeek } from "./services/useGetCurrentWeek";
-import { useGetPublishedSchedules } from "./services/useGetPublishedSchedules";
+import { ISchedule } from "./services/ISchedule";
 
 export const metadata: Metadata = {
 	title: "Cartelera PNFi-UPTAG",
@@ -13,8 +12,10 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
 	"use server";
-	const week = await useGetCurrentWeek();
-	const schedules = await useGetPublishedSchedules();
+	const week = 0;
+	const schedules = [] as ISchedule[];
+	//const week = await useGetCurrentWeek();
+	//const schedules = await useGetPublishedSchedules();
 
 	return (
 		<>

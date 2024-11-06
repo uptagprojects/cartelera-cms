@@ -7,7 +7,7 @@ type ColumnValue = string | number | boolean | Date | null;
 export class PostgresConnection {
 	private poolInstance: Pool | null = null;
 
-	private get pool(): Pool {
+	get pool(): Pool {
 		if (!this.poolInstance) {
 			this.poolInstance = new Pool({
 				connectionString:

@@ -1,9 +1,4 @@
 "use server";
-import { getIronSession, IronSessionData } from "iron-session";
-import { cookies } from "next/headers";
-
-import { CredentialChallengeGenerator } from "../../../contexts/shared/infrastructure/CredentialChallengeGenerator";
-import { sessionOptions } from "../../../contexts/shared/infrastructure/sessionOptions";
 import { Confirm } from "./components/Confirm";
 import { getSessionChallenge } from "./actions/getSessionChallenge";
 

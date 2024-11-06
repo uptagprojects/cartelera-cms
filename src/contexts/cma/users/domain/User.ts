@@ -8,6 +8,7 @@ import { UserRegisteredDomainEvent } from "./event/UserRegisteredDomainEvent";
 import { UserRestoredDomainEvent } from "./event/UserRestoredDomainEvent";
 import { UserAvatar } from "./UserAvatar";
 import { UserEmail } from "./UserEmail";
+import { UserEmailVerified } from "./UserEmailVerified";
 import { UserId } from "./UserId";
 import { UserName } from "./UserName";
 import { UserStatus } from "./UserStatus";
@@ -16,6 +17,7 @@ export type UserPrimitives = {
 	id: string;
 	name: string;
 	email: string;
+	emailVerified: Date | null;
 	avatar: string;
 	status: string;
 };
@@ -26,7 +28,8 @@ export class User extends AggregateRoot {
 		private name: UserName,
 		private email: UserEmail,
 		private avatar: UserAvatar,
-		private status: UserStatus
+		private status: UserStatus,
+		private emailVerified?: UserEmailVerified
 	) {
 		super();
 	}
@@ -53,7 +56,8 @@ export class User extends AggregateRoot {
 			new UserName(primitives.name),
 			new UserEmail(primitives.email),
 			new UserAvatar(primitives.avatar),
-			primitives.status as UserStatus
+			primitives.status as UserStatus,
+			primitives.emailVerified ? new UserEmailVerified(primitives.emailVerified) : undefined
 		);
 	}
 
@@ -63,7 +67,8 @@ export class User extends AggregateRoot {
 			name: this.name.value,
 			email: this.email.value,
 			avatar: this.avatar.value.toString(),
-			status: this.status
+			status: this.status,
+			emailVerified: this.emailVerified ? this.emailVerified.value : null
 		};
 	}
 
@@ -99,5 +104,9 @@ export class User extends AggregateRoot {
 	restore(): void {
 		this.status = UserStatus.ACTIVE;
 		this.record(new UserRestoredDomainEvent(this.id.value));
+	}
+
+	verifyEmail(date: Date): void {
+		this.emailVerified = new UserEmailVerified(date);
 	}
 }

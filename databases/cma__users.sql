@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS cma__users (
     id UUID PRIMARY KEY,
     name VARCHAR(200),
     email VARCHAR(120),
+    email_verified TIMESTAMP,
     avatar TEXT,
     password TEXT,
     status VARCHAR(20),

@@ -1,4 +1,5 @@
 import { Service } from "diod";
+
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
@@ -11,6 +12,7 @@ type DatabaseUser = {
 	id: string;
 	name: string;
 	email: string;
+	emailVerified: Date | null;
 	avatar: string;
 	status: string;
 };
@@ -22,7 +24,7 @@ export class PostgresUserRepository implements UserRepository {
 	async matching(criteria: Criteria): Promise<User[]> {
 		const converter = new CriteriaToPostgresSqlConverter();
 		const { query, params } = converter.convert(
-			["id", "name", "email", "avatar", "status"],
+			["id", "name", "email", "email_verified", "avatar", "status"],
 			"cma__users",
 			criteria
 		);
@@ -35,7 +37,8 @@ export class PostgresUserRepository implements UserRepository {
 				name: user.name,
 				email: user.email,
 				avatar: user.avatar,
-				status: user.status
+				status: user.status,
+				emailVerified: user.emailVerified
 			})
 		);
 	}
@@ -47,19 +50,20 @@ export class PostgresUserRepository implements UserRepository {
 			userPrimitives.id,
 			userPrimitives.name,
 			userPrimitives.email,
+			userPrimitives.emailVerified,
 			userPrimitives.avatar,
 			userPrimitives.status
 		];
 
 		await this.connection.execute(
-			`INSERT INTO cma__users(id, name, email, avatar, status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name = $2, email = $3, avatar = $4, status = $5`,
+			`INSERT INTO cma__users(id, name, email, email_verified, avatar, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET name = $2, email = $3, email_verified = $4, avatar = $5, status = $6`,
 			params
 		);
 	}
 
 	async searchByEmail(email: UserEmail): Promise<User | null> {
 		const res = await this.connection.searchOne<DatabaseUser>(
-			"SELECT id, name, email, avatar, status FROM cma__users WHERE email = $1 LIMIT 1",
+			"SELECT id, name, email, email_verified, avatar, status FROM cma__users WHERE email = $1 LIMIT 1",
 			[email.value]
 		);
 
@@ -72,7 +76,7 @@ export class PostgresUserRepository implements UserRepository {
 
 	async search(id: UserId): Promise<User | null> {
 		const res = await this.connection.searchOne<DatabaseUser>(
-			"SELECT id, name, email, avatar, status FROM cma__users WHERE id = $1 LIMIT 1",
+			"SELECT id, name, email, email_verified, avatar, status FROM cma__users WHERE id = $1 LIMIT 1",
 			[id.value]
 		);
 		if (!res) {
