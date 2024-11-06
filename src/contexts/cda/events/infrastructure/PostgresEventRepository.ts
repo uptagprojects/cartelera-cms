@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
@@ -12,6 +13,8 @@ interface DatabaseEvent {
 	start_date: string;
 	end_date: string;
 }
+
+@Service()
 export class PostgresEventRepository implements EventRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 

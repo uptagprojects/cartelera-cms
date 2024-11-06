@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Announcement } from "../domain/Announcement";
 import { AnnouncementId } from "../domain/AnnouncementId";
@@ -10,6 +11,7 @@ interface DatabaseAnnouncement {
 	type: string;
 }
 
+@Service()
 export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 

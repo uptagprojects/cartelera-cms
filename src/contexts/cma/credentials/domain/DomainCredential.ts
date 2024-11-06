@@ -5,6 +5,7 @@ import { CredentialId } from "./CredentialId";
 import { CredentialName } from "./CredentialName";
 import { CredentialPublicKey } from "./CredentialPublicKey";
 import { CredentialSignCount } from "./CredentialSignCount";
+import { CredentialRegisteredDomainEvent } from "./event/CredentialRegisteredDomainEvent";
 
 export interface CredentialPrimitives {
 	id: string;
@@ -15,20 +16,20 @@ export interface CredentialPrimitives {
 	signCount: number;
 }
 
-export class Credential extends AggregateRoot {
+export class DomainCredential extends AggregateRoot {
 	constructor(
-		private readonly id: CredentialId,
+		public readonly id: CredentialId,
 		private readonly name: CredentialName,
 		private readonly userId: UserId,
 		private readonly externalId: CredentialExternalId,
 		private readonly publicKey: CredentialPublicKey,
-		private readonly signCount: CredentialSignCount
+		private signCount: CredentialSignCount
 	) {
 		super();
 	}
 
-	static fromPrimitives(credentialPrimitives: CredentialPrimitives): Credential {
-		return new Credential(
+	static fromPrimitives(credentialPrimitives: CredentialPrimitives): DomainCredential {
+		return new DomainCredential(
 			new CredentialId(credentialPrimitives.id),
 			new CredentialName(credentialPrimitives.name),
 			new UserId(credentialPrimitives.userId),
@@ -36,6 +37,28 @@ export class Credential extends AggregateRoot {
 			new CredentialPublicKey(credentialPrimitives.publicKey),
 			new CredentialSignCount(credentialPrimitives.signCount)
 		);
+	}
+
+	static create(
+		id: string,
+		name: string,
+		userId: string,
+		externalId: string,
+		publicKey: string,
+		signCount: number
+	): DomainCredential {
+		const credential = new DomainCredential(
+			new CredentialId(id),
+			new CredentialName(name),
+			new UserId(userId),
+			new CredentialExternalId(externalId),
+			new CredentialPublicKey(publicKey),
+			new CredentialSignCount(signCount)
+		);
+
+		credential.record(new CredentialRegisteredDomainEvent(id));
+
+		return credential;
 	}
 
 	getId(): CredentialId {
@@ -51,5 +74,9 @@ export class Credential extends AggregateRoot {
 			publicKey: this.publicKey.value,
 			signCount: this.signCount.value
 		};
+	}
+
+	updateSignCount(signCount: number): void {
+		this.signCount = new CredentialSignCount(signCount);
 	}
 }

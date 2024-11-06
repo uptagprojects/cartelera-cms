@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { UC } from "../domain/UC";
 import { UCId } from "../domain/UCId";
@@ -9,6 +10,8 @@ interface DatabaseUC {
 	total_guides: number;
 }
 
+
+@Service()
 export class PostgresUCRepository implements UCRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 	

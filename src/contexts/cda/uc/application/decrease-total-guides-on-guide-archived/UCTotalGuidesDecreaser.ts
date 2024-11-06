@@ -1,6 +1,8 @@
+import { Service } from "diod";
 import { UCId } from "../../domain/UCId";
 import { UCRepository } from "../../domain/UCRepository";
 
+@Service()
 export class UCTotalGuidesDecreaser {
     constructor(private readonly repository: UCRepository) {}
 

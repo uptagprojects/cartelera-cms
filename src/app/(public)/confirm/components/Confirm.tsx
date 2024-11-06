@@ -1,5 +1,6 @@
+"use client";
 import { create, supported } from "@github/webauthn-json";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { Alert, Button, Container, TextInput } from "octagon-ui";
 import { FC, FormEvent, useEffect, useState } from "react";
 

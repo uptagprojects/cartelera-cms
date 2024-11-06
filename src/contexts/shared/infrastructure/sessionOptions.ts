@@ -11,7 +11,7 @@ export const sessionOptions: SessionOptions = {
 // Define the cookie structure globally for TypeScript
 declare module "iron-session" {
 	interface IronSessionData {
-		userId?: number;
+		userId?: string;
 		challenge?: string;
 	}
 }

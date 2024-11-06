@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
@@ -13,6 +14,7 @@ type DatabaseActivity = {
     published_date: Date;
 }
 
+@Service()
 export class PostgresActivityRepository implements ActivityRepository {
 
     constructor(private readonly connection: PostgresConnection) {}

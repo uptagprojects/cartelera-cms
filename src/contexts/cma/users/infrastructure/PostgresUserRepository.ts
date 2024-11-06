@@ -1,3 +1,4 @@
+import { Service } from "diod";
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
@@ -14,6 +15,7 @@ type DatabaseUser = {
 	status: string;
 };
 
+@Service()
 export class PostgresUserRepository implements UserRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 

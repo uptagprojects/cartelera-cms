@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 
 export class CredentialChallengeGenerator {
 	async generate(): Promise<string> {
-		return this.clean(crypto.randomBytes(32).toString("base64"));
+		return this.clean(crypto.randomBytes(40).toString("base64"));
 	}
 
 	private clean(raw: string): string {
