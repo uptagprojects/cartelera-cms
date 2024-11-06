@@ -2,7 +2,6 @@
 import { TextInput } from "octagon-ui";
 import { useFormState } from "react-dom";
 
-import { localAuthentication } from "../../../actions/localAuthentication";
 import { LoginFormSubmitButton } from "./LoginFormSubmitButton";
 
 export const LoginForm: React.FC = () => {

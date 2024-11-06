@@ -1,13 +1,12 @@
-CREATE TABLE IF NOT EXISTS cma__verification_token
+CREATE TABLE IF NOT EXISTS cma__auth_verification_token
 (
   identifier TEXT NOT NULL,
   expires TIMESTAMPTZ NOT NULL,
   token TEXT NOT NULL,
- 
   PRIMARY KEY (identifier, token)
 );
  
-CREATE TABLE IF NOT EXISTS cma__accounts
+CREATE TABLE IF NOT EXISTS cma__auh_accounts
 (
   id UUID PRIMARY KEY,
   user_id UUID NOT NULL,
@@ -23,7 +22,7 @@ CREATE TABLE IF NOT EXISTS cma__accounts
   token_type TEXT
 );
  
-CREATE TABLE IF NOT EXISTS cma__sessions
+CREATE TABLE IF NOT EXISTS cma__auth_sessions
 (
   id UUID PRIMARY KEY,
   user_id UUID NOT NULL,
