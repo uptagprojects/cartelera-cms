@@ -6,7 +6,7 @@ import { CourseRepository } from "../../domain/CourseRepository";
 export class CourseByCriteriaSearcher {
 	constructor(private readonly repository: CourseRepository) {}
 
-	async searchByCriteria(
+	async search(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,

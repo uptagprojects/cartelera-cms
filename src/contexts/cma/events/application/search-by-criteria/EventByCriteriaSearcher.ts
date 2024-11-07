@@ -6,7 +6,7 @@ import { EventRepository } from "../../domain/EventRepository";
 export class EventByCriteriaSearcher {
 	constructor(private readonly repository: EventRepository) {}
 
-	async searchByCriteria(
+	async search(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,

@@ -1,20 +1,27 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { AnnouncementFinder } from "../../domain/AnnouncementFinder";
+import { Announcement } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
 
-export class AnnouncementPublisher {
-	private readonly finder: AnnouncementFinder;
-
+export class AnnouncementPoster {
 	constructor(
 		private readonly repository: AnnouncementRepository,
 		private readonly eventBus: EventBus
-	) {
-		this.finder = new AnnouncementFinder(repository);
-	}
+	) { }
 
-	async publish(id: string): Promise<void> {
-		const announcement = await this.finder.find(id);
-		announcement.publish();
+	async post(
+		id: string,
+		title: string,
+		content: string,
+		publishDate: string,
+		type: string,
+	): Promise<void> {
+		const announcement = Announcement.create(
+			id,
+			title,
+			content,
+			publishDate,
+			type,
+		);
 		await this.repository.save(announcement);
 		await this.eventBus.publish(announcement.pullDomainEvents());
 	}

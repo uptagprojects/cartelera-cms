@@ -6,17 +6,32 @@ import { RabbitMQEventBus } from "../../../../../contexts/shared/infrastructure/
 import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { InvalidArgumentError } from "../../../../../contexts/shared/domain/InvalidArgumentError";
-import { EventPoster } from "../../../../../contexts/cma/events/application/post/EventPoster";
-import { PostgresEventRepository } from "../../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
-import { EventDoesNotExist } from "../../../../../contexts/cma/events/domain/EventDoesNotExist";
-import { EventFinder } from "../../../../../contexts/cma/events/application/find/EventFinder";
+import { CoursePoster } from "../../../../../contexts/cma/courses/application/post/CoursePoster";
+import { PostgresCourseRepository } from "../../../../../contexts/cma/courses/infrastructure/PostgresCourseRepository";
+import { CourseDoesNotExists } from "../../../../../contexts/cma/courses/domain/CourseDoesNotExists";
+import { CourseFinder } from "../../../../../contexts/cma/courses/application/find/CourseFinder";
 
-const eventValidator = z.object({
+const courseValidator = z.object({
 	id: z.string().uuid(),
 	name: z.string(),
+	abstract: z.string(),
+	picture: z.string(),
+	instructor: z.object({
+		name: z.string(),
+		badge: z.string(),
+		email: z.string().email(),
+		avatar: z.string(),
+		relatedUrl: z.string().url()
+	}),
 	location: z.string(),
-	startDate: z.string().date(),
-	endDate: z.string().date(),
+	duration: z.object({
+		startDate: z.string().date(),
+		finishDate: z.string().date(),
+		academicHours: z.number(),
+	}),
+	price: z.number(),
+	creation: z.string().date(),
+	lastUpdate: z.string().date(),
 });
 
 export async function PUT(
@@ -25,7 +40,7 @@ export async function PUT(
 ): Promise<Response> {
 	const { id } = await params;
 	const json = await request.json();
-	const parsed = eventValidator.safeParse(json);
+	const parsed = courseValidator.safeParse(json);
 	if (!parsed.success) {
 		return new Response(JSON.stringify({ message: parsed.error.message }), {
 			status: 422,
@@ -38,8 +53,8 @@ export async function PUT(
 	if (id !== parsed.data.id) {
 		return new Response(
 			JSON.stringify({
-				code: "invalid_event_id",
-				message: "The event id in the URL does not match the event id in the body"
+				code: "invalid_course_id",
+				message: "The course id in the URL does not match the course id in the body"
 			}),
 			{
 				status: 400,
@@ -55,17 +70,17 @@ export async function PUT(
 	const postgresConnection = new PostgresConnection();
 
 	try {
-		await new EventPoster(
-			new PostgresEventRepository(postgresConnection),
+		await new CoursePoster(
+			new PostgresCourseRepository(postgresConnection),
 			new RabbitMQEventBus(
 				new RabbitMQConnection(),
 				new DomainEventFailover(postgresConnection)
 			)
-		).post(id, body.name, body.location, body.startDate, body.endDate);
+		).post(id, body.name, body.abstract, body.picture, body.instructor, body.location, body.duration, body.price, body.creation, body.lastUpdate);
 	} catch (error) {
-		if (error instanceof EventDoesNotExist) {
+		if (error instanceof CourseDoesNotExists) {
 			return new Response(
-				JSON.stringify({ code: "event_not_found", message: error.message }),
+				JSON.stringify({ code: "course_not_found", message: error.message }),
 				{
 					status: 404,
 					headers: {
@@ -108,15 +123,15 @@ export async function GET(
 ): Promise<Response> {
 	const { id } = await params;
 	const postgresConnection = new PostgresConnection();
-	let event = null;
+	let course = null;
 	try {
-		const eventRepository = new PostgresEventRepository(postgresConnection);
-		const eventFinder = new EventFinder(eventRepository);
-		event = await eventFinder.find(id);
+		const courseRepository = new PostgresCourseRepository(postgresConnection);
+		const courseFinder = new CourseFinder(courseRepository);
+		course = await courseFinder.find(id);
 	} catch (error) {
-		if (error instanceof EventDoesNotExist) {
+		if (error instanceof CourseDoesNotExists) {
 			return new Response(
-				JSON.stringify({ code: "event_not_found", message: error.message }),
+				JSON.stringify({ code: "course_not_found", message: error.message }),
 				{
 					status: 404,
 					headers: {
@@ -137,5 +152,5 @@ export async function GET(
 		);
 	}
 
-	return NextResponse.json(event.toPrimitives());
+	return NextResponse.json(course.toPrimitives());
 }

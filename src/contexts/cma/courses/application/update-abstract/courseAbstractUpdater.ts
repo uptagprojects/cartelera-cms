@@ -1,8 +1,7 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { CourseFinder } from "../../domain/CourseFinder";
 import { CourseRepository } from "../../domain/CourseRepository";
-
-export class EventPriceUpdater {
+export class CourseAbstractUpdater {
 	private readonly finder: CourseFinder;
 	constructor(
 		private readonly repository: CourseRepository,

@@ -2,7 +2,7 @@ import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { CourseFinder } from "../../domain/CourseFinder";
 import { CourseRepository } from "../../domain/CourseRepository";
 
-export class EventNameUpdater {
+export class CourseNameUpdater {
 	private readonly finder: CourseFinder;
 	constructor(
 		private readonly repository: CourseRepository,
