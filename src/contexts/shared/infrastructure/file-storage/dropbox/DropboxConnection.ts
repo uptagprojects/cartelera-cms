@@ -93,7 +93,7 @@ export class DropboxConnection {
 				require_password: false,
 				access: { ".tag": "viewer" },
 				allow_download: true,
-				audience: { ".tag": "public" },
+				audience: { ".tag": "public" }
 			}
 		});
 

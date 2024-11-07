@@ -31,7 +31,7 @@ const events = [
 	}
 ];
 
-export function AnnouncementBento() {
+export function DashboardBento() {
 	return (
 		<div>
 			<aside>

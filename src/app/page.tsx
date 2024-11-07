@@ -20,7 +20,7 @@ export default async function HomePage() {
 	return (
 		<>
 			<Nav />
-			<main className="tv">
+			<main>
 				<Home week={week} schedule={schedules[0]?.id} />
 			</main>
 			<PageFooter />

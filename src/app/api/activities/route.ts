@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { ActivitiesByCriteriaSearcher } from "../../../contexts/cda/activities/application/search-all-by-criteria/ActivitiesByCriteriaSearcher";
-import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 import { PostgresActivityRepository } from "../../../contexts/cda/activities/infrastructure/PostgresActivityRepository";
 import { SearchParamsCriteriaFiltersParser } from "../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
+import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);

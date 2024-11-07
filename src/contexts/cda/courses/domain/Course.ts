@@ -15,7 +15,6 @@ export interface CdaCoursePrimitives {
 }
 
 export class Course {
-
 	constructor(
 		readonly id: CourseId,
 		private name: CourseName,
@@ -23,7 +22,7 @@ export class Course {
 		private instructor: CourseInstructor,
 		private duration: CourseDuration,
 		private price: CoursePrice
-	) { }
+	) {}
 
 	static create(
 		id: string,
@@ -84,5 +83,4 @@ export class Course {
 	updatePrice(price: number): void {
 		this.price = new CoursePrice(price);
 	}
-	
 }

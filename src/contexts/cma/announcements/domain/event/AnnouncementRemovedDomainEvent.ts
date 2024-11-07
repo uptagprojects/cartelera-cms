@@ -18,11 +18,7 @@ export class AnnouncementRemovedDomainEvent extends AnnouncementDomainEvent {
 		occurredOn: Date,
 		_: DomainEventAttributes
 	): AnnouncementRemovedDomainEvent {
-		return new AnnouncementRemovedDomainEvent(
-			aggregateId,
-			eventId,
-			occurredOn
-		);
+		return new AnnouncementRemovedDomainEvent(aggregateId, eventId, occurredOn);
 	}
 
 	toPrimitives(): DomainEventAttributes {

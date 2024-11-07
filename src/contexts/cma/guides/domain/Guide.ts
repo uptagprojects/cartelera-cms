@@ -87,13 +87,15 @@ export class Guide extends AggregateRoot {
 
 	publish(): void {
 		this.status = GuideStatus.PUBLISHED;
-		this.record(new GuidePublishedDomainEvent(
-			this.id.value,
-			this.title.value,
-			this.content.value,
-			this.ucId.value,
-			this.authorId.value
-		));
+		this.record(
+			new GuidePublishedDomainEvent(
+				this.id.value,
+				this.title.value,
+				this.content.value,
+				this.ucId.value,
+				this.authorId.value
+			)
+		);
 	}
 
 	restore(): void {

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Alert, Button, Container, TextInput } from "octagon-ui";
-import { FC, FormEvent, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 export const Confirm: FC<{ challenge: string }> = ({ challenge }) => {
 	const router = useRouter();
@@ -25,16 +25,16 @@ export const Confirm: FC<{ challenge: string }> = ({ challenge }) => {
 	return (
 		<Container align="center" display>
 			{error.length > 0 && (
-					<Alert
-						type="error"
-						title={error}
-						message="Intente mas tarde"
-						onClose={() => setError("")}
-					/>
-				)}
+				<Alert
+					type="error"
+					title={error}
+					message="Intente mas tarde"
+					onClose={() => setError("")}
+				/>
+			)}
 			<h1>Confirm your account</h1>
 			<p>Confirma tu registro.</p>
-			<form onSubmit={() =>{}}>
+			<form onSubmit={() => {}}>
 				<TextInput
 					label="Nombre"
 					value={username}

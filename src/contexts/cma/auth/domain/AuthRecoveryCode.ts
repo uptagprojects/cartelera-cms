@@ -1,4 +1,4 @@
-export interface AuthVerificationToken {
+export interface AuthRecoveryCode {
 	expires: Date;
 	identifier: string;
 	token: string;

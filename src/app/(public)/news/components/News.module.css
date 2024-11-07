@@ -1,4 +1,12 @@
 .newsContainer {
     width: 100%;
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: "announcements events" "guides courses" "guides uc";
+    gap: var(--size-4); /*repeat(auto-fill, minmax(300px, 1fr));*/
+}
+
+.recentGuides {
+    grid-area: guides;
 }

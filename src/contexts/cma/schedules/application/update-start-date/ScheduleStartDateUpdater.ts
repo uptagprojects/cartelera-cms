@@ -1,22 +1,21 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { ScheduleRepository } from "../../domain/ScheduleRepository";
 import { ScheduleFinder } from "../../domain/ScheduleFinder";
-
+import { ScheduleRepository } from "../../domain/ScheduleRepository";
 
 export class ScheduleStartDateUpdater {
-    private readonly finder: ScheduleFinder;
-    constructor(
-        private readonly repository: ScheduleRepository,
-        private readonly eventBus: EventBus
-    ) {
-        this.finder = new ScheduleFinder(repository);
-    }
+	private readonly finder: ScheduleFinder;
+	constructor(
+		private readonly repository: ScheduleRepository,
+		private readonly eventBus: EventBus
+	) {
+		this.finder = new ScheduleFinder(repository);
+	}
 
-    async update(id: string, date: string): Promise<void> {
-        const schedule = await this.finder.find(id);
-        schedule.updateStartDate(date);
+	async update(id: string, date: string): Promise<void> {
+		const schedule = await this.finder.find(id);
+		schedule.updateStartDate(date);
 
-        await this.repository.save(schedule);
-        await this.eventBus.publish(schedule.pullDomainEvents());
-    }
+		await this.repository.save(schedule);
+		await this.eventBus.publish(schedule.pullDomainEvents());
+	}
 }

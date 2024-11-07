@@ -38,7 +38,7 @@ export class AnnouncementPublishedDomainEvent extends AnnouncementDomainEvent {
 			title: this.title,
 			content: this.content,
 			publishDate: this.publishDate,
-			type: this.type,
+			type: this.type
 		};
 	}
 }

@@ -1,13 +1,16 @@
 import { Service } from "diod";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
-import { AnnouncementDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementDomainEvent";
-import { UnpublishedAnnouncementRemover } from "./UnpublishedAnnouncementRemover";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { AnnouncementRemovedDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementRemovedDomainEvent";
+
 import { AnnouncementArchivedDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementArchivedDomainEvent";
+import { AnnouncementDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementDomainEvent";
+import { AnnouncementRemovedDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { UnpublishedAnnouncementRemover } from "./UnpublishedAnnouncementRemover";
 
 @Service()
-export class RemoveOnAnnouncementUnpublished implements DomainEventSubscriber<AnnouncementDomainEvent> {
+export class RemoveOnAnnouncementUnpublished
+	implements DomainEventSubscriber<AnnouncementDomainEvent>
+{
 	constructor(private readonly remover: UnpublishedAnnouncementRemover) {}
 
 	async on(event: AnnouncementDomainEvent): Promise<void> {

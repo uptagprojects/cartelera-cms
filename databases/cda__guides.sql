@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS cda__guides (
     title VARCHAR(200),
     area VARCHAR(200),
     content TEXT,
+    content_wrapped TEXT,
     professor JSON,
     attachments JSON,
     published_date TIMESTAMP,

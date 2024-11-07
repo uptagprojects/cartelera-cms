@@ -1,6 +1,6 @@
+import { CourseDurationAcademicHours } from "./CourseDurationAcademicHours";
 import { CourseDurationFinishDate } from "./CourseDurationFinishDate";
 import { CourseDurationStartDate } from "./CourseDurationStartDate";
-import { CourseDurationAcademicHours } from "./CourseDurationAcademicHours";
 
 export type CourseDurationPrimitives = {
 	startDate: string;

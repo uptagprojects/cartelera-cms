@@ -2,19 +2,19 @@ import "octagon-ui/dist/index.css";
 
 import { PageFooter } from "../../components/footer/PageFooter";
 import { Nav } from "../../components/nav/Nav";
+import { Sidebar } from "./_components/Sidebar";
 
-export default function cmaLayout({
+export default function CMALayout({
 	children
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="es-ES">
-			<body>
-				<Nav />
-				<main>{children}</main>
-				<PageFooter />
-			</body>
-		</html>
+		<>
+			<Nav />
+			<Sidebar />
+			<main>{children}</main>
+			<PageFooter />
+		</>
 	);
 }

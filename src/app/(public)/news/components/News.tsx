@@ -1,16 +1,18 @@
 "use client";
 
-import { Metadata } from 'next';
-import styles from './News.module.css';
-import { NewsAnnouncementBox } from './NewsAnnouncementBox';
-import { NewsUpcomingEventsBox } from './NewsUpcomingEventsBox';
-import { IAnnouncement } from './IAnnouncement';
-import { IEvent } from './IEvent';
-import { NewsRecentGuidesBox } from './NewsRecentGuidesBox';
-import { IRecentGuide } from './IRecentGuide';
-import { NewsUpcomingCoursesBox } from './NewsUpcomingCoursesBox';
-import { ICourse } from './ICourse';
+import { Metadata } from "next";
 
+import { IAnnouncement } from "./IAnnouncement";
+import { ICourse } from "./ICourse";
+import { IEvent } from "./IEvent";
+import { IRecentGuide } from "./IRecentGuide";
+import { IUC } from "./IUC";
+import styles from "./News.module.css";
+import { NewsAnnouncementBox } from "./NewsAnnouncementBox";
+import { NewsCurricularUnitsBox } from "./NewsCurricularUnitsBox";
+import { NewsRecentGuidesBox } from "./NewsRecentGuidesBox";
+import { NewsUpcomingCoursesBox } from "./NewsUpcomingCoursesBox";
+import { NewsUpcomingEventsBox } from "./NewsUpcomingEventsBox";
 
 export const metadata: Metadata = {
 	title: "PNFi | Noticias",
@@ -18,22 +20,21 @@ export const metadata: Metadata = {
 };
 
 type NewsProps = {
-    announcements: IAnnouncement[];
-    events: IEvent[];
-    guides: IRecentGuide[];
-    courses: ICourse[]
-}
+	announcements: IAnnouncement[];
+	events: IEvent[];
+	guides: IRecentGuide[];
+	courses: ICourse[];
+	uc: IUC[];
+};
 
-export function News({ announcements, events, guides, courses }: NewsProps) {
-    return (
-        <div className={styles.newsContainer}>
-            <NewsAnnouncementBox announcements={announcements} />
-            <NewsUpcomingEventsBox events={events} />
-            <NewsRecentGuidesBox guides={guides} />
-            <NewsUpcomingCoursesBox courses={courses} />
-            <aside>
-                <h2>Unidades Curriculares</h2>
-            </aside>
-        </div>
-    );
+export function News({ announcements, events, guides, courses, uc }: NewsProps) {
+	return (
+		<div className={styles.newsContainer}>
+			<NewsAnnouncementBox announcements={announcements} />
+			<NewsUpcomingEventsBox events={events} />
+			<NewsRecentGuidesBox guides={guides} />
+			<NewsUpcomingCoursesBox courses={courses} />
+			<NewsCurricularUnitsBox uc={uc} />
+		</div>
+	);
 }

@@ -5,6 +5,7 @@ import { Announcement } from "../domain/Announcement";
 import { AnnouncementId } from "../domain/AnnouncementId";
 import { AnnouncementRepository } from "../domain/AnnouncementRepository";
 import { AnnouncementRemovedDomainEvent } from "../domain/event/AnnouncementRemovedDomainEvent";
+
 interface DatabaseAnnouncement {
 	id: string;
 	title: string;

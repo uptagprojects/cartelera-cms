@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresUCRepository } from "../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
+
 import { UCFinder } from "../../../../../contexts/cma/uc/application/find/UCFinder";
 import { UCDoesNotExist } from "../../../../../contexts/cma/uc/domain/UCDoesNotExist";
+import { PostgresUCRepository } from "../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
+import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
@@ -11,9 +12,7 @@ export async function GET(
 	const { id } = await params;
 	let uc = null;
 	try {
-		const ucFinder = new UCFinder(
-            new PostgresUCRepository(new PostgresConnection())
-        );
+		const ucFinder = new UCFinder(new PostgresUCRepository(new PostgresConnection()));
 		uc = await ucFinder.find(id);
 	} catch (error) {
 		if (error instanceof UCDoesNotExist) {

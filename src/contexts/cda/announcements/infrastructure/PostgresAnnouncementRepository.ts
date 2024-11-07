@@ -1,4 +1,5 @@
 import { Service } from "diod";
+
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Announcement } from "../domain/Announcement";
 import { AnnouncementId } from "../domain/AnnouncementId";
@@ -19,12 +20,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 		const primitives = announcement.toPrimitives();
 		await this.connection.execute(
 			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET title=$2, content=$3, type=$4",
-			[
-				announcement.id.value,
-				primitives.title,
-				primitives.content,
-				primitives.type
-			]
+			[announcement.id.value, primitives.title, primitives.content, primitives.type]
 		);
 	}
 
@@ -48,7 +44,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 
 	async searchAll(): Promise<Announcement[]> {
 		const results = await this.connection.searchAll<DatabaseAnnouncement>(
-			"SELECT id, title, content, type FROM cda__announcements ORDER BY stored_creation_timestamp",
+			"SELECT id, title, content, type FROM cda__announcements ORDER BY stored_creation_timestamp"
 		);
 
 		return results.map(a =>
@@ -62,6 +58,8 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 	}
 
 	async remove(announcement: Announcement): Promise<void> {
-		await this.connection.execute("DELETE FROM cda__announcements WHERE id = $1", [announcement.id.value]);
+		await this.connection.execute("DELETE FROM cda__announcements WHERE id = $1", [
+			announcement.id.value
+		]);
 	}
 }

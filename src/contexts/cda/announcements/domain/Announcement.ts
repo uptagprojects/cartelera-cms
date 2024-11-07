@@ -11,26 +11,19 @@ export interface AnnouncementPrimitives {
 }
 
 export class Announcement {
-
 	constructor(
 		public readonly id: AnnouncementId,
 		private title: AnnouncementTitle,
 		private content: AnnouncementContent,
-		private readonly type: AnnouncementType,
-	) {
-	}
+		private readonly type: AnnouncementType
+	) {}
 
-	static create(
-		id: string,
-		title: string,
-		content: string,
-		type: string,
-	): Announcement {
+	static create(id: string, title: string, content: string, type: string): Announcement {
 		return new Announcement(
 			new AnnouncementId(id),
 			new AnnouncementTitle(title),
 			new AnnouncementContent(content),
-			type as AnnouncementType,
+			type as AnnouncementType
 		);
 	}
 
@@ -39,7 +32,7 @@ export class Announcement {
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
 			new AnnouncementContent(plainData.content),
-			plainData.type as AnnouncementType,
+			plainData.type as AnnouncementType
 		);
 	}
 

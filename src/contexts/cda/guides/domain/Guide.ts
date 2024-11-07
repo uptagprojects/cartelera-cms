@@ -54,7 +54,6 @@ export class Guide extends AggregateRoot {
 			attachments.map(v => new GuideAttachment(v))
 		);
 
-
 		return guide;
 	}
 

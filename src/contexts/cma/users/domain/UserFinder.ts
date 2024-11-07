@@ -1,4 +1,5 @@
 import { Service } from "diod";
+
 import { User } from "./User";
 import { UserDoesNotExist } from "./UserDoesNotExist";
 import { UserEmail } from "./UserEmail";

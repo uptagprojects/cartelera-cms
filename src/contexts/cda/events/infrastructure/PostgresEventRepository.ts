@@ -1,4 +1,5 @@
 import { Service } from "diod";
+
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
@@ -23,7 +24,13 @@ export class PostgresEventRepository implements EventRepository {
 
 		await this.connection.execute(
 			"INSERT INTO cda__events (id, name, location, start_date, end_date) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id) DO UPDATE SET name=$2, location=$3, start_date=$4, end_date=$5",
-			[primitives.id, primitives.name, primitives.location, primitives.startDate, primitives.endDate]
+			[
+				primitives.id,
+				primitives.name,
+				primitives.location,
+				primitives.startDate,
+				primitives.endDate
+			]
 		);
 	}
 

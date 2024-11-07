@@ -1,0 +1,47 @@
+.sidebar {
+    grid-area: aside-left;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        grid-area: main;
+        display: block;
+        position: relative;
+        width: 100%;
+    }
+}
+
+.menu {
+    display: grid;
+    place-content: end;
+    place-items: stretch;
+    gap: 1rem;
+}
+
+.menuItem {
+    list-style: none;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+    color: var(--gray-600);
+    border-radius: var(--border-radius);
+}
+
+.menuItem:hover {
+    background-color: var(--gray-100);
+    color: var(--cyan-800);
+}
+
+.menuItemLink {
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    gap: 1cap;
+}
+
+@media (prefers-color-scheme: dark) {
+    .menuItem:hover {
+        background-color: var(--gray-800);
+        color: var(--cyan-200);
+    }
+}

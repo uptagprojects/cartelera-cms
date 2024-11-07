@@ -1,16 +1,16 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { AnnouncementStatus } from "./AnnouncementStatus";
 import { AnnouncementContent } from "./AnnouncementContent";
 import { AnnouncementId } from "./AnnouncementId";
 import { AnnouncementPublishDate } from "./AnnouncementPublishDate";
+import { AnnouncementStatus } from "./AnnouncementStatus";
 import { AnnouncementTitle } from "./AnnouncementTitle";
 import { AnnouncementType } from "./AnnouncementType";
+import { AnnouncementArchivedDomainEvent } from "./event/AnnouncementArchivedDomainEvent";
 import { AnnouncementContentUpdatedDomainEvent } from "./event/AnnouncementContentUpdatedDomainEvent";
 import { AnnouncementPostedDomainEvent } from "./event/AnnouncementPostedDomainEvent";
-import { AnnouncementTitleUpdatedDomainEvent } from "./event/AnnouncementTitleUpdatedDomainEvent";
 import { AnnouncementPublishedDomainEvent } from "./event/AnnouncementPublishedDomainEvent";
-import { AnnouncementArchivedDomainEvent } from "./event/AnnouncementArchivedDomainEvent";
 import { AnnouncementRestoredDomainEvent } from "./event/AnnouncementRestoredDomainEvent";
+import { AnnouncementTitleUpdatedDomainEvent } from "./event/AnnouncementTitleUpdatedDomainEvent";
 
 export interface AnnouncementPrimitives {
 	id: string;
@@ -38,7 +38,7 @@ export class Announcement extends AggregateRoot {
 		title: string,
 		content: string,
 		publishDate: string,
-		type: string,
+		type: string
 	): Announcement {
 		const announcement = new Announcement(
 			new AnnouncementId(id),
@@ -90,13 +90,15 @@ export class Announcement extends AggregateRoot {
 
 	publish(): void {
 		this.status = AnnouncementStatus.PUBLISHED;
-		this.record(new AnnouncementPublishedDomainEvent(
-			this.id.value,
-			this.title.value,
-			this.content.value,
-			this.publishDate.value.toISOString(),
-			this.type
-		));
+		this.record(
+			new AnnouncementPublishedDomainEvent(
+				this.id.value,
+				this.title.value,
+				this.content.value,
+				this.publishDate.value.toISOString(),
+				this.type
+			)
+		);
 	}
 
 	archive(): void {
@@ -106,8 +108,6 @@ export class Announcement extends AggregateRoot {
 
 	restore(): void {
 		this.status = AnnouncementStatus.DRAFT;
-		this.record(
-			new AnnouncementRestoredDomainEvent(this.id.value)
-		);
+		this.record(new AnnouncementRestoredDomainEvent(this.id.value));
 	}
 }

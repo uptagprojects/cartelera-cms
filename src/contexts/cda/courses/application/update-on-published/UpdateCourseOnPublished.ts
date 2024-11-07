@@ -1,11 +1,9 @@
 import { Service } from "diod";
 
+import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/event/CoursePublishedDomainEvent";
 import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
-
-import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/event/CoursePublishedDomainEvent";
 import { PublishedCourseUpdater } from "./PublishedCourseUpdater";
-
 
 @Service()
 export class UpdateCourseOnPublished implements DomainEventSubscriber<CoursePublishedDomainEvent> {
@@ -13,13 +11,13 @@ export class UpdateCourseOnPublished implements DomainEventSubscriber<CoursePubl
 
 	async on(event: CoursePublishedDomainEvent): Promise<void> {
 		await this.updater.update(
-            event.id,
-            event.name,
+			event.id,
+			event.name,
 			event.abstract,
 			event.price,
 			event.duration,
 			event.instructor
-        );
+		);
 	}
 
 	subscribedTo(): DomainEventClass[] {

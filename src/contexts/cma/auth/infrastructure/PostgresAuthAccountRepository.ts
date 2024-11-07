@@ -54,35 +54,40 @@ export class PostgresAuthAccountRepository implements AuthAccountRepository {
 
 	async search(id: string): Promise<AuthAccount | null> {
 		const account = await this.connection.searchOne<AuthAccount>(
-            "SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE id = $1",
-            [id]
-        );
+			"SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE id = $1",
+			[id]
+		);
 
-        if(!account) {
-            return null;
-        }
+		if (!account) {
+			return null;
+		}
 
-        return account;
+		return account;
 	}
 
-    async searchByProvider(provider: string, providerAccountId: string): Promise<AuthAccount | null> {
-        const account = await this.connection.searchOne<AuthAccount>(
-            "SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE provider = $1 AND provider_account_id = $2",
-            [provider, providerAccountId]
-        );
+	async searchByProvider(
+		provider: string,
+		providerAccountId: string
+	): Promise<AuthAccount | null> {
+		const account = await this.connection.searchOne<AuthAccount>(
+			"SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE provider = $1 AND provider_account_id = $2",
+			[provider, providerAccountId]
+		);
 
-        if(!account) {
-            return null;
-        }
+		if (!account) {
+			return null;
+		}
 
-        return account;
-    }
+		return account;
+	}
 
 	async remove(session: AuthAccount): Promise<void> {
 		await this.connection.execute("DELETE FROM cma__auth_account WHERE id = $1", [session.id]);
 	}
 
-    async removeAllByUserId(userId: UserId): Promise<void> {
-        await this.connection.execute("DELETE FROM cma__auth_session WHERE user_id = $1", [userId.value]);
-    }
+	async removeAllByUserId(userId: UserId): Promise<void> {
+		await this.connection.execute("DELETE FROM cma__auth_session WHERE user_id = $1", [
+			userId.value
+		]);
+	}
 }

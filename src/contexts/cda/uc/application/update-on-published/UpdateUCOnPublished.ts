@@ -1,10 +1,9 @@
 import { Service } from "diod";
 
+import { UCCreatedDomainEvent } from "../../../../cma/uc/domain/event/UCCreatedDomainEvent";
 import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
-import { UCCreatedDomainEvent } from "../../../../cma/uc/domain/event/UCCreatedDomainEvent";
 import { PublishedUCUpdater } from "./PublishedUCUpdater";
-
 
 @Service()
 export class UpdateUCOnPublished implements DomainEventSubscriber<UCCreatedDomainEvent> {

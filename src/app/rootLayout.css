@@ -1,3 +1,7 @@
 nextjs-portal {
     background: transparent;
 }
+
+.oct-navbar__container {
+    padding: 0px;
+}

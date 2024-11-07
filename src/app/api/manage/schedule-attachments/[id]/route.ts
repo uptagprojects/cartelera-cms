@@ -2,13 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { ScheduleAttachmentUploader } from "../../../../../contexts/cma/schedule-attachments/application/upload/ScheduleAttachmentUploader";
 import { PostgresScheduleAttachmentRepository } from "../../../../../contexts/cma/schedule-attachments/infrastructure/PostgresScheduleAttachmentRepository";
-import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
-import { DropboxFileStorage } from "../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxFileStorage";
-import { DropboxConnection } from "../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxConnection";
-import { RabbitMQEventBus } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
-import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
-
+import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
+import { RabbitMQEventBus } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
+import { DropboxConnection } from "../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxConnection";
+import { DropboxFileStorage } from "../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxFileStorage";
+import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function PUT(
 	request: NextRequest,
@@ -23,7 +22,7 @@ export async function PUT(
 		return NextResponse.json({ error: "No scheduleId received." }, { status: 400 });
 	}
 
-	if(!file) {
+	if (!file) {
 		return NextResponse.json({ error: "No files received." }, { status: 400 });
 	}
 

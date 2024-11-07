@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Button, Navbar, NavItem, Switch } from "octagon-ui";
-import { signIn } from "next-auth/react";
+import { Navbar, NavItem, Switch } from "octagon-ui";
 
 import { useTheme } from "../../app/services/useTheme";
 import { Brand } from "../brand/Brand";
@@ -12,15 +11,14 @@ export const Nav = () => {
 	return (
 		<Navbar brand={<Brand />}>
 			<NavItem>
-				<Link href="/schedules">horarios</Link>
-			</NavItem>
-			<NavItem>
-				<Link href="/announcements">Noticias</Link>
+				<Link href="/news">Noticias</Link>
 			</NavItem>
 			<NavItem>
 				<Link href="/guides">Guias</Link>
 			</NavItem>
-				<Button variant="tertiary" onClick={() => signIn()} label="Login" />
+			<NavItem>
+				<Link href="/login">Login</Link>
+			</NavItem>
 			<Switch
 				label=""
 				hideLabel={true}

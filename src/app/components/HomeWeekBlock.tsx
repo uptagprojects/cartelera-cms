@@ -8,8 +8,7 @@ type HomeWeekNumberBlockProps = {
 export const HomeWeekBlock: FC<HomeWeekNumberBlockProps> = ({ week = 0 }) => {
 	return (
 		<Container align="right">
-			<h3>{week > 0 ? "Estamos en la semana " : "Estamos de vacaciones 😎"}</h3>
-			{week && <span>{week}</span>}
+			<h3>{week > 0 ? `Estamos en la semana ${week}` : "Estamos de vacaciones 😎"}</h3>
 		</Container>
 	);
 };

@@ -9,7 +9,6 @@ export interface UCPrimitives {
 }
 
 export class UC {
-
 	constructor(
 		private readonly id: UCId,
 		private name: UCName,
@@ -17,12 +16,8 @@ export class UC {
 	) {}
 
 	static create(id: string, name: string): UC {
-		const uc = new UC(
-			new UCId(id),
-			new UCName(name),
-			new UCTotalGuides(0)
-		);
-		
+		const uc = new UC(new UCId(id), new UCName(name), new UCTotalGuides(0));
+
 		return uc;
 	}
 

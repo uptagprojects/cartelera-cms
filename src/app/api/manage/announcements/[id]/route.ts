@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
-import { PostgresAnnouncementRepository } from "../../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
+
 import { AnnouncementFinder } from "../../../../../contexts/cma/announcements/application/find/AnnouncementFinder";
 import { AnnouncementDoesNotExists } from "../../../../../contexts/cma/announcements/domain/AnnouncementDoesNotExists";
+import { PostgresAnnouncementRepository } from "../../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
+import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,
