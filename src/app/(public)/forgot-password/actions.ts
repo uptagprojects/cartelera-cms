@@ -1,5 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
 import { verifyEmailInput } from "@/lib/server/email";
 import {
 	createPasswordResetSession,
@@ -11,13 +14,14 @@ import { RefillingTokenBucket } from "@/lib/server/rate-limit";
 import { globalPOSTRateLimit } from "@/lib/server/request";
 import { generateSessionToken } from "@/lib/server/session";
 import { getUserFromEmail } from "@/lib/server/user";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
 const passwordResetEmailIPBucket = new RefillingTokenBucket<string>(3, 60);
 const passwordResetEmailUserBucket = new RefillingTokenBucket<number>(3, 60);
 
-export async function forgotPasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function forgotPasswordAction(
+	_prev: ActionResult,
+	formData: FormData
+): Promise<ActionResult> {
 	if (!globalPOSTRateLimit()) {
 		return {
 			message: "Too many requests"
@@ -64,6 +68,7 @@ export async function forgotPasswordAction(_prev: ActionResult, formData: FormDa
 
 	sendPasswordResetEmail(session.email, session.code);
 	setPasswordResetSessionTokenCookie(sessionToken, session.expiresAt);
+
 	return redirect("/reset-password/verify-email");
 }
 
