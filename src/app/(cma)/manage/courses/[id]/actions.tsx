@@ -3,40 +3,34 @@ import { z } from "zod";
 export const useGetCourseDetails = async (id: string) => {
 	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	let data = null;
-	try {
-		const res = await fetch(`${base}/api/manage/courses/${id}`);
-		if (res.status === 404) {
-			data = {
-				id: "",
+	const res = await fetch(`${base}/api/manage/courses/${id}`);
+	if (res.status === 404) {
+		data = {
+			id: "",
+			name: "",
+			abstract: "",
+			status: "draft",
+			location: "",
+			duration: {
+				startDate: null,
+				finishDate: null,
+				academicHours: 0
+			},
+			instructor: {
 				name: "",
-				abstract: "",
-				status: "draft",
-				location: "",
-				duration: {
-					startDate: null,
-					finishDate: null,
-					academicHours: 0
-				},
-				instructor: {
-					name: "",
-					badge: "",
-					email: "",
-					avatar: "",
-					relatedUrl: ""
-				}
-			};
+				badge: "",
+				email: "",
+				avatar: "",
+				relatedUrl: ""
+			}
+		};
 
-			return data;
-		}
-		if (res.status === 200) {
-			data = await res.json();
+		return data;
+	}
+	if (res.status === 200) {
+		data = await res.json();
 
-			return data;
-		}
-
-		throw new Error("An error occurred while fetching the course");
-	} catch (error) {
-		console.error(error);
+		return data;
 	}
 };
 

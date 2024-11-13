@@ -36,7 +36,6 @@ export default function postgresAdapter(
 		async createVerificationToken(
 			verificationToken: VerificationToken
 		): Promise<VerificationToken> {
-			console.log("create verification token", verificationToken);
 			await authVerificationTokenRepository.save(verificationToken);
 
 			return verificationToken;
@@ -49,7 +48,6 @@ export default function postgresAdapter(
 			identifier: string;
 			token: string;
 		}): Promise<VerificationToken | null> {
-			console.log("use verification token", identifier);
 			const savedToken = await authVerificationTokenRepository.search(identifier, token);
 
 			if (savedToken) {
@@ -60,7 +58,6 @@ export default function postgresAdapter(
 		},
 
 		async createUser(user: AdapterUser): Promise<AuthUser> {
-			console.log("create user", user);
 			try {
 				await new UserProviderConfirmer(userRepository).confirm(
 					user.id,
@@ -96,7 +93,6 @@ export default function postgresAdapter(
 		},
 
 		async getUser(id: string): Promise<AuthUser | null> {
-			console.log("get user by id", id);
 			const user = await userRepository.search(new UserId(id));
 
 			if (!user) {
@@ -116,7 +112,6 @@ export default function postgresAdapter(
 		},
 
 		async getUserByEmail(email: string): Promise<AuthUser | null> {
-			console.log("get user by email", email);
 			const user = await userRepository.searchByEmail(new UserEmail(email));
 
 			if (!user) {
@@ -139,7 +134,6 @@ export default function postgresAdapter(
 			providerAccountId,
 			provider
 		}: Pick<AdapterAccount, "provider" | "providerAccountId">): Promise<AuthUser | null> {
-			console.log("get user by account", provider, providerAccountId);
 			const account = await authAccountRepository.searchByProvider(
 				provider,
 				providerAccountId
@@ -168,7 +162,6 @@ export default function postgresAdapter(
 		},
 
 		async updateUser(user: Partial<AdapterUser> & Pick<AdapterUser, "id">): Promise<AuthUser> {
-			console.log("update user", user);
 			if (!user.id) {
 				throw new InvalidIdentifierError("User id is required");
 			}
@@ -208,7 +201,6 @@ export default function postgresAdapter(
 		async linkAccount(
 			account: AdapterAccount
 		): Promise<void | undefined | null | AdapterAccount> {
-			console.log("link account", account);
 			const id = await uuidGenerator.generate();
 
 			const saveAccount = {
@@ -228,7 +220,6 @@ export default function postgresAdapter(
 			userId,
 			expires
 		}: AdapterSession): Promise<AdapterSession> {
-			console.log("create session", sessionToken, userId);
 			const id = await uuidGenerator.generate();
 
 			await authSessionRepository.save({
@@ -249,21 +240,16 @@ export default function postgresAdapter(
 			session: AdapterSession;
 			user: AuthUser;
 		} | null> {
-			console.log("get session and user from token", sessionToken);
 			if (!sessionToken) {
 				return null;
 			}
 
 			const session = await authSessionRepository.searchByToken(sessionToken);
-			console.log("current session", session);
 			if (!session || !session.userId) {
 				return null;
 			}
 
-			console.log("session user", session.userId);
-
 			const user = await userRepository.search(new UserId(session.userId));
-			console.log("current user", user);
 			if (!user) {
 				return null;
 			}
@@ -292,7 +278,6 @@ export default function postgresAdapter(
 		async updateSession(
 			session: Partial<AdapterSession> & Pick<AdapterSession, "sessionToken">
 		): Promise<AdapterSession | null | undefined> {
-			console.log("update session", session);
 			const savedSession = await authSessionRepository.searchByToken(session.sessionToken);
 
 			if (!savedSession) {
@@ -314,7 +299,6 @@ export default function postgresAdapter(
 		},
 
 		async deleteSession(sessionToken: string): Promise<void> {
-			console.log("delete session", sessionToken);
 			const session = await authSessionRepository.searchByToken(sessionToken);
 
 			if (session) {
@@ -326,7 +310,6 @@ export default function postgresAdapter(
 			provider,
 			providerAccountId
 		}: Partial<AdapterAccount>): Promise<void> {
-			console.log("Unlink account", provider);
 			const account = await authAccountRepository.searchByProvider(
 				provider as string,
 				providerAccountId as string
@@ -337,7 +320,6 @@ export default function postgresAdapter(
 		},
 
 		async deleteUser(userId: string): Promise<void> {
-			console.log("delete user", userId);
 			const id = new UserId(userId);
 			await authSessionRepository.removeAllByUserId(id);
 			await authAccountRepository.removeAllByUserId(id);

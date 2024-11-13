@@ -22,9 +22,8 @@ export class InMemoryEventBus implements EventBus {
 			}
 		});
 
-		await Promise.all(executions).catch(error => {
+		await Promise.all(executions).catch(() => {
 			// TO DO: Add logger
-			console.error("Executing subscriptions: ", error);
 		});
 	}
 

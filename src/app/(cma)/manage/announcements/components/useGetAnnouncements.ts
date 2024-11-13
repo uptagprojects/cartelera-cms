@@ -30,13 +30,13 @@ export function useGetAnnouncements(): {
 			setAnnouncements(state => [...state, ...data]);
 		};
 
-		fetchData();
+		fetchData().catch(() => {});
 	}, [page]);
 
 	return {
 		page,
 		announcements,
-		loadMore: async () => {
+		loadMore: () => {
 			setPage(state => state + 1);
 		}
 	};

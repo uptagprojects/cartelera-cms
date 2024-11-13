@@ -24,7 +24,7 @@ export const Nav = ({ session }: { session: boolean }) => {
 			) : (
 				<NavItem
 					onClick={() => {
-						signInAction().catch(console.error);
+						signInAction().catch(() => {});
 					}}
 				>
 					Login

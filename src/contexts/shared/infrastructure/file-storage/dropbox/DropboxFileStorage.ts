@@ -10,7 +10,7 @@ export class DropboxFileStorage implements FileStorage {
 	async save(path: string, file: File): Promise<string> {
 		const content = await file.arrayBuffer();
 
-		const result = await this.connection.upload(path, Buffer.from(content));
+		await this.connection.upload(path, Buffer.from(content));
 		const url = await this.connection.share(path);
 
 		return url;

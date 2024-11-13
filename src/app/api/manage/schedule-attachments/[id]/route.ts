@@ -33,7 +33,7 @@ export async function PUT(
 		new RabbitMQEventBus(new RabbitMQConnection(), new DomainEventFailover(postgresConnection))
 	);
 
-	uploader.upload(id, scheduleId, file);
+	await uploader.upload(id, scheduleId, file);
 
 	return NextResponse.json({}, { status: 202 });
 }

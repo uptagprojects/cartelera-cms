@@ -4,6 +4,11 @@ import { Suspense } from "react";
 
 import { useGetAnnouncements } from "./useGetAnnouncements";
 
+const AnnouncementLoader = () => (
+	<Container display align="center">
+		<Spinner />
+	</Container>
+);
 export const AnnouncementList = () => {
 	const { announcements, loadMore } = useGetAnnouncements();
 
@@ -19,9 +24,3 @@ export const AnnouncementList = () => {
 		</Suspense>
 	);
 };
-
-const AnnouncementLoader = () => (
-	<Container display align="center">
-		<Spinner />
-	</Container>
-);

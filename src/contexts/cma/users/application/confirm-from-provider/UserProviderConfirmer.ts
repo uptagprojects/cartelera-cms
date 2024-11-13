@@ -1,12 +1,9 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { UserFinder } from "../../domain/UserFinder";
 import { UserRepository } from "../../domain/UserRepository";
 
 export class UserProviderConfirmer {
 	private readonly finder: UserFinder;
-	constructor(
-		private readonly repository: UserRepository,
-	) {
+	constructor(private readonly repository: UserRepository) {
 		this.finder = new UserFinder(repository);
 	}
 

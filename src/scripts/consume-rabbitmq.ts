@@ -43,4 +43,6 @@ function consume(subscriber: DomainEventSubscriber<DomainEvent>) {
 	};
 }
 
-main().catch(console.error);
+main().catch(() => {
+	// TO DO: handle error
+});
