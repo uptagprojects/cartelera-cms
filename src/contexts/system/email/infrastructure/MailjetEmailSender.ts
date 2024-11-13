@@ -31,9 +31,8 @@ export class MailjetEmailSender implements EmailSender {
 					}
 				]
 			});
-		} catch (error: unknown) {
+		} catch (_error: unknown) {
 			// TO DO: Handle error and log it
-			console.error(error);
 		}
 	}
 }

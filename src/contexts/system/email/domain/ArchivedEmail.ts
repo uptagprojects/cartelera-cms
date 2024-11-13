@@ -17,7 +17,7 @@ export type ArchivedEmailPrimitives = {
 };
 
 export class ArchivedEmail extends Email {
-	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@pnfi.uptag.net";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@octagon.uptag.net";
 
 	private constructor(
 		id: EmailId,

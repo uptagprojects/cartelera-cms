@@ -7,7 +7,7 @@ type ColumnValue = string | number | boolean | Date | null;
 export class PostgresConnection {
 	private poolInstance: Pool | null = null;
 
-	private get pool(): Pool {
+	get pool(): Pool {
 		if (!this.poolInstance) {
 			this.poolInstance = new Pool({
 				connectionString:
@@ -27,10 +27,8 @@ export class PostgresConnection {
 			const result = await conn.query(query, values);
 
 			return result.rows[0] ?? null;
-		} catch (error) {
+		} catch {
 			// TO DO: Add logger
-			console.error(error);
-
 			return null;
 		} finally {
 			if (conn) {
@@ -42,37 +40,20 @@ export class PostgresConnection {
 	async searchAll<T>(query: string, values?: ColumnValue[]): Promise<T[]> {
 		let conn: PoolClient | null = null;
 
-		try {
-			conn = await this.pool.connect();
-			const result = await conn.query(query, values);
+		conn = await this.pool.connect();
+		const result = await conn.query(query, values);
 
-			return result.rows;
-		} catch (error) {
-			// TO DO: Add logger
-			console.error(error);
-			throw error;
-		} finally {
-			if (conn) {
-				conn.release();
-			}
-		}
+		conn.release();
+
+		return result.rows;
 	}
 
 	async execute(query: string, values: ColumnValue[]): Promise<void> {
 		let conn: PoolClient | null = null;
 
-		try {
-			conn = await this.pool.connect();
-			await conn.query(query, values);
-		} catch (error) {
-			// TO DO: Add logger
-			console.error(error);
-			throw error;
-		} finally {
-			if (conn) {
-				conn.release();
-			}
-		}
+		conn = await this.pool.connect();
+		await conn.query(query, values);
+		conn.release();
 	}
 
 	async truncate(table: string): Promise<void> {

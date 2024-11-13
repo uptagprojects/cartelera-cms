@@ -1,11 +1,14 @@
 import { Service } from "diod";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
+
 import { GuideArchivedDomainEvent } from "../../../../cma/guides/domain/event/GuideArchivedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
 import { UCTotalGuidesIncreaser } from "../increase-total-guides-on-guide-published/UCTotalGuidesIncreaser";
 
 @Service()
-export class DecreaseTotalGuidesOnGuideArchived implements DomainEventSubscriber<GuideArchivedDomainEvent> {
+export class DecreaseTotalGuidesOnGuideArchived
+	implements DomainEventSubscriber<GuideArchivedDomainEvent>
+{
 	constructor(private readonly decreaser: UCTotalGuidesIncreaser) {}
 
 	async on(event: GuideArchivedDomainEvent): Promise<void> {

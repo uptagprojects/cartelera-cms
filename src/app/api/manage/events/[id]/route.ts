@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PostgresEventRepository } from "../../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
-import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
+
 import { EventFinder } from "../../../../../contexts/cma/events/application/find/EventFinder";
 import { EventDoesNotExist } from "../../../../../contexts/cma/events/domain/EventDoesNotExist";
+import { PostgresEventRepository } from "../../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
+import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(
 	_: NextRequest,

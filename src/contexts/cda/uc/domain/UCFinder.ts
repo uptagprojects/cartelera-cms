@@ -1,8 +1,11 @@
+import { Service } from "diod";
+
 import { UC } from "./UC";
 import { UCDoesNotExist } from "./UCDoesNotExist";
 import { UCId } from "./UCId";
 import { UCRepository } from "./UCRepository";
 
+@Service()
 export class UCFinder {
 	constructor(private readonly repository: UCRepository) {}
 

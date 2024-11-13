@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 function calculateThemeFromSystem() {
-	const localStorageTheme = globalThis.localStorage?.getItem("theme") || null;
+	const localStorageTheme = globalThis.localStorage.getItem("theme") ?? null;
 	const systemSettingDark = window.matchMedia("(prefers-color-scheme: dark)");
 	if (localStorageTheme !== null) {
 		return localStorageTheme;

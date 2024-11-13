@@ -5,10 +5,10 @@ export class SchedulePostedDomainEvent extends ScheduleDomainEvent {
 	static eventName = "pnfi.cma.schedule.posted";
 	constructor(
 		public readonly id: string,
-        public readonly name: string,
-        public readonly startDate: string,
-        public readonly finishDate: string,
-        public readonly status: string,
+		public readonly name: string,
+		public readonly startDate: string,
+		public readonly finishDate: string,
+		public readonly status: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -35,9 +35,9 @@ export class SchedulePostedDomainEvent extends ScheduleDomainEvent {
 	toPrimitives(): Record<string, unknown> {
 		return {
 			id: this.id,
-            name: this.name,
-            startDate: this.startDate,
-            finishDate: this.finishDate,
+			name: this.name,
+			startDate: this.startDate,
+			finishDate: this.finishDate,
 			status: this.status
 		};
 	}

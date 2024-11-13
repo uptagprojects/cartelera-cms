@@ -1,8 +1,9 @@
 import { Service } from "diod";
+
+import { UCRemovedDomainEvent } from "../../../../cma/uc/domain/event/UCRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
 import { UnpublishedUCRemover } from "./UnpublishedUCRemover";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { UCRemovedDomainEvent } from "../../../../cma/uc/domain/event/UCRemovedDomainEvent";
 
 @Service()
 export class RemoveOnUCUnpublished implements DomainEventSubscriber<UCRemovedDomainEvent> {

@@ -1,9 +1,12 @@
+import { Service } from "diod";
+
 import { User } from "./User";
 import { UserDoesNotExist } from "./UserDoesNotExist";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
 import { UserRepository } from "./UserRepository";
 
+@Service()
 export class UserFinder {
 	constructor(private readonly repository: UserRepository) {}
 

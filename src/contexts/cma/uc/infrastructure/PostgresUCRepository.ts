@@ -1,8 +1,8 @@
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
+import { UCRemovedDomainEvent } from "../domain/event/UCRemovedDomainEvent";
 import { UC } from "../domain/UC";
 import { UCId } from "../domain/UCId";
 import { UCRepository } from "../domain/UCRepository";
-import { UCRemovedDomainEvent } from "../domain/event/UCRemovedDomainEvent";
 
 export type DatabaseUC = {
 	id: string;

@@ -1,12 +1,14 @@
 import { Service } from "diod";
 
+import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/event/CoursePublishedDomainEvent";
 import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
 import { PublishedActivityUpdater } from "./PublishedActivityUpdater";
-import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/event/CoursePublishedDomainEvent";
 
 @Service()
-export class UpdateActivityOnCoursePublished implements DomainEventSubscriber<CoursePublishedDomainEvent> {
+export class UpdateActivityOnCoursePublished
+	implements DomainEventSubscriber<CoursePublishedDomainEvent>
+{
 	constructor(private readonly updater: PublishedActivityUpdater) {}
 
 	async on(event: CoursePublishedDomainEvent): Promise<void> {

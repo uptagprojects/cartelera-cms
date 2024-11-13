@@ -32,4 +32,6 @@ async function main(): Promise<void> {
 	await connection.close();
 }
 
-main().catch(console.error);
+main().catch(() => {
+	// TO DO: log error
+});

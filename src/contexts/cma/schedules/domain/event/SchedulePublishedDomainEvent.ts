@@ -6,9 +6,9 @@ export class SchedulePublishedDomainEvent extends ScheduleDomainEvent {
 
 	constructor(
 		public readonly id: string,
-        public readonly name: string,
-        public readonly startDate: string,
-        public readonly finishDate: string,
+		public readonly name: string,
+		public readonly startDate: string,
+		public readonly finishDate: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -35,8 +35,8 @@ export class SchedulePublishedDomainEvent extends ScheduleDomainEvent {
 		return {
 			id: this.id,
 			name: this.name,
-            startDate: this.startDate,
-            finishDate: this.finishDate
+			startDate: this.startDate,
+			finishDate: this.finishDate
 		};
 	}
 }

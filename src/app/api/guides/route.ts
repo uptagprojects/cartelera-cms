@@ -10,6 +10,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 	const searcher = new GuidesByCriteriaSearcher(
 		new PostgresGuideRepository(new PostgresConnection())
 	);
+
 	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
 
 	const guides = await searcher.search(

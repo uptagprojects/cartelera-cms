@@ -24,9 +24,9 @@ export class CriteriaToPostgresSqlConverter {
 		}
 
 		if (criteria.hasOrder()) {
-			query += ` ORDER BY $${params.length + 1} $${params.length + 2}`;
+			query += ` ORDER BY $${params.length + 1} ${criteria.order.orderType.value}`;
 
-			params.push(criteria.order.orderBy.value, criteria.order.orderType.value);
+			params.push(criteria.order.orderBy.value);
 		}
 
 		if (criteria.pageSize !== null) {

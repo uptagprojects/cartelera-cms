@@ -4,11 +4,9 @@ import { Schedule } from "../../domain/Schedule";
 import { ScheduleRepository } from "../../domain/ScheduleRepository";
 
 export class SchedulesByCriteriaSearcher {
-    constructor(
-        private readonly repository: ScheduleRepository
-    ) {}
+	constructor(private readonly repository: ScheduleRepository) {}
 
-    async searchByCriteria(
+	async searchByCriteria(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,
@@ -19,5 +17,4 @@ export class SchedulesByCriteriaSearcher {
 
 		return this.repository.matching(criteria);
 	}
-
 }

@@ -12,9 +12,7 @@ export async function GET(
 	const { id } = await params;
 	let event = null;
 	try {
-		const eventRepository = new PostgresEventRepository(
-			new PostgresConnection()
-		);
+		const eventRepository = new PostgresEventRepository(new PostgresConnection());
 		const eventFinder = new EventFinder(eventRepository);
 		event = await eventFinder.find(id);
 	} catch (error) {

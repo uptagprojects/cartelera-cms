@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { AnnouncementsByCriteriaSearcher } from "../../../../contexts/cma/announcements/application/search_by_criteria/AnnouncementsByCriteriaSearcher";
-import { SearchParamsCriteriaFiltersParser } from "../../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { PostgresAnnouncementRepository } from "../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
+import { SearchParamsCriteriaFiltersParser } from "../../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 const searcher = new AnnouncementsByCriteriaSearcher(
@@ -10,7 +10,7 @@ const searcher = new AnnouncementsByCriteriaSearcher(
 );
 
 export async function GET(request: NextRequest): Promise<Response> {
-    const { searchParams } = new URL(request.url);
+	const { searchParams } = new URL(request.url);
 
 	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
 	const announcements = await searcher.search(

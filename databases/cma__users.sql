@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS cma__users (
     name VARCHAR(200),
     email VARCHAR(120),
     avatar TEXT,
-    password TEXT,
+    email_verified TIMESTAMPTZ,
     status VARCHAR(20),
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

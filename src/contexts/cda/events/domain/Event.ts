@@ -13,7 +13,6 @@ export interface EventPrimitives {
 }
 
 export class Event {
-
 	constructor(
 		private readonly id: EventId,
 		private name: EventName,

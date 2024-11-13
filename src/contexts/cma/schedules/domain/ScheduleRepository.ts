@@ -3,9 +3,9 @@ import { Schedule } from "./Schedule";
 import { ScheduleId } from "./ScheduleId";
 
 export interface ScheduleRepository {
-    save(schedule: Schedule): Promise<void>;
+	save(schedule: Schedule): Promise<void>;
 
-    search(id: ScheduleId): Promise<Schedule | null>;
+	search(id: ScheduleId): Promise<Schedule | null>;
 
-    matching(criteria: Criteria): Promise<Schedule[]>;
+	matching(criteria: Criteria): Promise<Schedule[]>;
 }

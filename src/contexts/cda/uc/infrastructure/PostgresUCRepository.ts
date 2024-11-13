@@ -1,3 +1,5 @@
+import { Service } from "diod";
+
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { UC } from "../domain/UC";
 import { UCId } from "../domain/UCId";
@@ -9,9 +11,10 @@ interface DatabaseUC {
 	total_guides: number;
 }
 
+@Service()
 export class PostgresUCRepository implements UCRepository {
 	constructor(private readonly connection: PostgresConnection) {}
-	
+
 	async save(uc: UC): Promise<void> {
 		const ucPrimitives = uc.toPrimitives();
 
@@ -24,13 +27,18 @@ export class PostgresUCRepository implements UCRepository {
 	}
 
 	async searchAll(): Promise<UC[]> {
-		const res = await this.connection.searchAll<DatabaseUC>("SELECT id, name, total_guides FROM cda__uc", []);
+		const res = await this.connection.searchAll<DatabaseUC>(
+			"SELECT id, name, total_guides FROM cda__uc",
+			[]
+		);
 
-		return res.map(r => UC.fromPrimitives({
-			id: r.id,
-			name: r.name,
-			totalGuides: r.total_guides
-		}));
+		return res.map(r =>
+			UC.fromPrimitives({
+				id: r.id,
+				name: r.name,
+				totalGuides: r.total_guides
+			})
+		);
 	}
 
 	async search(id: UCId): Promise<UC | null> {

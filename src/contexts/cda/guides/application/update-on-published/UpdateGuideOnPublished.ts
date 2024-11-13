@@ -1,10 +1,9 @@
 import { Service } from "diod";
 
+import { GuidePublishedDomainEvent } from "../../../../cma/guides/domain/event/GuidePublishedDomainEvent";
 import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
-import { GuidePublishedDomainEvent } from "../../../../cma/guides/domain/event/GuidePublishedDomainEvent";
 import { PublishedGuideUpdater } from "./PublishedGuideUpdater";
-
 
 @Service()
 export class UpdateGuideOnPublished implements DomainEventSubscriber<GuidePublishedDomainEvent> {
@@ -12,13 +11,13 @@ export class UpdateGuideOnPublished implements DomainEventSubscriber<GuidePublis
 
 	async on(event: GuidePublishedDomainEvent): Promise<void> {
 		await this.updater.update(
-            event.id,
-            event.title,
-            event.content,
-            event.ucId,
-            event.authorId,
-            event.occurredOn
-        );
+			event.id,
+			event.title,
+			event.content,
+			event.ucId,
+			event.authorId,
+			event.occurredOn
+		);
 	}
 
 	subscribedTo(): DomainEventClass[] {

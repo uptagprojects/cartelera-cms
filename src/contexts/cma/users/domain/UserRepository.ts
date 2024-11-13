@@ -3,12 +3,12 @@ import { User } from "./User";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
 
-export interface UserRepository {
-	searchByEmail(email: UserEmail): Promise<User | null>;
+export abstract class UserRepository {
+	abstract searchByEmail(email: UserEmail): Promise<User | null>;
 
-	search(id: UserId): Promise<User | null>;
+	abstract search(id: UserId): Promise<User | null>;
 
-	matching(criteria: Criteria): Promise<User[]>;
+	abstract matching(criteria: Criteria): Promise<User[]>;
 
-	save(user: User): Promise<void>;
+	abstract save(user: User): Promise<void>;
 }

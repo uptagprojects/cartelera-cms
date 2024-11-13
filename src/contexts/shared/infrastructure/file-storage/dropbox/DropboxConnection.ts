@@ -1,6 +1,5 @@
 import { Service } from "diod";
 import { Dropbox, DropboxAuth } from "dropbox";
-import fetch from "node-fetch";
 
 export interface DropboxFileMetadata {
 	id: string;
@@ -17,7 +16,7 @@ export class DropboxConnection {
 	private get dbx(): Dropbox {
 		if (!this.dropboxAuth) {
 			this.dropboxAuth = new DropboxAuth({
-				fetch,
+				fetch: global.fetch,
 				clientId: process.env.DROPBOX_API_KEY ?? "dropbox-api-key",
 				clientSecret: process.env.DROPBOX_API_SECRET ?? "dropbox-api-secret",
 				refreshToken: process.env.DROPBOX_REFRESH_TOKEN ?? "refresh-token"
@@ -28,7 +27,7 @@ export class DropboxConnection {
 
 		if (!this.dropboxInstance) {
 			this.dropboxInstance = new Dropbox({
-				fetch,
+				fetch: global.fetch,
 				auth: this.dropboxAuth
 			});
 		}
@@ -94,7 +93,7 @@ export class DropboxConnection {
 				require_password: false,
 				access: { ".tag": "viewer" },
 				allow_download: true,
-				audience: { ".tag": "public" },
+				audience: { ".tag": "public" }
 			}
 		});
 

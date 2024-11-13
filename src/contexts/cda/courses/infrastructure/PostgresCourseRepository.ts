@@ -1,3 +1,5 @@
+import { Service } from "diod";
+
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
@@ -16,6 +18,7 @@ interface DatabaseCourse {
 	price: number;
 }
 
+@Service()
 export class PostgresCourseRepository implements CourseRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 

@@ -18,11 +18,7 @@ export class AnnouncementRestoredDomainEvent extends AnnouncementDomainEvent {
 		occurredOn: Date,
 		_: DomainEventAttributes
 	): AnnouncementRestoredDomainEvent {
-		return new AnnouncementRestoredDomainEvent(
-			aggregateId,
-			eventId,
-			occurredOn
-		);
+		return new AnnouncementRestoredDomainEvent(aggregateId, eventId, occurredOn);
 	}
 
 	toPrimitives(): DomainEventAttributes {
