@@ -17,7 +17,7 @@ export type WelcomeEmailPrimitives = {
 };
 
 export class WelcomeEmail extends Email {
-	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@pnfi.uptag.net";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@octagon.uptag.net";
 
 	private constructor(
 		id: EmailId,
@@ -79,7 +79,7 @@ export class WelcomeEmail extends Email {
 
 	private static generateBody(id: string, userName: string): EmailBody {
 		return new EmailBody(
-			`Bienvenido a la cartelera del PNFi, ${userName}! Completa tu registro utilizando el enlace de invitacion:\nhttps://cartelerapnfi.uptag.net/confirm?id=${id}`
+			`Bienvenido a la cartelera del PNFi, ${userName}! Completa tu registro utilizando el enlace de invitacion:\nhttps://octagon.uptag.net/confirm?id=${id}`
 		);
 	}
 

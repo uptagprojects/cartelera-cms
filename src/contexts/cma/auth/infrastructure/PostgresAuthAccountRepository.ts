@@ -3,12 +3,27 @@ import { UserId } from "../../users/domain/UserId";
 import { AuthAccount } from "../domain/AuthAccount";
 import { AuthAccountRepository } from "../domain/AuthAccountRepository";
 
+type DatabaseAccount = {
+	id: string;
+	user_id: string;
+	provider: string;
+	type: string;
+	provider_account_id: string;
+	access_token: string | null;
+	expires_at: string | null;
+	refresh_token: string | null;
+	id_token: string | null;
+	scope: string | null;
+	session_state: string | null;
+	token_type: string | null;
+};
+
 export class PostgresAuthAccountRepository implements AuthAccountRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
 	async save(account: AuthAccount): Promise<void> {
 		await this.connection.execute(
-			`INSERT INTO cma__auth_account (
+			`INSERT INTO cma__auth_accounts (
                 id,
                 user_id, 
                 provider, 
@@ -53,8 +68,8 @@ export class PostgresAuthAccountRepository implements AuthAccountRepository {
 	}
 
 	async search(id: string): Promise<AuthAccount | null> {
-		const account = await this.connection.searchOne<AuthAccount>(
-			"SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE id = $1",
+		const account = await this.connection.searchOne<DatabaseAccount>(
+			"SELECT id, user_id, provider, type, provider_account_id, access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_accounts WHERE id = $1",
 			[id]
 		);
 
@@ -62,15 +77,28 @@ export class PostgresAuthAccountRepository implements AuthAccountRepository {
 			return null;
 		}
 
-		return account;
+		return {
+			id: account.id,
+			userId: account.user_id,
+			provider: account.provider,
+			type: account.type,
+			providerAccountId: account.provider_account_id,
+			access_token: account.access_token,
+			expires_at: account.expires_at,
+			refresh_token: account.refresh_token,
+			id_token: account.id_token,
+			scope: account.scope,
+			session_state: account.session_state,
+			token_type: account.token_type
+		};
 	}
 
 	async searchByProvider(
 		provider: string,
 		providerAccountId: string
 	): Promise<AuthAccount | null> {
-		const account = await this.connection.searchOne<AuthAccount>(
-			"SELECT id, user_id as userId, provider, type, provider_account_id as providerAccountId,  access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_account WHERE provider = $1 AND provider_account_id = $2",
+		const account = await this.connection.searchOne<DatabaseAccount>(
+			"SELECT id, user_id, provider, type, provider_account_id, access_token, expires_at, refresh_token, id_token, scope, session_state, token_type FROM cma__auth_accounts WHERE provider = $1 AND provider_account_id = $2",
 			[provider, providerAccountId]
 		);
 
@@ -78,15 +106,28 @@ export class PostgresAuthAccountRepository implements AuthAccountRepository {
 			return null;
 		}
 
-		return account;
+		return {
+			id: account.id,
+			userId: account.user_id,
+			provider: account.provider,
+			type: account.type,
+			providerAccountId: account.provider_account_id,
+			access_token: account.access_token,
+			expires_at: account.expires_at,
+			refresh_token: account.refresh_token,
+			id_token: account.id_token,
+			scope: account.scope,
+			session_state: account.session_state,
+			token_type: account.token_type
+		};
 	}
 
 	async remove(session: AuthAccount): Promise<void> {
-		await this.connection.execute("DELETE FROM cma__auth_account WHERE id = $1", [session.id]);
+		await this.connection.execute("DELETE FROM cma__auth_accounts WHERE id = $1", [session.id]);
 	}
 
 	async removeAllByUserId(userId: UserId): Promise<void> {
-		await this.connection.execute("DELETE FROM cma__auth_session WHERE user_id = $1", [
+		await this.connection.execute("DELETE FROM cma__auth_accounts WHERE user_id = $1", [
 			userId.value
 		]);
 	}

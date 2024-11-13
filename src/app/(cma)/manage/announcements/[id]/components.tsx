@@ -1,51 +1,41 @@
-import { useRouter } from "next/navigation";
+"use client";
 import { Button, Select, TextArea, TextInput } from "octagon-ui";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 
 import { IManageAnnouncement } from "../components/IManageAnnouncement";
-
-export const Header = () => {
-	const router = useRouter();
-	const returnPage = () => {
-		router.back();
-	};
-
-	return (
-		<header>
-			<Button
-				icon="ArrowLeft"
-				size="small"
-				variant="tertiary"
-				label="Volver"
-				onClick={returnPage}
-			/>
-			<h3>Anuncios</h3>
-		</header>
-	);
-};
+import { saveAnnouncement } from "./actions";
 
 export const AnnouncementForm = ({
 	id,
-	initAnnouncement,
-	action
+	initAnnouncement
 }: {
 	id: string;
 	initAnnouncement?: IManageAnnouncement;
-	action: (announcement: IManageAnnouncement) => void;
 }) => {
+	const [errors, saveFormAction, isPending] = useActionState(saveAnnouncement, {});
 	const [title, setTitle] = useState(initAnnouncement?.title ?? "");
 	const [content, setContent] = useState(initAnnouncement?.content ?? "");
 	const [type, setType] = useState(initAnnouncement?.type ?? "info");
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		action({ title, content, type, id } as IManageAnnouncement);
-	};
-
 	return (
-		<form onSubmit={handleSubmit}>
-			<TextInput label="Título" value={title} onChange={e => setTitle(e.target.value)} />
-			<Select label="Tipo" value={type} onChange={e => setType(e.target.value)}>
+		<form action={saveFormAction}>
+			<input type="hidden" name="id" value={id} />
+			<TextInput
+				label="Título"
+				name="title"
+				value={title}
+				disabled={isPending}
+				errorMessage={errors.title}
+				onChange={e => setTitle(e.target.value)}
+			/>
+			<Select
+				label="Tipo"
+				name="type"
+				value={type}
+				disabled={isPending}
+				errorMessage={errors.type}
+				onChange={e => setType(e.target.value)}
+			>
 				{[
 					{ name: "Informacion", value: "info" },
 					{ name: "Celebracion", value: "success" },
@@ -58,9 +48,13 @@ export const AnnouncementForm = ({
 			</Select>
 			<TextArea
 				label="Contenido"
+				name="content"
+				errorMessage={errors.content}
+				disabled={isPending}
 				value={content}
 				onChange={e => setContent(e.target.value)}
 			/>
+			<Button type="submit" disabled={isPending} label="Guardar" />
 		</form>
 	);
 };

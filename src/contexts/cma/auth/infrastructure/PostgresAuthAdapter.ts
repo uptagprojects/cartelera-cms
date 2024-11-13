@@ -9,13 +9,16 @@ import {
 import { InvalidIdentifierError } from "../../../shared/domain/InvalidIdentifierError";
 import { UuidGenerator } from "../../../shared/domain/UuidGenerator";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { User } from "../../users/domain/User";
+import { UserProviderConfirmer } from "../../users/application/confirm-from-provider/UserProviderConfirmer";
 import { UserDoesNotExist } from "../../users/domain/UserDoesNotExist";
 import { UserEmail } from "../../users/domain/UserEmail";
+import { UserFinder } from "../../users/domain/UserFinder";
 import { UserId } from "../../users/domain/UserId";
+import { UserStatus } from "../../users/domain/UserStatus";
 import { PostgresUserRepository } from "../../users/infrastructure/PostgresUserRepository";
 import { AuthAccount } from "../domain/AuthAccount";
 import { AuthSession } from "../domain/AuthSession";
+import { AuthUser } from "../domain/AuthUser";
 import { PostgresAuthAccountRepository } from "./PostgresAuthAccountRepository";
 import { PostgresAuthSessionRepository } from "./PostgresAuthSessionRepository";
 import { PostgresAuthVerificationTokenRepository } from "./PostgresAuthVerificationTokenRepository";
@@ -33,6 +36,7 @@ export default function postgresAdapter(
 		async createVerificationToken(
 			verificationToken: VerificationToken
 		): Promise<VerificationToken> {
+			console.log("create verification token", verificationToken);
 			await authVerificationTokenRepository.save(verificationToken);
 
 			return verificationToken;
@@ -45,41 +49,54 @@ export default function postgresAdapter(
 			identifier: string;
 			token: string;
 		}): Promise<VerificationToken | null> {
+			console.log("use verification token", identifier);
 			const savedToken = await authVerificationTokenRepository.search(identifier, token);
 
 			if (savedToken) {
-				authVerificationTokenRepository.remove(savedToken);
+				await authVerificationTokenRepository.remove(savedToken);
 			}
 
 			return savedToken;
 		},
 
-		async createUser(user: AdapterUser): Promise<AdapterUser> {
-			let savedUser = await userRepository.searchByEmail(new UserEmail(user.email));
-
-			if (!savedUser) {
-				savedUser = User.create(
+		async createUser(user: AdapterUser): Promise<AuthUser> {
+			console.log("create user", user);
+			try {
+				await new UserProviderConfirmer(userRepository).confirm(
 					user.id,
-					user.name ?? "",
-					user.email,
-					user.image ?? "https://avatar.iran.liara.run/public"
+					user.name as string | undefined,
+					user.image as string | undefined
 				);
+
+				const savedUser = await new UserFinder(userRepository).find(user.id);
+
+				const primitives = savedUser.toPrimitives();
+
+				return {
+					id: primitives.id,
+					name: primitives.name,
+					email: primitives.email,
+					emailVerified: primitives.emailVerified,
+					image: primitives.avatar,
+					status: primitives.status
+				};
+			} catch (err) {
+				if (err instanceof UserDoesNotExist) {
+					return {
+						id: user.id,
+						name: user.name ?? "",
+						email: user.email,
+						emailVerified: user.emailVerified,
+						image: user.image ?? "https://avatar.iran.liara.run/public",
+						status: UserStatus.BLOCKED
+					};
+				}
+				throw err;
 			}
-
-			await userRepository.save(savedUser);
-
-			const primitives = savedUser.toPrimitives();
-
-			return {
-				id: primitives.id,
-				name: primitives.name,
-				email: primitives.email,
-				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
-			};
 		},
 
-		async getUser(id: string): Promise<AdapterUser | null> {
+		async getUser(id: string): Promise<AuthUser | null> {
+			console.log("get user by id", id);
 			const user = await userRepository.search(new UserId(id));
 
 			if (!user) {
@@ -93,11 +110,13 @@ export default function postgresAdapter(
 				name: primitives.name,
 				email: primitives.email,
 				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
+				image: primitives.avatar,
+				status: primitives.status
 			};
 		},
 
-		async getUserByEmail(email: string): Promise<AdapterUser | null> {
+		async getUserByEmail(email: string): Promise<AuthUser | null> {
+			console.log("get user by email", email);
 			const user = await userRepository.searchByEmail(new UserEmail(email));
 
 			if (!user) {
@@ -111,14 +130,16 @@ export default function postgresAdapter(
 				name: primitives.name,
 				email: primitives.email,
 				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
+				image: primitives.avatar,
+				status: primitives.status
 			};
 		},
 
 		async getUserByAccount({
 			providerAccountId,
 			provider
-		}: Pick<AdapterAccount, "provider" | "providerAccountId">): Promise<AdapterUser | null> {
+		}: Pick<AdapterAccount, "provider" | "providerAccountId">): Promise<AuthUser | null> {
+			console.log("get user by account", provider, providerAccountId);
 			const account = await authAccountRepository.searchByProvider(
 				provider,
 				providerAccountId
@@ -141,13 +162,13 @@ export default function postgresAdapter(
 				name: primitives.name,
 				email: primitives.email,
 				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
+				image: primitives.avatar,
+				status: primitives.status
 			};
 		},
 
-		async updateUser(
-			user: Partial<AdapterUser> & Pick<AdapterUser, "id">
-		): Promise<AdapterUser> {
+		async updateUser(user: Partial<AdapterUser> & Pick<AdapterUser, "id">): Promise<AuthUser> {
+			console.log("update user", user);
 			if (!user.id) {
 				throw new InvalidIdentifierError("User id is required");
 			}
@@ -158,24 +179,20 @@ export default function postgresAdapter(
 				throw new UserDoesNotExist(user.id);
 			}
 
-			if (user.name) {
-				savedUser.updateName(user.name);
-			}
+			const { status } = savedUser.toPrimitives();
 
 			if (user.email) {
 				savedUser.updateEmail(user.email);
 			}
 
-			if (user.image) {
-				savedUser.updateAvatar(user.image);
-			}
-
-			if (user.emailVerified) {
-				savedUser.verifyEmail(user.emailVerified);
+			if ((status as UserStatus) === UserStatus.PENDING_CONFIRMATION) {
+				savedUser.confirm(
+					user.name as string | undefined,
+					user.image as string | undefined
+				);
 			}
 
 			await userRepository.save(savedUser);
-
 			const primitives = savedUser.toPrimitives();
 
 			return {
@@ -183,13 +200,15 @@ export default function postgresAdapter(
 				name: primitives.name,
 				email: primitives.email,
 				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
+				image: primitives.avatar,
+				status: primitives.status
 			};
 		},
 
 		async linkAccount(
 			account: AdapterAccount
 		): Promise<void | undefined | null | AdapterAccount> {
+			console.log("link account", account);
 			const id = await uuidGenerator.generate();
 
 			const saveAccount = {
@@ -209,6 +228,7 @@ export default function postgresAdapter(
 			userId,
 			expires
 		}: AdapterSession): Promise<AdapterSession> {
+			console.log("create session", sessionToken, userId);
 			const id = await uuidGenerator.generate();
 
 			await authSessionRepository.save({
@@ -227,20 +247,23 @@ export default function postgresAdapter(
 
 		async getSessionAndUser(sessionToken: string): Promise<{
 			session: AdapterSession;
-			user: AdapterUser;
+			user: AuthUser;
 		} | null> {
+			console.log("get session and user from token", sessionToken);
 			if (!sessionToken) {
 				return null;
 			}
 
 			const session = await authSessionRepository.searchByToken(sessionToken);
-
-			if (!session) {
+			console.log("current session", session);
+			if (!session || !session.userId) {
 				return null;
 			}
 
-			const user = await userRepository.search(new UserId(session.userId));
+			console.log("session user", session.userId);
 
+			const user = await userRepository.search(new UserId(session.userId));
+			console.log("current user", user);
 			if (!user) {
 				return null;
 			}
@@ -252,7 +275,8 @@ export default function postgresAdapter(
 				name: primitives.name,
 				email: primitives.email,
 				emailVerified: primitives.emailVerified,
-				image: primitives.avatar
+				image: primitives.avatar,
+				status: primitives.status
 			};
 
 			return {
@@ -268,6 +292,7 @@ export default function postgresAdapter(
 		async updateSession(
 			session: Partial<AdapterSession> & Pick<AdapterSession, "sessionToken">
 		): Promise<AdapterSession | null | undefined> {
+			console.log("update session", session);
 			const savedSession = await authSessionRepository.searchByToken(session.sessionToken);
 
 			if (!savedSession) {
@@ -289,6 +314,7 @@ export default function postgresAdapter(
 		},
 
 		async deleteSession(sessionToken: string): Promise<void> {
+			console.log("delete session", sessionToken);
 			const session = await authSessionRepository.searchByToken(sessionToken);
 
 			if (session) {
@@ -300,16 +326,18 @@ export default function postgresAdapter(
 			provider,
 			providerAccountId
 		}: Partial<AdapterAccount>): Promise<void> {
+			console.log("Unlink account", provider);
 			const account = await authAccountRepository.searchByProvider(
 				provider as string,
 				providerAccountId as string
 			);
 			if (account) {
-				authAccountRepository.remove(account);
+				await authAccountRepository.remove(account);
 			}
 		},
 
 		async deleteUser(userId: string): Promise<void> {
+			console.log("delete user", userId);
 			const id = new UserId(userId);
 			await authSessionRepository.removeAllByUserId(id);
 			await authAccountRepository.removeAllByUserId(id);

@@ -1,31 +1,31 @@
-CREATE TABLE IF NOT EXISTS cma__auth_recovery_codes
+CREATE TABLE IF NOT EXISTS cma__auth_verification_token
 (
-  user_id UUID PRIMARY KEY,
-  code TEXT
+  identifier TEXT,
+  expires TIMESTAMPTZ,
+  token TEXT,
+  PRIMARY KEY (identifier, token)
 );
 
- 
+
+CREATE TABLE IF NOT EXISTS cma__auth_accounts (
+  id UUID PRIMARY KEY,
+  user_id UUID,
+  type VARCHAR(255),
+  provider VARCHAR(255),
+  provider_account_id VARCHAR(255),
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at BIGINT,
+  id_token TEXT,
+  scope TEXT,
+  session_state TEXT,
+  token_type TEXT
+);
+
 CREATE TABLE IF NOT EXISTS cma__auth_sessions (
   id UUID PRIMARY KEY,
   user_id UUID,
   expires_at TIMESTAMPTZ,
-  two_factor_verified BOOLEAN
+  session_token VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS cma__auth_email_verification_request (
-    id UUID PRIMARY KEY,
-    user_id UUID,
-    email TEXT,
-    code TEXT,
-    expires_at INTEGER
-);
-
-CREATE TABLE IF NOT EXISTS cma__auth_password_reset_session (
-    id UUID PRIMARY KEY,
-    user_id UUID,
-    email TEXT,
-    code TEXT,
-    expires_at INTEGER,
-    email_verified INTEGER DEFAULT 0,
-    two_factor_verified INTEGER DEFAULT 0
-);

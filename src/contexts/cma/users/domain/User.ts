@@ -2,6 +2,7 @@ import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { UserArchivedDomainEvent } from "./event/UserArchivedDomainEvent";
 import { UserAvatarUpdatedDomainEvent } from "./event/UserAvatarUpdatedDomainEvent";
 import { UserBlockedDomainEvent } from "./event/UserBlockedDomainEvent";
+import { UserConfirmedDomainEvent } from "./event/UserConfirmedDomainEvent";
 import { UserEmailUpdatedDomainEvent } from "./event/UserEmailUpdatedDomainEvent";
 import { UserNameUpdatedDomainEvent } from "./event/UserNameUpdatedDomainEvent";
 import { UserRegisteredDomainEvent } from "./event/UserRegisteredDomainEvent";
@@ -35,7 +36,7 @@ export class User extends AggregateRoot {
 	}
 
 	static create(id: string, name: string, email: string, avatar: string): User {
-		const defaultUserStatus = UserStatus.ACTIVE;
+		const defaultUserStatus = UserStatus.PENDING_CONFIRMATION;
 
 		const user = new User(
 			new UserId(id),
@@ -89,6 +90,27 @@ export class User extends AggregateRoot {
 	updateAvatar(avatar: string): void {
 		this.avatar = new UserAvatar(avatar);
 		this.record(new UserAvatarUpdatedDomainEvent(this.id.value, avatar));
+	}
+
+	confirm(name?: string, avatar?: string): void {
+		this.status = UserStatus.ACTIVE;
+		this.emailVerified = new UserEmailVerified(new Date());
+
+		if (name && this.name.value.length < 1) {
+			this.name = new UserName(name);
+		}
+
+		if (avatar) {
+			this.avatar = new UserAvatar(avatar);
+		}
+
+		this.record(
+			new UserConfirmedDomainEvent(
+				this.id.value,
+				this.name.value,
+				this.avatar.value.toString()
+			)
+		);
 	}
 
 	archive(): void {

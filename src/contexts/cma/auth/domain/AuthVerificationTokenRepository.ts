@@ -1,4 +1,4 @@
-import { AuthVerificationToken } from "./AuthRecoveryCode";
+import { AuthVerificationToken } from "./AuthVerificationToken";
 
 export interface AuthVerificationTokenRepository {
 	save(verificationToken: AuthVerificationToken): Promise<void>;

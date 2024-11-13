@@ -1,5 +1,5 @@
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { AuthVerificationToken } from "../domain/AuthRecoveryCode";
+import { AuthVerificationToken } from "../domain/AuthVerificationToken";
 import { AuthVerificationTokenRepository } from "../domain/AuthVerificationTokenRepository";
 
 export class PostgresAuthVerificationTokenRepository implements AuthVerificationTokenRepository {
@@ -7,7 +7,7 @@ export class PostgresAuthVerificationTokenRepository implements AuthVerification
 
 	async save(verificationToken: AuthVerificationToken): Promise<void> {
 		await this.connection.execute(
-			"INSERT INTO cma__auth_verification_token (identifier, expires, token) VALUES ($1, $2, $3) ON CONFLICT (id, token) DO UPDATE SET expires = $2",
+			"INSERT INTO cma__auth_verification_token (identifier, expires, token) VALUES ($1, $2, $3) ON CONFLICT (identifier, token) DO UPDATE SET expires = $2",
 			[verificationToken.identifier, verificationToken.expires, verificationToken.token]
 		);
 	}

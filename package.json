@@ -28,6 +28,7 @@
   "dependencies": {
     "@dotenvx/dotenvx": "^1.21.0",
     "@gsap/react": "^2.1.1",
+    "@lottiefiles/dotlottie-react": "^0.9.3",
     "@openfga/sdk": "^0.7.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
@@ -40,7 +41,9 @@
     "lucide-react": "^0.454.0",
     "migrate": "^2.1.0",
     "next": "^15.0.2",
+    "next-auth": "^5.0.0-beta.25",
     "node-mailjet": "^6.0.6",
+    "nodemailer": "^6.9.16",
     "octagon-ui": "^1.0.9",
     "otp-generator": "^4.0.1",
     "pg": "^8.12.0",

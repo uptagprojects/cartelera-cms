@@ -1,36 +1,29 @@
 import "octagon-ui/dist/index.css";
 
+import { redirect } from "next/navigation";
+
 import { PageFooter } from "../../components/footer/PageFooter";
 import { Nav } from "../../components/nav/Nav";
+import { auth } from "../auth";
 import { Sidebar } from "./_components/Sidebar";
+import styles from "./ManageLayout.module.css";
 
-export default function CMALayout({
+export default async function CMALayout({
 	children
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	if (!globalGETRateLimit()) {
-		return "Too many requests";
-	}
-	const { session, user } = getCurrentSession();
-	if (session === null) {
-		return redirect("/login");
-	}
-	if (!user.emailVerified) {
-		return redirect("/verify-email");
-	}
-	if (!user.registered2FA) {
-		return redirect("/2fa/setup");
-	}
-	if (!session.twoFactorVerified) {
-		return redirect("/2fa");
+	const session = await auth();
+
+	if (!session) {
+		redirect("/");
 	}
 
 	return (
 		<>
-			<Nav />
+			<Nav session={Boolean(session)} />
 			<Sidebar />
-			<main>{children}</main>
+			<main className={styles.mainContainer}>{children}</main>
 			<PageFooter />
 		</>
 	);

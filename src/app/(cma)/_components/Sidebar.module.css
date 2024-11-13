@@ -28,8 +28,12 @@
 }
 
 .menuItem:hover {
-    background-color: var(--gray-100);
     color: var(--cyan-800);
+}
+
+.menuItem.active {
+    color: var(--cyan-500);
+    background-color: var(--gray-100);
 }
 
 .menuItemLink {
@@ -41,7 +45,11 @@
 
 @media (prefers-color-scheme: dark) {
     .menuItem:hover {
-        background-color: var(--gray-800);
         color: var(--cyan-200);
+    }
+
+    .menuItem.active {
+        background-color: var(--gray-800);
+        color: var(--cyan-400);
     }
 }

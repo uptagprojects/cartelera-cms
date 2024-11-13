@@ -1,3 +1,4 @@
+"use client";
 import {
 	LucideAward,
 	LucideBook,
@@ -9,12 +10,13 @@ import {
 	LucideUserPlus
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 import styles from "./Sidebar.module.css";
 
 const menu = [
-	{ title: "Dashboard", href: "/manage", Icon: LucideNewspaper },
+	{ title: "Inicio", href: "/manage/onboarding", Icon: LucideNewspaper },
 	{ title: "Guias", href: "/manage/guides", Icon: LucideBook },
 	{ title: "Anuncios", href: "/manage/announcements", Icon: LucideSignal },
 	{ title: "Cursos", href: "/manage/courses", Icon: LucideAward },
@@ -25,12 +27,20 @@ const menu = [
 ];
 
 export const Sidebar: FC = () => {
+	const pathname = usePathname();
+
 	return (
 		<aside className={styles.sidebar}>
 			<nav>
 				<ul className={styles.menu}>
 					{menu.map(({ title, href, Icon }) => (
-						<li key={title} className={styles.menuItem}>
+						<li
+							key={title}
+							className={[
+								styles.menuItem,
+								pathname.includes(href) ? styles.active : ""
+							].join(" ")}
+						>
 							<Link href={href} className={styles.menuItemLink}>
 								<Icon />
 								<span>{title}</span>
