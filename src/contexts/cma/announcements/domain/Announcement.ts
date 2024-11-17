@@ -26,31 +26,27 @@ export class Announcement extends AggregateRoot {
 		private readonly id: AnnouncementId,
 		private title: AnnouncementTitle,
 		private content: AnnouncementContent,
-		private readonly publishDate: AnnouncementPublishDate,
+		private readonly publishDate: AnnouncementPublishDate, // TO DO: remove publishDate from here
 		private readonly type: AnnouncementType,
 		private status: AnnouncementStatus
 	) {
 		super();
 	}
 
-	static create(
-		id: string,
-		title: string,
-		content: string,
-		publishDate: string,
-		type: string
-	): Announcement {
+	static create(id: string, title: string, type: string, content: string): Announcement {
+		const defaultPublishDate = new Date().toISOString();
+		const defaultStatus = AnnouncementStatus.DRAFT;
 		const announcement = new Announcement(
 			new AnnouncementId(id),
 			new AnnouncementTitle(title),
 			new AnnouncementContent(content),
-			new AnnouncementPublishDate(publishDate),
+			new AnnouncementPublishDate(defaultPublishDate),
 			type as AnnouncementType,
-			AnnouncementStatus.DRAFT
+			defaultStatus
 		);
 
 		announcement.record(
-			new AnnouncementPostedDomainEvent(id, title, content, publishDate, type)
+			new AnnouncementPostedDomainEvent(id, title, content, defaultPublishDate, type)
 		);
 
 		return announcement;
