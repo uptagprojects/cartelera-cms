@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { AnnouncementsByCriteriaSearcher } from "../../../../contexts/cma/announcements/application/search-by-criteria/AnnouncementsByCriteriaSearcher";
-import { PostgresAnnouncementRepository } from "../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
+import { EventsByCriteriaSearcher } from "../../../../contexts/cma/events/application/search-by-criteria/EventsByCriteriaSearcher";
+import { PostgresEventRepository } from "../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
 import { SearchParamsCriteriaFiltersParser } from "../../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
-const searcher = new AnnouncementsByCriteriaSearcher(
-	new PostgresAnnouncementRepository(new PostgresConnection())
+const searcher = new EventsByCriteriaSearcher(
+	new PostgresEventRepository(new PostgresConnection())
 );
 
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);
 
 	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
-	const announcements = await searcher.search(
+	const courses = await searcher.search(
 		filters,
 		searchParams.get("orderBy"),
 		searchParams.get("orderType"),
@@ -23,5 +23,5 @@ export async function GET(request: NextRequest): Promise<Response> {
 			: null
 	);
 
-	return NextResponse.json(announcements.map(announcement => announcement.toPrimitives()));
+	return NextResponse.json(courses.map(course => course.toPrimitives()));
 }

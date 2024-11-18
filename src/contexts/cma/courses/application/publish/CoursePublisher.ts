@@ -4,7 +4,7 @@ import { CourseDurationPrimitives } from "../../domain/CourseDuration/CourseDura
 import { CourseInstructorPrimitives } from "../../domain/CourseInstructor/CourseInstructor";
 import { CourseRepository } from "../../domain/CourseRepository";
 
-export class CoursePoster {
+export class CoursePublisher {
 	constructor(
 		private readonly repository: CourseRepository,
 		private readonly eventBus: EventBus
@@ -18,9 +18,7 @@ export class CoursePoster {
 		instructor: CourseInstructorPrimitives,
 		location: string,
 		duration: CourseDurationPrimitives,
-		price: number,
-		creation: string,
-		lastUpdate: string
+		price: number
 	): Promise<void> {
 		const course = Course.create(
 			id,
@@ -30,9 +28,7 @@ export class CoursePoster {
 			instructor,
 			location,
 			duration,
-			price,
-			creation,
-			lastUpdate
+			price
 		);
 		await this.repository.save(course);
 		await this.eventBus.publish(course.pullDomainEvents());

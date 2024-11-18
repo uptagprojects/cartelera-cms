@@ -3,10 +3,10 @@ import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
 import { Course } from "../../domain/Course";
 import { CourseRepository } from "../../domain/CourseRepository";
 
-export class CourseByCriteriaSearcher {
+export class CoursesByCriteriaSearcher {
 	constructor(private readonly repository: CourseRepository) {}
 
-	async searchByCriteria(
+	async search(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,

@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { AnnouncementsByCriteriaSearcher } from "../../../../contexts/cma/announcements/application/search-by-criteria/AnnouncementsByCriteriaSearcher";
-import { PostgresAnnouncementRepository } from "../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
+import { GuidesByCriteriaSearcher } from "../../../../contexts/cma/guides/application/search-by-criteria/GuidesByCriteriaSearcher";
+import { PostgresGuideRepository } from "../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
 import { SearchParamsCriteriaFiltersParser } from "../../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
-const searcher = new AnnouncementsByCriteriaSearcher(
-	new PostgresAnnouncementRepository(new PostgresConnection())
+const searcher = new GuidesByCriteriaSearcher(
+	new PostgresGuideRepository(new PostgresConnection())
 );
 
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);
 
 	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
-	const announcements = await searcher.search(
+	const guides = await searcher.search(
 		filters,
 		searchParams.get("orderBy"),
 		searchParams.get("orderType"),
@@ -23,5 +23,5 @@ export async function GET(request: NextRequest): Promise<Response> {
 			: null
 	);
 
-	return NextResponse.json(announcements.map(announcement => announcement.toPrimitives()));
+	return NextResponse.json(guides.map(guide => guide.toPrimitives()));
 }

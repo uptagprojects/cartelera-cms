@@ -2,13 +2,13 @@ import { EventBus } from "../../../../shared/domain/event/EventBus";
 import { Event } from "../../domain/Event";
 import { EventRepository } from "../../domain/EventRepository";
 
-export class EventPoster {
+export class EventPublisher {
 	constructor(
 		private readonly repository: EventRepository,
 		private readonly eventBus: EventBus
 	) {}
 
-	async post(
+	async publish(
 		id: string,
 		name: string,
 		location: string,

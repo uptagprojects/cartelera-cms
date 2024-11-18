@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { UCCreator } from "../../../../../contexts/cma/uc/application/create/UCCreator";
-import { UCFinder } from "../../../../../contexts/cma/uc/application/find/UCFinder";
-import { UCDoesNotExist } from "../../../../../contexts/cma/uc/domain/UCDoesNotExist";
-import { PostgresUCRepository } from "../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
+import { CoursePublisher } from "../../../../../contexts/cma/courses/application/publish/CoursePublisher";
+import { CourseDoesNotExists } from "../../../../../contexts/cma/courses/domain/CourseDoesNotExists";
+import { CourseDurationPrimitives } from "../../../../../contexts/cma/courses/domain/CourseDuration/CourseDuration";
+import { CourseFinder } from "../../../../../contexts/cma/courses/domain/CourseFinder";
+import { CourseInstructorPrimitives } from "../../../../../contexts/cma/courses/domain/CourseInstructor/CourseInstructor";
+import { PostgresCourseRepository } from "../../../../../contexts/cma/courses/infrastructure/PostgresCourseRepository";
 import { InvalidArgumentError } from "../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
@@ -13,7 +15,24 @@ import { PostgresConnection } from "../../../../../contexts/shared/infrastructur
 
 const validator = z.object({
 	id: z.string().uuid(),
-	name: z.string()
+	name: z.string(),
+	abstract: z.string(),
+	picture: z.string().url(),
+	instructor: z.object({
+		id: z.string().uuid(),
+		name: z.string(),
+		email: z.string().email(),
+		badge: z.string(),
+		avatar: z.string().url(),
+		relatedUrl: z.string().url()
+	}),
+	location: z.string(),
+	duration: z.object({
+		startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+		finishDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+		academicHours: z.number().min(1)
+	}),
+	price: z.number().min(0)
 });
 
 export async function PUT(
@@ -35,8 +54,8 @@ export async function PUT(
 	if (id !== parsed.data.id) {
 		return new Response(
 			JSON.stringify({
-				code: "invalid_uc_id",
-				message: "The uc id in the URL does not match the uc id in the body"
+				code: "invalid_course_id",
+				message: "The course id in the URL does not match the course id in the body"
 			}),
 			{
 				status: 400,
@@ -52,13 +71,22 @@ export async function PUT(
 	const postgresConnection = new PostgresConnection();
 
 	try {
-		await new UCCreator(
-			new PostgresUCRepository(postgresConnection),
+		await new CoursePublisher(
+			new PostgresCourseRepository(postgresConnection),
 			new RabbitMQEventBus(
 				new RabbitMQConnection(),
 				new DomainEventFailover(postgresConnection)
 			)
-		).create(id, body.name);
+		).post(
+			id,
+			body.name,
+			body.abstract,
+			body.picture,
+			body.instructor as CourseInstructorPrimitives,
+			body.location,
+			body.duration as CourseDurationPrimitives,
+			body.price
+		);
 	} catch (error) {
 		if (error instanceof InvalidArgumentError) {
 			return new Response(
@@ -91,14 +119,18 @@ export async function GET(
 	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
 	const { id } = await params;
-	let uc = null;
+	const postgresConnection = new PostgresConnection();
+
 	try {
-		const ucFinder = new UCFinder(new PostgresUCRepository(new PostgresConnection()));
-		uc = await ucFinder.find(id);
+		const courseRepository = new PostgresCourseRepository(postgresConnection);
+		const courseFinder = new CourseFinder(courseRepository);
+		const course = await courseFinder.find(id);
+
+		return NextResponse.json(course.toPrimitives());
 	} catch (error) {
-		if (error instanceof UCDoesNotExist) {
+		if (error instanceof CourseDoesNotExists) {
 			return new Response(
-				JSON.stringify({ code: "guide_not_found", message: error.message }),
+				JSON.stringify({ code: "course_not_found", message: error.message }),
 				{
 					status: 404,
 					headers: {
@@ -118,6 +150,4 @@ export async function GET(
 			}
 		);
 	}
-
-	return NextResponse.json(uc.toPrimitives());
 }

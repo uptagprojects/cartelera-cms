@@ -1,18 +1,18 @@
 import { Criteria } from "../../../../shared/domain/criteria/Criteria";
 import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
-import { Event } from "../../domain/Event";
-import { EventRepository } from "../../domain/EventRepository";
+import { Guide } from "../../domain/Guide";
+import { GuideRepository } from "../../domain/GuideRepository";
 
-export class EventByCriteriaSearcher {
-	constructor(private readonly repository: EventRepository) {}
+export class GuidesByCriteriaSearcher {
+	constructor(private readonly repository: GuideRepository) {}
 
-	async searchByCriteria(
+	async search(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-	): Promise<Event[]> {
+	): Promise<Guide[]> {
 		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
 		return this.repository.matching(criteria);
