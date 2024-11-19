@@ -1,15 +1,15 @@
 import { NextRequest } from "next/server";
 
-import { EventRemover } from "../../../../../../contexts/cma/events/application/remove/EventRemover";
-import { EventDoesNotExist } from "../../../../../../contexts/cma/events/domain/EventDoesNotExist";
-import { PostgresEventRepository } from "../../../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
+import { GuidePublisher } from "../../../../../../contexts/cma/guides/application/publish/GuidePublisher";
+import { GuideDoesNotExist } from "../../../../../../contexts/cma/guides/domain/GuideDoesNotExist";
+import { PostgresGuideRepository } from "../../../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
-export async function DELETE(
+export async function PUT(
 	_request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
@@ -17,17 +17,17 @@ export async function DELETE(
 	const postgresConnection = new PostgresConnection();
 
 	try {
-		await new EventRemover(
-			new PostgresEventRepository(postgresConnection),
+		await new GuidePublisher(
+			new PostgresGuideRepository(postgresConnection),
 			new RabbitMQEventBus(
 				new RabbitMQConnection(),
 				new DomainEventFailover(postgresConnection)
 			)
-		).remove(id);
+		).publish(id);
 	} catch (error) {
-		if (error instanceof EventDoesNotExist) {
+		if (error instanceof GuideDoesNotExist) {
 			return new Response(
-				JSON.stringify({ code: "event_not_found", message: error.message }),
+				JSON.stringify({ code: "guide_not_found", message: error.message }),
 				{
 					status: 404,
 					headers: {

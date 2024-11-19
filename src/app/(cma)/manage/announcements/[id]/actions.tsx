@@ -24,6 +24,7 @@ export const useGetAnnouncementDetails = async (id: string) => {
 };
 
 const saveAnnouncementSchema = z.object({
+	id: z.string().uuid(),
 	title: z
 		.string({
 			invalid_type_error: "Invalid title"

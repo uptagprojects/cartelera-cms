@@ -14,7 +14,7 @@ import { PostgresConnection } from "../../../../../contexts/shared/infrastructur
 const validator = z.object({
 	id: z.string().uuid(),
 	title: z.string(),
-	type: z.enum(["info", "warning", "error"]),
+	type: z.enum(["info", "warning", "success"]),
 	content: z.string()
 });
 
@@ -26,7 +26,7 @@ export async function PUT(
 	const json = await request.json();
 	const parsed = validator.safeParse(json);
 	if (!parsed.success) {
-		return new Response(JSON.stringify({ message: parsed.error.message }), {
+		return new Response(parsed.error.message, {
 			status: 422,
 			headers: {
 				"Content-Type": "application/json"
@@ -62,6 +62,8 @@ export async function PUT(
 				new DomainEventFailover(postgresConnection)
 			)
 		).post(id, body.title, body.type, body.content);
+
+		return new Response("", { status: 201 });
 	} catch (error) {
 		if (error instanceof InvalidArgumentError) {
 			return new Response(
@@ -85,8 +87,6 @@ export async function PUT(
 			}
 		);
 	}
-
-	return new Response("", { status: 201 });
 }
 
 export async function GET(

@@ -6,7 +6,7 @@ import { ScheduleRepository } from "../../domain/ScheduleRepository";
 export class SchedulesByCriteriaSearcher {
 	constructor(private readonly repository: ScheduleRepository) {}
 
-	async searchByCriteria(
+	async search(
 		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,

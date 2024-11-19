@@ -17,5 +17,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 		})
 	],
 	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator()),
-	callbacks: {}
+	callbacks: {
+		session({ session, user }) {
+			session.userId = user.id;
+
+			return session;
+		}
+	}
 });

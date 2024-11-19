@@ -1,8 +1,8 @@
 import { NextRequest } from "next/server";
 
-import { EventRemover } from "../../../../../../contexts/cma/events/application/remove/EventRemover";
-import { EventDoesNotExist } from "../../../../../../contexts/cma/events/domain/EventDoesNotExist";
-import { PostgresEventRepository } from "../../../../../../contexts/cma/events/infrastructure/PostgresEventRepository";
+import { UCRemover } from "../../../../../../contexts/cma/uc/application/remove/UCRemover";
+import { UCDoesNotExist } from "../../../../../../contexts/cma/uc/domain/UCDoesNotExist";
+import { PostgresUCRepository } from "../../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
@@ -17,24 +17,21 @@ export async function DELETE(
 	const postgresConnection = new PostgresConnection();
 
 	try {
-		await new EventRemover(
-			new PostgresEventRepository(postgresConnection),
+		await new UCRemover(
+			new PostgresUCRepository(postgresConnection),
 			new RabbitMQEventBus(
 				new RabbitMQConnection(),
 				new DomainEventFailover(postgresConnection)
 			)
 		).remove(id);
 	} catch (error) {
-		if (error instanceof EventDoesNotExist) {
-			return new Response(
-				JSON.stringify({ code: "event_not_found", message: error.message }),
-				{
-					status: 404,
-					headers: {
-						"Content-Type": "application/json"
-					}
+		if (error instanceof UCDoesNotExist) {
+			return new Response(JSON.stringify({ code: "uc_not_found", message: error.message }), {
+				status: 404,
+				headers: {
+					"Content-Type": "application/json"
 				}
-			);
+			});
 		}
 
 		if (error instanceof InvalidArgumentError) {

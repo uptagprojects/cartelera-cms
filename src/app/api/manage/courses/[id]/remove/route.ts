@@ -9,7 +9,7 @@ import { RabbitMQConnection } from "../../../../../../contexts/shared/infrastruc
 import { RabbitMQEventBus } from "../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
-export async function PUT(
+export async function DELETE(
 	_request: NextRequest,
 	{ params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {

@@ -34,7 +34,7 @@ export class Announcement extends AggregateRoot {
 	}
 
 	static create(id: string, title: string, type: string, content: string): Announcement {
-		const defaultPublishDate = new Date().toISOString();
+		const defaultPublishDate = new Date();
 		const defaultStatus = AnnouncementStatus.DRAFT;
 		const announcement = new Announcement(
 			new AnnouncementId(id),
@@ -46,7 +46,13 @@ export class Announcement extends AggregateRoot {
 		);
 
 		announcement.record(
-			new AnnouncementPostedDomainEvent(id, title, content, defaultPublishDate, type)
+			new AnnouncementPostedDomainEvent(
+				id,
+				title,
+				content,
+				defaultPublishDate.toISOString(),
+				type
+			)
 		);
 
 		return announcement;
@@ -57,7 +63,7 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
 			new AnnouncementContent(plainData.content),
-			new AnnouncementPublishDate(plainData.publishDate),
+			new AnnouncementPublishDate(new Date(plainData.publishDate)),
 			plainData.type as AnnouncementType,
 			plainData.status as AnnouncementStatus
 		);
