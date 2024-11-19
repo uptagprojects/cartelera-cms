@@ -1,6 +1,7 @@
 services:
   db:
-    image: postgres:16-alpine
+    name: cms_db
+    image: cgr.dev/chainguard/postgres:latest
     ports:
       - 5432:5432
     volumes:
@@ -17,22 +18,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  rebac_migrate:
-    depends_on:
-      db:
-        condition: service_healthy
-    image: openfga/openfga:latest
-    environment:
-      - OPENFGA_DATASTORE_ENGINE=postgres
-      - "OPENFGA_DATASTORE_URI=postgres://user:password$@db:5432/cartelera?sslmode=disable"
-    command: migrate
-    networks:
-      - default
   rebac:
-    depends_on:
-      rebac_migrate:
-        condition: service_completed_successfully
-    image: openfga/openfga:latest
+    image: docker.io/openfga/openfga:v1.8
+    name: cms_rebac
     command: run
     ports:
       - 3001:3000
@@ -47,7 +35,8 @@ services:
     networks:
       - default
   rabbitmq:
-    image: 'rabbitmq:4.0-management'
+    name: cms_rabbitmq
+    image: cgr.dev/chainguard/rabbitmq
     restart: unless-stopped
     networks:
       - default
