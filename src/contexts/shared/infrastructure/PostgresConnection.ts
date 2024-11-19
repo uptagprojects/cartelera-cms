@@ -1,11 +1,12 @@
 import { Service } from "diod";
 import { Pool, PoolClient } from "pg";
 
-type ColumnValue = string | number | boolean | Date | null;
+import { ColumnValue, DatabaseConnection } from "../domain/DatabaseConnection";
 
 @Service()
-export class PostgresConnection {
+export class PostgresConnection extends DatabaseConnection {
 	private poolInstance: Pool | null = null;
+	private connection: PoolClient | null = null;
 
 	get pool(): Pool {
 		if (!this.poolInstance) {
@@ -20,38 +21,22 @@ export class PostgresConnection {
 	}
 
 	async searchOne<T>(query: string, values?: Array<ColumnValue>): Promise<T | null> {
-		let conn: PoolClient | null = null;
+		const conn = await this.getConnection();
+		const result = await conn.query(query, values);
 
-		try {
-			conn = await this.pool.connect();
-			const result = await conn.query(query, values);
-
-			return result.rows[0] ?? null;
-		} catch {
-			// TO DO: Add logger
-			return null;
-		} finally {
-			if (conn) {
-				conn.release();
-			}
-		}
+		return result.rows[0] ?? null;
 	}
 
 	async searchAll<T>(query: string, values?: ColumnValue[]): Promise<T[]> {
-		let conn: PoolClient | null = null;
-
-		conn = await this.pool.connect();
+		const conn = await this.getConnection();
 		const result = await conn.query(query, values);
-
-		conn.release();
 
 		return result.rows;
 	}
 
-	async execute(query: string, values: ColumnValue[]): Promise<void> {
-		let conn: PoolClient | null = null;
+	async execute(query: string, values?: ColumnValue[]): Promise<void> {
+		const conn = await this.getConnection();
 
-		conn = await this.pool.connect();
 		await conn.query(query, values);
 		conn.release();
 	}
@@ -65,9 +50,31 @@ export class PostgresConnection {
 		await this.execute(`SELECT truncate_tables($1)`, ["cda"]);
 	}
 
+	async beginTransaction(): Promise<void> {
+		this.connection = await this.getConnection();
+
+		await this.connection.query("BEGIN");
+	}
+
+	async commit(): Promise<void> {
+		await this.connection?.query("COMMIT");
+	}
+
+	async rollback(): Promise<void> {
+		await this.connection?.query("ROLLBACK");
+	}
+
 	async close(): Promise<void> {
 		if (this.poolInstance !== null) {
 			await this.poolInstance.end();
 		}
+	}
+
+	private async getConnection(): Promise<PoolClient> {
+		if (!this.connection) {
+			this.connection = await this.pool.connect();
+		}
+
+		return this.connection;
 	}
 }
