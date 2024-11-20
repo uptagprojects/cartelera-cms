@@ -25,15 +25,19 @@ export class PostgresConnection extends DatabaseConnection {
 	}
 
 	async searchOne<T>(query: string, values?: Array<ColumnValue>): Promise<T | null> {
-		const conn = await this.getConnection();
+		const conn = await this.pool.connect();
 		const result = await conn.query(query, values);
+
+		conn.release();
 
 		return result.rows[0] ?? null;
 	}
 
 	async searchAll<T>(query: string, values?: ColumnValue[]): Promise<T[]> {
-		const conn = await this.getConnection();
+		const conn = await this.pool.connect();
 		const result = await conn.query(query, values);
+
+		conn.release();
 
 		return result.rows;
 	}
@@ -64,7 +68,7 @@ export class PostgresConnection extends DatabaseConnection {
 	}
 
 	async release(): Promise<void> {
-		await this.connection?.release(true);
+		this.connection?.release(true);
 		this.connection = null;
 	}
 

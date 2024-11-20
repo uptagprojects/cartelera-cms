@@ -24,14 +24,14 @@ export abstract class DatabaseConnection {
 			const result = await fn(this);
 
 			await this.commit();
+			await this.release();
 
 			return result;
 		} catch (error) {
 			await this.rollback();
+			await this.release();
 
 			throw error;
-		} finally {
-			await this.release();
 		}
 	}
 }

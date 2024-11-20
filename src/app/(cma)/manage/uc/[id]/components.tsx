@@ -1,16 +1,11 @@
 "use client";
-import { Button, Select, TextArea, TextInput } from "octagon-ui";
+import { Button, TextInput } from "octagon-ui";
 import { useActionState, useState } from "react";
+
 import { IManageUC } from "../actions";
 import { saveUC } from "./actions";
 
-export const UCForm = ({
-	id,
-	initUC
-}: {
-	id: string;
-	initUC?: IManageUC;
-}) => {
+export const UCForm = ({ id, initUC }: { id: string; initUC?: IManageUC }) => {
 	const [errors, saveFormAction, isPending] = useActionState(saveUC, {});
 	const [name, setName] = useState(initUC?.name ?? "");
 
@@ -25,7 +20,7 @@ export const UCForm = ({
 				errorMessage={errors.name}
 				onChange={e => setName(e.target.value)}
 			/>
-			<Button type="submit" disabled={isPending} label="Guardar" />
+			<Button type="submit" variant="primary" disabled={isPending} label="Guardar" />
 		</form>
 	);
 };

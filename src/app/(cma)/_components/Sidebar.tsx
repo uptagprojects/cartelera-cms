@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import styles from "./Sidebar.module.css";
 
@@ -44,7 +44,7 @@ export const Sidebar: FC = () => {
 							].join(" ")}
 						>
 							<Link href={href} className={styles.menuItemLink}>
-								<Icon />
+								{useMemo(() => <Icon />, [Icon])}
 								<span>{title}</span>
 							</Link>
 						</li>

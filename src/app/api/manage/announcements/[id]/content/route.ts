@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 
-import { AnnouncementTitleUpdater } from "../../../../../../contexts/cma/announcements/application/update-title/AnnouncementTitleUpdater";
+import { AnnouncementContentUpdater } from "../../../../../../contexts/cma/announcements/application/update-content/AnnouncementContentUpdater";
 import { AnnouncementDoesNotExistError } from "../../../../../../contexts/cma/announcements/domain/AnnouncementDoesNotExistError";
 import { AnnouncementTitleIsEmptyError } from "../../../../../../contexts/cma/announcements/domain/AnnouncementTitleIsEmptyError";
 import { AnnouncementTitleTooLongError } from "../../../../../../contexts/cma/announcements/domain/AnnouncementTitleTooLongError";
@@ -16,7 +16,7 @@ import { HTTPNextResponse } from "../../../../../../contexts/shared/infrastructu
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 const validator = z.object({
-	title: z.string().url()
+	content: z.string().url()
 });
 
 export async function PUT(
@@ -36,13 +36,13 @@ export async function PUT(
 			const postgresConnection = new PostgresConnection();
 
 			await postgresConnection.transactional(async connection => {
-				await new AnnouncementTitleUpdater(
+				await new AnnouncementContentUpdater(
 					new PostgresAnnouncementRepository(connection as PostgresConnection),
 					new RabbitMQEventBus(
 						new RabbitMQConnection(),
 						new DomainEventFailover(connection as PostgresConnection)
 					)
-				).update(id, parsed.data.title);
+				).update(id, parsed.data.content);
 			});
 
 			return HTTPNextResponse.accepted();

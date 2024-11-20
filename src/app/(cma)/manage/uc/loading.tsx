@@ -2,5 +2,5 @@
 import { UCLoader } from "./components";
 
 export default function LoadingUC() {
-	return <UCLoader />
+	return <UCLoader />;
 }

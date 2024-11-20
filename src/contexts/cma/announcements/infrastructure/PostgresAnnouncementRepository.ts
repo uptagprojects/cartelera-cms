@@ -61,14 +61,16 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			[]
 		);
 
-		return res.map(r => Announcement.fromPrimitives({
-			id: r.id,
-			title: r.title,
-			content: r.content,
-			publishDate: r.publish_date,
-			type: r.type,
-			status: r.status
-		}));
+		return res.map(r =>
+			Announcement.fromPrimitives({
+				id: r.id,
+				title: r.title,
+				content: r.content,
+				publishDate: r.publish_date,
+				type: r.type,
+				status: r.status
+			})
+		);
 	}
 
 	async matching(criteria: Criteria): Promise<Announcement[]> {

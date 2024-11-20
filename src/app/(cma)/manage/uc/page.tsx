@@ -12,9 +12,7 @@ export default function UCPage() {
 		<article>
 			<UCHeader />
 			<section>
-				<p>
-					Las unidades curriculares son todas las materias que se dictan en el PNFi.
-				</p>
+				<p>Las unidades curriculares son todas las materias que se dictan en el PNFi.</p>
 			</section>
 			<section>
 				<UCList />

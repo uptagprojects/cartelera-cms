@@ -1,10 +1,10 @@
 "use client";
 
 import { Alert } from "octagon-ui";
-import styles from "./News.module.css";
+import { useState } from "react";
 
 import { IAnnouncement } from "./IAnnouncement";
-import { useState } from "react";
+import styles from "./News.module.css";
 
 export function NewsAnnouncementBox({ announcements }: { announcements: IAnnouncement[] }) {
 	const [announcementList, setAnnouncementList] = useState<IAnnouncement[]>(announcements);

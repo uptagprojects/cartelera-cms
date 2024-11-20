@@ -2,8 +2,9 @@
 
 import { Card, CardHeader } from "octagon-ui";
 import React, { FC } from "react";
-import styles from "./News.module.css";
+
 import { IEvent } from "./IEvent";
+import styles from "./News.module.css";
 
 export const NewsUpcomingEventsBox: FC<{ events: IEvent[] }> = ({ events }) => {
 	return (

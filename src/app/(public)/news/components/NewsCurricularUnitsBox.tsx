@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, CardHeader, Container } from "octagon-ui";
+import { Card, CardHeader } from "octagon-ui";
 import React, { FC } from "react";
-import styles from "./News.module.css";
+
 import { IUC } from "./IUC";
+import styles from "./News.module.css";
 
 interface NewsCurricularUnitsBoxProps {
 	uc: IUC[];

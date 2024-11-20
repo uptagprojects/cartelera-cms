@@ -22,7 +22,7 @@ export async function PUT(
 			const { id } = await params;
 			const connection = new PostgresConnection();
 
-			await connection.transactional(async (connection) => {
+			await connection.transactional(async connection => {
 				await new AnnouncementPublisher(
 					new PostgresAnnouncementRepository(connection as PostgresConnection),
 					new RabbitMQEventBus(

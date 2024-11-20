@@ -19,7 +19,7 @@ export function ManageReturnHeader({ title }: { title: string }) {
 				label="Volver"
 				onClick={returnPage}
 			/>
-			<h3>{title}</h3>
+			<h4>{title}</h4>
 		</header>
 	);
 }
