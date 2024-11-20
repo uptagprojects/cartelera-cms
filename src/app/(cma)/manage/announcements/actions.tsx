@@ -89,7 +89,7 @@ export function useGetAnnouncements(): {
 			const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 			const query = qs.stringify({
 				pageSize: PAGE_SIZE,
-				pageNumber: page
+				pageNumber: state.page
 			});
 
 			const data = await fetch(`${base}/api/manage/announcements?${query}`).then(res =>
@@ -106,7 +106,7 @@ export function useGetAnnouncements(): {
 		};
 
 		fetchData().catch(() => {});
-	}, [page]);
+	}, [state.page]);
 
 	const removeAnnouncement = (id: string) => {
 		setAnnouncements(state => state.filter(announcement => announcement.id !== id));
