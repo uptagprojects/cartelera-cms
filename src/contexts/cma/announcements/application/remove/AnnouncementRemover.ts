@@ -1,6 +1,7 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { AnnouncementFinder } from "../../domain/AnnouncementFinder";
+import { Announcement } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
+import { AnnouncementFinder } from "../find/AnnouncementFinder";
 
 export class AnnouncementRemover {
 	private readonly finder: AnnouncementFinder;
@@ -13,8 +14,12 @@ export class AnnouncementRemover {
 	}
 
 	async remove(id: string): Promise<void> {
-		const announcement = await this.finder.find(id);
+		const announcement = await this.findAnnouncement(id);
 		await this.repository.remove(announcement);
 		await this.eventBus.publish(announcement.pullDomainEvents());
+	}
+
+	private async findAnnouncement(id: string): Promise<Announcement> {
+		return Announcement.fromPrimitives(await this.finder.find(id));
 	}
 }

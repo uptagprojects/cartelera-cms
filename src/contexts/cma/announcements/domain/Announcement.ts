@@ -112,4 +112,20 @@ export class Announcement extends AggregateRoot {
 		this.status = AnnouncementStatus.DRAFT;
 		this.record(new AnnouncementRestoredDomainEvent(this.id.value));
 	}
+
+	getId(): string {
+		return this.id.value;
+	}
+
+	isDraft(): boolean {
+		return this.status === AnnouncementStatus.DRAFT;
+	}
+
+	isArchived(): boolean {
+		return this.status === AnnouncementStatus.ARCHIVED;
+	}
+
+	isPublished(): boolean {
+		return this.status === AnnouncementStatus.PUBLISHED;
+	}
 }

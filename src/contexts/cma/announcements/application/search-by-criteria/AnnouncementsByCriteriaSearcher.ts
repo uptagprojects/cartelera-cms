@@ -1,6 +1,6 @@
 import { Criteria } from "../../../../shared/domain/criteria/Criteria";
 import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
-import { Announcement } from "../../domain/Announcement";
+import { AnnouncementPrimitives } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
 
 export class AnnouncementsByCriteriaSearcher {
@@ -12,9 +12,11 @@ export class AnnouncementsByCriteriaSearcher {
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-	): Promise<Announcement[]> {
+	): Promise<AnnouncementPrimitives[]> {
 		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
-		return this.repository.matching(criteria);
+		return (await this.repository.matching(criteria)).map(announcement =>
+			announcement.toPrimitives()
+		);
 	}
 }

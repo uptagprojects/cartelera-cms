@@ -1,6 +1,10 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { InvalidArgumentError } from "../../../../shared/domain/InvalidArgumentError";
+import { InvalidIdentifierError } from "../../../../shared/domain/InvalidIdentifierError";
 import { Announcement } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
+
+export type AnnouncementPosterErrors = InvalidIdentifierError | InvalidArgumentError;
 
 export class AnnouncementPoster {
 	constructor(

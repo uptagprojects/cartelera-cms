@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 import { AnnouncementRestorer } from "../../../../../../contexts/cma/announcements/application/restore/AnnouncementRestorer";
-import { AnnouncementDoesNotExists } from "../../../../../../contexts/cma/announcements/domain/AnnouncementDoesNotExists";
+import { AnnouncementDoesNotExists } from "../../../../../../contexts/cma/announcements/domain/AnnouncementDoesNotExistError";
 import { PostgresAnnouncementRepository } from "../../../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
