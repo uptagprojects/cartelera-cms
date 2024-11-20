@@ -1,3 +1,3 @@
 import { StringValueObject } from "../../../shared/domain/StringValueObject";
 
-export class AnnouncementTitle extends StringValueObject {}
+export class CdaAnnouncementTitle extends StringValueObject {}

@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 
 export default async function NewsPage() {
 	const announcements = await useGetAnnouncements();
-	const guides = await useGetRecentGuides(3);
-	const courses = await useGetUpcomingCourses();
-	const uc = await useGetUC();
+	//const guides = await useGetRecentGuides(3);
+	//const courses = await useGetUpcomingCourses();
+	//const uc = await useGetUC();
 
 	return (
-		<News announcements={announcements} guides={guides} events={[]} courses={courses} uc={uc} />
+		<News announcements={announcements} guides={[]} events={[]} courses={[]} uc={[]} />
 	);
 }

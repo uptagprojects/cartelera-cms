@@ -1,9 +1,9 @@
 import { Service } from "diod";
 
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { Announcement } from "../domain/Announcement";
-import { AnnouncementId } from "../domain/AnnouncementId";
-import { AnnouncementRepository } from "../domain/AnnouncementRepository";
+import { CdaAnnouncement } from "../domain/CdaAnnouncement";
+import { CdaAnnouncementId } from "../domain/CdaAnnouncementId";
+import { CdaAnnouncementRepository } from "../domain/CdaAnnouncementRepository";
 
 interface DatabaseAnnouncement {
 	id: string;
@@ -13,10 +13,10 @@ interface DatabaseAnnouncement {
 }
 
 @Service()
-export class PostgresAnnouncementRepository implements AnnouncementRepository {
+export class PostgresCdaAnnouncementRepository implements CdaAnnouncementRepository {
 	constructor(private readonly connection: PostgresConnection) {}
 
-	async save(announcement: Announcement): Promise<void> {
+	async save(announcement: CdaAnnouncement): Promise<void> {
 		const primitives = announcement.toPrimitives();
 		await this.connection.execute(
 			"INSERT INTO cda__announcements (id, title, content, type) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO UPDATE SET title=$2, content=$3, type=$4",
@@ -24,7 +24,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 		);
 	}
 
-	async search(id: AnnouncementId): Promise<Announcement | null> {
+	async search(id: CdaAnnouncementId): Promise<CdaAnnouncement | null> {
 		const res = await this.connection.searchOne<DatabaseAnnouncement>(
 			"SELECT id, title, content, type FROM cda__announcements WHERE id = $1 LIMIT 1",
 			[id.value]
@@ -34,7 +34,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			return null;
 		}
 
-		return Announcement.fromPrimitives({
+		return CdaAnnouncement.fromPrimitives({
 			id: res.id,
 			title: res.title,
 			content: res.content,
@@ -42,13 +42,13 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 		});
 	}
 
-	async searchAll(): Promise<Announcement[]> {
+	async searchAll(): Promise<CdaAnnouncement[]> {
 		const results = await this.connection.searchAll<DatabaseAnnouncement>(
 			"SELECT id, title, content, type FROM cda__announcements ORDER BY stored_creation_timestamp"
 		);
 
 		return results.map(a =>
-			Announcement.fromPrimitives({
+			CdaAnnouncement.fromPrimitives({
 				id: a.id,
 				title: a.title,
 				content: a.content,
@@ -57,7 +57,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 		);
 	}
 
-	async remove(announcement: Announcement): Promise<void> {
+	async remove(announcement: CdaAnnouncement): Promise<void> {
 		await this.connection.execute("DELETE FROM cda__announcements WHERE id = $1", [
 			announcement.id.value
 		]);

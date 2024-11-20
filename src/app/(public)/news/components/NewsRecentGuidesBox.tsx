@@ -1,4 +1,5 @@
-import { Avatar, Card, CardFooter, CardHeader, Tag } from "octagon-ui";
+"use client";
+import { Avatar, Card, CardFooter, CardHeader, Container, Tag } from "octagon-ui";
 import React, { FC } from "react";
 
 import { IRecentGuide } from "./IRecentGuide";
@@ -9,7 +10,7 @@ type NewsRecentGuidesBoxProps = {
 };
 export const NewsRecentGuidesBox: FC<NewsRecentGuidesBoxProps> = ({ guides }) => {
 	return (
-		<Card hover={false} className={styles.recentGuides}>
+		<Container className={styles.recentGuides}>
 			<CardHeader title="Publicaciones recientes" />
 			{guides.map(guide => (
 				<Card key={guide.id} image={guide.image} aspectRatio="portrait">
@@ -22,6 +23,6 @@ export const NewsRecentGuidesBox: FC<NewsRecentGuidesBoxProps> = ({ guides }) =>
 					</CardFooter>
 				</Card>
 			))}
-		</Card>
+		</Container>
 	);
 };

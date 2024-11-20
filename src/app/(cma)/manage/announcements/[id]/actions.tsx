@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const useGetAnnouncementDetails = async (id: string) => {
@@ -69,5 +70,5 @@ export async function saveAnnouncement(_state: {}, formData: FormData) {
 		return await res.json();
 	}
 
-	return {};
+	return redirect("/manage/announcements");
 }

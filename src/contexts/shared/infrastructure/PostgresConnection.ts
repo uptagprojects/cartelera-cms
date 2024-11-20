@@ -11,6 +11,10 @@ export class PostgresConnection extends DatabaseConnection {
 	get pool(): Pool {
 		if (!this.poolInstance) {
 			this.poolInstance = new Pool({
+				connectionTimeoutMillis: 2000,
+				idleTimeoutMillis: 30000,
+				max: 30,
+				min: 2,
 				connectionString:
 					process.env.POSTGRES_CONNECTION ??
 					"postgres://user:password$@localhost:5432/cartelera?sslmode=disable"
@@ -38,7 +42,6 @@ export class PostgresConnection extends DatabaseConnection {
 		const conn = await this.getConnection();
 
 		await conn.query(query, values);
-		conn.release();
 	}
 
 	async truncate(table: string): Promise<void> {
@@ -58,6 +61,11 @@ export class PostgresConnection extends DatabaseConnection {
 
 	async commit(): Promise<void> {
 		await this.connection?.query("COMMIT");
+	}
+
+	async release(): Promise<void> {
+		await this.connection?.release(true);
+		this.connection = null;
 	}
 
 	async rollback(): Promise<void> {

@@ -1,6 +1,10 @@
 "use client";
-import { Spinner } from "octagon-ui";
+import { Container, Spinner } from "octagon-ui";
 
 export default function LoadingNews() {
-	return <Spinner />;
+	return (
+	<Container align="center" display>
+		<Spinner />
+	</Container>
+	);
 }

@@ -13,16 +13,22 @@ const searcher = new AnnouncementsByCriteriaSearcher(
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);
 
-	const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
-	const announcements = await searcher.search(
-		filters,
-		searchParams.get("orderBy"),
-		searchParams.get("orderType"),
-		searchParams.get("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : null,
-		searchParams.get("pageNumber")
-			? parseInt(searchParams.get("pageNumber") as string, 10)
-			: null
-	);
+	try {
+		const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
+		const announcements = await searcher.search(
+			filters,
+			searchParams.get("orderBy"),
+			searchParams.get("orderType"),
+			searchParams.get("pageSize")
+				? parseInt(searchParams.get("pageSize") as string, 10)
+				: null,
+			searchParams.get("pageNumber")
+				? parseInt(searchParams.get("pageNumber") as string, 10)
+				: null
+		);
 
-	return HTTPNextResponse.json(announcements);
+		return HTTPNextResponse.json(announcements);
+	} catch (_error) {
+		return HTTPNextResponse.internalServerError();
+	}
 }

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "PNFi | Anuncios",
+	title: "PNFi | CMS | Guias",
 	description: "Programa Nacional de Formacion en Informatica"
 };
 

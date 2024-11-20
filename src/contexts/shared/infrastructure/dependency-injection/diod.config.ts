@@ -11,8 +11,8 @@ import { RemoveOnAnnouncementUnpublished } from "../../../cda/announcements/appl
 import { UnpublishedAnnouncementRemover } from "../../../cda/announcements/application/remove-on-unpublished/UnpublishedAnnouncementRemover";
 import { PublishedAnnouncementUpdater } from "../../../cda/announcements/application/update-on-published/PublishedAnnouncementUpdater";
 import { UpdateAnnouncementOnPublished } from "../../../cda/announcements/application/update-on-published/UpdateAnnouncementOnPublished";
-import { AnnouncementRepository } from "../../../cda/announcements/domain/AnnouncementRepository";
-import { PostgresAnnouncementRepository } from "../../../cda/announcements/infrastructure/PostgresAnnouncementRepository";
+import { CdaAnnouncementRepository } from "../../../cda/announcements/domain/CdaAnnouncementRepository";
+import { PostgresCdaAnnouncementRepository } from "../../../cda/announcements/infrastructure/PostgresCdaAnnouncementRepository";
 import { RemoveOnCourseUnpublished } from "../../../cda/courses/application/remove-on-unpublished/RemoveOnCourseUnpublished";
 import { UnpublishedCourseRemover } from "../../../cda/courses/application/remove-on-unpublished/UnpublishedCourseRemover";
 import { PublishedCourseUpdater } from "../../../cda/courses/application/update-on-published/PublishedCourseUpdater";
@@ -111,7 +111,7 @@ builder.registerAndUse(UpdateActivityOnEventPublished).addTag("subscriber");
 builder.registerAndUse(UpdateActivityOnGuidePublished).addTag("subscriber");
 
 // cda/announcements
-builder.register(AnnouncementRepository).use(PostgresAnnouncementRepository);
+builder.register(CdaAnnouncementRepository).use(PostgresCdaAnnouncementRepository);
 builder.registerAndUse(UpdateAnnouncementOnPublished).addTag("subscriber");
 builder.registerAndUse(PublishedAnnouncementUpdater);
 builder.registerAndUse(RemoveOnAnnouncementUnpublished).addTag("subscriber");

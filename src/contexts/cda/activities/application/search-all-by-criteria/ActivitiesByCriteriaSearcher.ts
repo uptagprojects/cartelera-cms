@@ -1,6 +1,6 @@
 import { Criteria } from "../../../../shared/domain/criteria/Criteria";
 import { FiltersPrimitives } from "../../../../shared/domain/criteria/Filter";
-import { Activity } from "../../domain/Activity";
+import { ActivityPrimitives } from "../../domain/Activity";
 import { ActivityRepository } from "../../domain/ActivityRepository";
 
 export class ActivitiesByCriteriaSearcher {
@@ -12,9 +12,9 @@ export class ActivitiesByCriteriaSearcher {
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-	): Promise<Activity[]> {
+	): Promise<ActivityPrimitives[]> {
 		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
-		return this.repository.matching(criteria);
+		return (await this.repository.matching(criteria)).map(a => a.toPrimitives());
 	}
 }

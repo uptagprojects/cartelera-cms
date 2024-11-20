@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 
-import { AnnouncementHeader } from "./components";
-import { AnnouncementList } from "./components/AnnouncementList";
+import { AnnouncementHeader, AnnouncementList } from "./components";
 
 export const metadata: Metadata = {
-	title: "PNFi | Anuncios",
+	title: "PNFi | CMS | Anuncios",
 	description: "Programa Nacional de Formacion en Informatica"
 };
 

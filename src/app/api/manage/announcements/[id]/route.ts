@@ -38,15 +38,17 @@ export async function PUT(
 			}
 
 			const body = parsed.data;
-			const postgresConnection = new PostgresConnection();
+			const connection = new PostgresConnection();
 
-			await new AnnouncementPoster(
-				new PostgresAnnouncementRepository(postgresConnection),
-				new RabbitMQEventBus(
-					new RabbitMQConnection(),
-					new DomainEventFailover(postgresConnection)
-				)
-			).post(id, body.title, body.type, body.content);
+			await connection.transactional(async () => {
+				await new AnnouncementPoster(
+					new PostgresAnnouncementRepository(connection),
+					new RabbitMQEventBus(
+						new RabbitMQConnection(),
+						new DomainEventFailover(connection)
+					)
+				).post(id, body.title, body.type, body.content);
+			});
 
 			return HTTPNextResponse.created();
 		},

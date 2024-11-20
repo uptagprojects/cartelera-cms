@@ -1,15 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-import { AllAnnouncementsSearcher } from "../../../contexts/cda/announcements/application/search-all/AllAnnouncementsSearcher";
-import { PostgresAnnouncementRepository } from "../../../contexts/cda/announcements/infrastructure/PostgresAnnouncementRepository";
+import { AllCdaAnnouncementsSearcher } from "../../../contexts/cda/announcements/application/search-all/AllCdaAnnouncementsSearcher";
+import { PostgresCdaAnnouncementRepository } from "../../../contexts/cda/announcements/infrastructure/PostgresCdaAnnouncementRepository";
+import { HTTPNextResponse } from "../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
-const searcher = new AllAnnouncementsSearcher(
-	new PostgresAnnouncementRepository(new PostgresConnection())
+const searcher = new AllCdaAnnouncementsSearcher(
+	new PostgresCdaAnnouncementRepository(new PostgresConnection())
 );
 
 export async function GET(_: NextRequest): Promise<Response> {
 	const announcements = await searcher.searchAll();
 
-	return NextResponse.json(announcements.map(announcement => announcement.toPrimitives()));
+	return HTTPNextResponse.json(announcements);
 }

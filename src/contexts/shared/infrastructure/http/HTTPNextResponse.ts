@@ -34,6 +34,12 @@ export class HTTPNextResponse {
 		});
 	}
 
+	static accepted(): NextResponse {
+		return new NextResponse(null, {
+			status: 202
+		});
+	}
+
 	static deleted(): NextResponse {
 		return new NextResponse(null, {
 			status: 204

@@ -15,6 +15,8 @@ export abstract class DatabaseConnection {
 
 	abstract rollback(): Promise<void>;
 
+	abstract release(): Promise<void>;
+
 	async transactional<T>(fn: (connection: DatabaseConnection) => Promise<T>): Promise<T> {
 		try {
 			await this.beginTransaction();
@@ -28,6 +30,8 @@ export abstract class DatabaseConnection {
 			await this.rollback();
 
 			throw error;
+		} finally {
+			await this.release();
 		}
 	}
 }
