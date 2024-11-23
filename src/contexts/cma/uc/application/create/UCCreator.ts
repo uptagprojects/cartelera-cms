@@ -1,7 +1,11 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { InvalidIdentifierError } from "../../../../shared/domain/InvalidIdentifierError";
 import { UC } from "../../domain/UC";
+import { UCNameIsEmptyError } from "../../domain/UCNameIsEmptyError";
+import { UCNameTooLongError } from "../../domain/UCNameTooLongError";
 import { UCRepository } from "../../domain/UCRepository";
 
+export type UCCreatorErrors = InvalidIdentifierError | UCNameIsEmptyError | UCNameTooLongError;
 export class UCCreator {
 	constructor(
 		private readonly repository: UCRepository,

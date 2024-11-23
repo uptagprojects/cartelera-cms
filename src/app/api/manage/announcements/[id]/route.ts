@@ -9,7 +9,6 @@ import {
 import { AnnouncementDoesNotExistError } from "../../../../../contexts/cma/announcements/domain/AnnouncementDoesNotExistError";
 import { PostgresAnnouncementRepository } from "../../../../../contexts/cma/announcements/infrastructure/PostgresAnnouncementRepository";
 import { assertNever } from "../../../../../contexts/shared/domain/assertNever";
-import { InvalidArgumentError } from "../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
@@ -34,7 +33,7 @@ export async function PUT(
 			const json = await request.json();
 			const parsed = validator.safeParse(json);
 			if (!parsed.success) {
-				throw new InvalidArgumentError(parsed.error.message);
+				return HTTPNextResponse.validationError(parsed.error, 422);
 			}
 
 			const body = parsed.data;

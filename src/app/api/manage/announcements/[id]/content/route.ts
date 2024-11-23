@@ -16,7 +16,7 @@ import { HTTPNextResponse } from "../../../../../../contexts/shared/infrastructu
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 const validator = z.object({
-	content: z.string().url()
+	content: z.string()
 });
 
 export async function PUT(
@@ -30,7 +30,7 @@ export async function PUT(
 			const parsed = validator.safeParse(json);
 
 			if (!parsed.success) {
-				throw parsed.error.message;
+				return HTTPNextResponse.validationError(parsed.error, 422);
 			}
 
 			const postgresConnection = new PostgresConnection();

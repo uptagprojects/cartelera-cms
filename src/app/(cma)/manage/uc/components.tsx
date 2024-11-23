@@ -1,11 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button, Card, CardFooter, Container, Spinner, TextInput } from "octagon-ui";
-import { useActionState, useCallback, useRef, useState, memo } from "react";
+import { Button, Container, Spinner, TextInput } from "octagon-ui";
+import { memo, useCallback, useId, useState } from "react";
 
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
-import { deleteUC, IManageUC, saveUCContent, useGetUCs } from "./actions";
+import { deleteUC, IManageUC, updateUCName, useGetUCs } from "./actions";
+import styles from "./UC.module.css";
 
 export const UCHeader = () => {
 	const router = useRouter();
@@ -29,11 +30,19 @@ export const UCLoader = () => (
 );
 
 const UCListItem = ({ id, name, onDelete }: IManageUC & { onDelete: (id: string) => void }) => {
-	const [errors, saveNameAction, isPending] = useActionState(saveUCContent, { id });
+	const htmlId = useId();
 	const [editing, setEditing] = useState<boolean>(false);
 	const [nameValue, setNameValue] = useState<string>(name);
 
-	const ref = useRef<HTMLFormElement>(null);
+	const handleEditing = useCallback(async () => {
+		if (editing) {
+			await updateUCName({
+				id,
+				name: nameValue
+			});
+		}
+		setEditing(state => !state);
+	}, [editing, nameValue, setEditing, id]);
 
 	const handleDelete = useCallback(() => {
 		void deleteUC({ id });
@@ -41,37 +50,28 @@ const UCListItem = ({ id, name, onDelete }: IManageUC & { onDelete: (id: string)
 	}, [id, onDelete]);
 
 	return (
-		<Card>
-			{editing ? (
-				<form action={saveNameAction} ref={ref}>
+		<tr className={styles.tableRow}>
+			<td>
+				{editing ? (
 					<TextInput
+						id={htmlId}
 						label="nombre"
 						size="small"
 						value={nameValue}
-						disabled={isPending}
 						onChange={e => setNameValue(e.target.value)}
-						errorMessage={errors.name}
 					/>
-				</form>
-			) : (
-				<>
-					<p>{name}</p>
-				</>
-			)}
-			<CardFooter>
+				) : (
+					<p id={htmlId}>{nameValue}</p>
+				)}
+			</td>
+			<td>
 				<Button
 					icon={editing ? "Check" : "Pencil"}
 					variant="secondary"
 					label={editing ? "terminar edicion" : "editar"}
 					size="small"
 					onClick={() => {
-						setEditing(state => {
-							if (state) {
-								ref.current?.requestSubmit();
-							}
-
-							return !state;
-						});
+						void handleEditing();
 					}}
 				/>
 				<Button
@@ -81,8 +81,8 @@ const UCListItem = ({ id, name, onDelete }: IManageUC & { onDelete: (id: string)
 					size="small"
 					onClick={handleDelete}
 				/>
-			</CardFooter>
-		</Card>
+			</td>
+		</tr>
 	);
 };
 
@@ -93,6 +93,8 @@ const EmptyUC = memo(() => (
 	/>
 ));
 
+EmptyUC.displayName = "EmptyUC";
+
 export const UCList = () => {
 	const { ucs, remove } = useGetUCs();
 
@@ -101,10 +103,18 @@ export const UCList = () => {
 	}
 
 	return (
-		<>
-			{ucs.map(announcement => (
-				<UCListItem key={announcement.id} onDelete={remove} {...announcement} />
-			))}
-		</>
+		<table className={styles.table}>
+			<thead className={styles.tableHeader}>
+				<tr>
+					<th>Nombre</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{ucs.map(announcement => (
+					<UCListItem key={announcement.id} onDelete={remove} {...announcement} />
+				))}
+			</tbody>
+		</table>
 	);
 };

@@ -1,5 +1,6 @@
 import { STATUS_CODES } from "http";
 import { NextResponse } from "next/server";
+import { ZodError } from "zod";
 
 import { DomainError } from "../../domain/DomainError";
 
@@ -8,6 +9,28 @@ export class HTTPNextResponse {
 		return NextResponse.json(
 			{
 				error: error.toPrimitives()
+			},
+			{
+				status: statusCode
+			}
+		);
+	}
+
+	static validationError(error: ZodError, statusCode: number): NextResponse {
+		return NextResponse.json(
+			{
+				error: Object.fromEntries(
+					Object.entries(error.flatten().fieldErrors).map(([field, errors]) => [
+						field,
+						errors && errors.length > 0
+							? {
+									type: "validation_error",
+									description: errors.join(", "),
+									data: errors
+								}
+							: null
+					])
+				)
 			},
 			{
 				status: statusCode

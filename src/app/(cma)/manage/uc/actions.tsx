@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
@@ -55,6 +56,37 @@ export async function saveUCContent(_state: { id: string }, formData: FormData) 
 		},
 		body: JSON.stringify({
 			title: validated.data.name
+		})
+	});
+
+	if (res.status >= 400) {
+		return await res.json();
+	}
+
+	return {};
+}
+
+export async function updateUCName(_state: { id: string; name: string }) {
+	const nameSchema = z
+		.string()
+		.min(1, "This field has to be filled.")
+		.max(120, "This field is too long.");
+
+	const validated = nameSchema.safeParse(_state.name);
+
+	if (!validated.success) {
+		return validated.error.message;
+	}
+
+	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+
+	const res = await fetch(`${base}/api/manage/uc/${_state.id}/rename`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			name: validated.data
 		})
 	});
 

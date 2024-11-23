@@ -1,5 +1,5 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { UCFinder } from "../../../uc/domain/UCFinder";
+import { UCFinder } from "../../../uc/application/find/UCFinder";
 import { UserFinder } from "../../../users/domain/UserFinder";
 import { Guide } from "../../domain/Guide";
 import { GuideRepository } from "../../domain/GuideRepository";
@@ -22,7 +22,7 @@ export class GuidePoster {
 		const user = await this.userFinder.find(authorId);
 		const uc = await this.ucFinder.find(areaId);
 
-		const guide = Guide.create(id, title, content, uc.getId().value, user.getId().value);
+		const guide = Guide.create(id, title, content, uc.id, user.getId().value);
 		await this.repository.save(guide);
 		await this.eventBus.publish(guide.pullDomainEvents());
 	}

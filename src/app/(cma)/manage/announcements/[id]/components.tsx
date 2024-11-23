@@ -2,7 +2,7 @@
 import { Button, Select, TextArea, TextInput } from "octagon-ui";
 import { useActionState, useState } from "react";
 
-import { IManageAnnouncement } from "../actions";
+import { IManageAnnouncement } from "../types";
 import { saveAnnouncement } from "./actions";
 
 export const AnnouncementForm = ({

@@ -1,4 +1,4 @@
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export const useGetAnnouncementDetails = async (id: string) => {

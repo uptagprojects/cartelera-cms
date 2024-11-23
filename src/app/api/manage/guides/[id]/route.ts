@@ -5,7 +5,7 @@ import { GuideFinder } from "../../../../../contexts/cma/guides/application/find
 import { GuidePoster } from "../../../../../contexts/cma/guides/application/post/GuidePoster";
 import { GuideDoesNotExist } from "../../../../../contexts/cma/guides/domain/GuideDoesNotExist";
 import { PostgresGuideRepository } from "../../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
-import { UCFinder } from "../../../../../contexts/cma/uc/domain/UCFinder";
+import { UCFinder } from "../../../../../contexts/cma/uc/application/find/UCFinder";
 import { PostgresUCRepository } from "../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
 import { UserFinder } from "../../../../../contexts/cma/users/domain/UserFinder";
 import { PostgresUserRepository } from "../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
@@ -22,15 +22,15 @@ const validator = z.object({
 	areaId: z.string().uuid()
 });
 
-export async function PUT(
-	request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
-): Promise<Response> {
-	const session = await auth();
+export const PUT = auth(async (request, { params }): Promise<Response> => {
+	const { id } = await (params as unknown as Promise<{ id: string }>);
+	console.log("Auth", request.auth);
+	console.log("id", id);
+
+	const session = request.auth;
 
 	if (!session?.user?.id) return new Response("Unauthorized", { status: 401 });
 
-	const { id } = await params;
 	const json = await request.json();
 	const parsed = validator.safeParse(json);
 	if (!parsed.success) {
@@ -96,7 +96,7 @@ export async function PUT(
 			}
 		);
 	}
-}
+});
 
 export async function GET(
 	_: NextRequest,

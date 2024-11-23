@@ -1,29 +1,20 @@
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import Nodemailer from "next-auth/providers/nodemailer";
+import nodemailer from "next-auth/providers/nodemailer";
 
 import postgresAdapter from "../contexts/cma/auth/infrastructure/PostgresAuthAdapter";
 import { OfficialUuidGenerator } from "../contexts/shared/infrastructure/OfficialUuidGenerator";
 import { PostgresConnection } from "../contexts/shared/infrastructure/PostgresConnection";
+import { authConfig } from "./auth.config";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-	debug: process.env.NODE_ENV === "production",
-	basePath: "/api/auth",
+	...authConfig,
 	providers: [
-		Google({
-			allowDangerousEmailAccountLinking: process.env.NODE_ENV === "development"
-		}),
-		Nodemailer({
-			server: process.env.EMAIL_SERVER,
-			from: process.env.EMAIL_FROM
+		...authConfig.providers,
+		nodemailer({
+			from: process.env.EMAIL_FROM,
+			server: process.env.EMAIL_SERVER
 		})
 	],
-	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator()),
-	callbacks: {
-		session({ session, user }) {
-			session.userId = user.id;
-
-			return session;
-		}
-	}
+	session: { strategy: "jwt" },
+	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator())
 });

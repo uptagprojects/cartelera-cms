@@ -11,19 +11,27 @@ import {
 	TextArea,
 	TextInput
 } from "octagon-ui";
-import { Suspense, useActionState, useCallback, useRef, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
 import {
 	archiveAnnouncement,
 	deleteAnnouncement,
-	IManageAnnouncement,
 	publishAnnouncement,
 	restoreAnnouncement,
-	saveAnnouncementContent,
+	updateAnnouncementContent,
+	updateAnnouncementTitle,
 	useGetAnnouncements
 } from "./actions";
+import { IManageAnnouncement } from "./types";
+
+enum emojis {
+	"info" = "📢",
+	"success" = "🎉",
+	"warning" = "⚠️",
+	"error" = "🚨"
+}
 
 export const AnnouncementHeader = () => {
 	const router = useRouter();
@@ -52,19 +60,33 @@ const AnnouncementListItem = ({
 	type,
 	content,
 	status,
+	publishDate,
 	onDelete
 }: IManageAnnouncement & { onDelete: (id: string) => void }) => {
-	const [errors, saveContentAction, isPending] = useActionState(saveAnnouncementContent, { id });
 	const [editing, setEditing] = useState<boolean>(false);
 	const [titleValue, setTitleValue] = useState<string>(title);
 	const [contentValue, setContentValue] = useState<string>(content);
 	const [statusValue, setStatusValue] = useState<string>(status);
-	const ref = useRef<HTMLFormElement>(null);
 
 	const handlePublish = useCallback(async () => {
 		await publishAnnouncement({ id });
 		setStatusValue("published");
 	}, [setStatusValue, id]);
+
+	const handleEditing = useCallback(async () => {
+		if (editing) {
+			await updateAnnouncementTitle({
+				id,
+				title: titleValue
+			});
+
+			await updateAnnouncementContent({
+				id,
+				content: contentValue
+			});
+		}
+		setEditing(state => !state);
+	}, [editing, titleValue, contentValue, setEditing, id]);
 
 	const handleArchive = useCallback(async () => {
 		if (statusValue === "archived") {
@@ -84,33 +106,36 @@ const AnnouncementListItem = ({
 	return (
 		<Card>
 			{editing ? (
-				<form action={saveContentAction} ref={ref}>
+				<>
 					<TextInput
 						label="titulo"
 						size="small"
 						value={titleValue}
-						disabled={isPending}
 						onChange={e => setTitleValue(e.target.value)}
-						errorMessage={errors.title}
 					/>
 					<TextArea
 						label="contenido"
 						size="small"
 						value={contentValue}
-						disabled={isPending}
 						onChange={e => setContentValue(e.target.value)}
-						errorMessage={errors.content}
 					/>
-				</form>
+				</>
 			) : (
 				<>
-					<CardHeader title={titleValue} subtitle={type} />
+					<CardHeader
+						title={`${emojis[type as keyof typeof emojis]} ${titleValue}`}
+						subtitle={
+							statusValue === "published"
+								? `publicado el ${new Date(publishDate).toLocaleDateString()}`
+								: undefined
+						}
+					/>
 					<p>{contentValue}</p>
 				</>
 			)}
 			<CardFooter>
 				{statusValue === "draft" && (
-					<div>
+					<>
 						<Button
 							icon="WholeWord"
 							variant="primary"
@@ -126,16 +151,10 @@ const AnnouncementListItem = ({
 							label={editing ? "terminar edicion" : "editar"}
 							size="small"
 							onClick={() => {
-								setEditing(state => {
-									if (state) {
-										ref.current?.requestSubmit();
-									}
-
-									return !state;
-								});
+								void handleEditing();
 							}}
 						/>
-					</div>
+					</>
 				)}
 				<div>
 					<Button
@@ -163,9 +182,9 @@ const AnnouncementListItem = ({
 };
 
 export const AnnouncementList = () => {
-	const { announcements, loadMore, noMoreAvailable, remove } = useGetAnnouncements();
+	const { announcements, loading, loadMore, noMoreAvailable, remove } = useGetAnnouncements();
 
-	if (announcements.length === 0) {
+	if (!loading && announcements.length === 0) {
 		return (
 			<ManageEmpty
 				message="Puedes crear un nuevo anuncio con el boton de arriba o"

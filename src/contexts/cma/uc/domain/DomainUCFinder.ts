@@ -1,15 +1,15 @@
 import { UC } from "./UC";
-import { UCDoesNotExist } from "./UCDoesNotExist";
+import { UCDoesNotExistError } from "./UCDoesNotExistError";
 import { UCId } from "./UCId";
 import { UCRepository } from "./UCRepository";
 
-export class UCFinder {
+export class DomainUCFinder {
 	constructor(private readonly repository: UCRepository) {}
 
 	async find(id: string): Promise<UC> {
 		const uc = await this.repository.search(new UCId(id));
 		if (!uc) {
-			throw new UCDoesNotExist(id);
+			throw new UCDoesNotExistError(id);
 		}
 
 		return uc;

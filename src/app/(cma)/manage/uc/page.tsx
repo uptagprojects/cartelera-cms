@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function UCPage() {
 	return (
-		<article>
+		<>
 			<UCHeader />
 			<section>
 				<p>Las unidades curriculares son todas las materias que se dictan en el PNFi.</p>
@@ -17,6 +17,6 @@ export default function UCPage() {
 			<section>
 				<UCList />
 			</section>
-		</article>
+		</>
 	);
 }

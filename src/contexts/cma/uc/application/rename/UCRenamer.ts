@@ -1,6 +1,7 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { UCFinder } from "../../domain/UCFinder";
+import { UC } from "../../domain/UC";
 import { UCRepository } from "../../domain/UCRepository";
+import { UCFinder } from "../find/UCFinder";
 
 export class UCRenamer {
 	private readonly finder: UCFinder;
@@ -12,9 +13,13 @@ export class UCRenamer {
 	}
 
 	async rename(id: string, name: string): Promise<void> {
-		const uc = await this.finder.find(id);
+		const uc = await this.findUC(id);
 		uc.rename(name);
 		await this.repository.save(uc);
 		await this.eventBus.publish(uc.pullDomainEvents());
+	}
+
+	private async findUC(id: string): Promise<UC> {
+		return UC.fromPrimitives(await this.finder.find(id));
 	}
 }

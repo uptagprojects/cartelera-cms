@@ -33,7 +33,7 @@ export async function saveUC(_state: {}, formData: FormData) {
 	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	const validatedFields = saveUCSchema.safeParse({
 		id: formData.get("id"),
-		title: formData.get("name")
+		name: formData.get("name")
 	});
 
 	if (!validatedFields.success) {
