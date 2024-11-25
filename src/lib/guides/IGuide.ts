@@ -6,7 +6,7 @@ export interface IGuide {
 	professor: {
 		id: string;
 		name: string;
-		badge: string;
+		avatar: string;
 	};
 	image: string;
 	publishDate: string;

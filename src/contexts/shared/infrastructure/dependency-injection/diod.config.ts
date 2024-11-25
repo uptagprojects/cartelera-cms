@@ -11,8 +11,8 @@ import { RemoveOnAnnouncementUnpublished } from "../../../cda/announcements/appl
 import { UnpublishedAnnouncementRemover } from "../../../cda/announcements/application/remove-on-unpublished/UnpublishedAnnouncementRemover";
 import { PublishedAnnouncementUpdater } from "../../../cda/announcements/application/update-on-published/PublishedAnnouncementUpdater";
 import { UpdateAnnouncementOnPublished } from "../../../cda/announcements/application/update-on-published/UpdateAnnouncementOnPublished";
-import { AnnouncementRepository } from "../../../cda/announcements/domain/AnnouncementRepository";
-import { PostgresAnnouncementRepository } from "../../../cda/announcements/infrastructure/PostgresAnnouncementRepository";
+import { CdaAnnouncementRepository } from "../../../cda/announcements/domain/CdaAnnouncementRepository";
+import { PostgresCdaAnnouncementRepository } from "../../../cda/announcements/infrastructure/PostgresCdaAnnouncementRepository";
 import { RemoveOnCourseUnpublished } from "../../../cda/courses/application/remove-on-unpublished/RemoveOnCourseUnpublished";
 import { UnpublishedCourseRemover } from "../../../cda/courses/application/remove-on-unpublished/UnpublishedCourseRemover";
 import { PublishedCourseUpdater } from "../../../cda/courses/application/update-on-published/PublishedCourseUpdater";
@@ -31,8 +31,8 @@ import { PublishedGuideUpdater } from "../../../cda/guides/application/update-on
 import { UpdateGuideOnPublished } from "../../../cda/guides/application/update-on-published/UpdateGuideOnPublished";
 import { GuideRepository } from "../../../cda/guides/domain/GuideRepository";
 import { PostgresGuideRepository } from "../../../cda/guides/infrastructure/PostgresGuideRepository";
-import { DecreaseTotalGuidesOnGuideArchived } from "../../../cda/uc/application/decrease-total-guides-on-guide-archived/DecreaseTotalGuidesOnGuideArchived";
-import { UCTotalGuidesDecreaser } from "../../../cda/uc/application/decrease-total-guides-on-guide-archived/UCTotalGuidesDecreaser";
+import { DecreaseTotalGuidesOnGuideUnpublished } from "../../../cda/uc/application/decrease-total-guides-on-guide-unpublished/DecreaseTotalGuidesOnGuideUnpublished";
+import { UCTotalGuidesDecreaser } from "../../../cda/uc/application/decrease-total-guides-on-guide-unpublished/UCTotalGuidesDecreaser";
 import { IncreaseTotalGuidesOnGuidePublished } from "../../../cda/uc/application/increase-total-guides-on-guide-published/IncreaseTotalGuidesOnGuidePublished";
 import { UCTotalGuidesIncreaser } from "../../../cda/uc/application/increase-total-guides-on-guide-published/UCTotalGuidesIncreaser";
 import { RemoveOnUCUnpublished } from "../../../cda/uc/application/remove-on-unpublished/RemoveOnUCUnpublished";
@@ -111,7 +111,7 @@ builder.registerAndUse(UpdateActivityOnEventPublished).addTag("subscriber");
 builder.registerAndUse(UpdateActivityOnGuidePublished).addTag("subscriber");
 
 // cda/announcements
-builder.register(AnnouncementRepository).use(PostgresAnnouncementRepository);
+builder.register(CdaAnnouncementRepository).use(PostgresCdaAnnouncementRepository);
 builder.registerAndUse(UpdateAnnouncementOnPublished).addTag("subscriber");
 builder.registerAndUse(PublishedAnnouncementUpdater);
 builder.registerAndUse(RemoveOnAnnouncementUnpublished).addTag("subscriber");
@@ -147,7 +147,7 @@ builder.registerAndUse(UpdateUCOnPublished).addTag("subscriber");
 builder.registerAndUse(PublishedUCUpdater);
 builder.registerAndUse(IncreaseTotalGuidesOnGuidePublished).addTag("subscriber");
 builder.registerAndUse(UCTotalGuidesIncreaser);
-builder.registerAndUse(DecreaseTotalGuidesOnGuideArchived).addTag("subscriber");
+builder.registerAndUse(DecreaseTotalGuidesOnGuideUnpublished).addTag("subscriber");
 builder.registerAndUse(UCTotalGuidesDecreaser);
 builder.registerAndUse(RemoveOnUCUnpublished).addTag("subscriber");
 builder.registerAndUse(UnpublishedUCRemover);

@@ -12,7 +12,7 @@ export class IncreaseTotalGuidesOnGuidePublished
 	constructor(private readonly increaser: UCTotalGuidesIncreaser) {}
 
 	async on(event: GuidePublishedDomainEvent): Promise<void> {
-		await this.increaser.increment(event.id);
+		await this.increaser.increment(event.ucId);
 	}
 
 	subscribedTo(): DomainEventClass[] {

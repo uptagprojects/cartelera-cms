@@ -1,15 +1,15 @@
 import { EventBus } from "../../../../shared/domain/event/EventBus";
-import { UCFinder } from "../../domain/UCFinder";
+import { DomainUCFinder } from "../../domain/DomainUCFinder";
 import { UCRepository } from "../../domain/UCRepository";
 
 export class UCRemover {
-	private readonly finder: UCFinder;
+	private readonly finder: DomainUCFinder;
 
 	constructor(
 		private readonly repository: UCRepository,
 		private readonly eventBus: EventBus
 	) {
-		this.finder = new UCFinder(repository);
+		this.finder = new DomainUCFinder(repository);
 	}
 
 	async remove(id: string): Promise<void> {

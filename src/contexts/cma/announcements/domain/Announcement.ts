@@ -26,31 +26,33 @@ export class Announcement extends AggregateRoot {
 		private readonly id: AnnouncementId,
 		private title: AnnouncementTitle,
 		private content: AnnouncementContent,
-		private readonly publishDate: AnnouncementPublishDate,
+		private readonly publishDate: AnnouncementPublishDate, // TO DO: remove publishDate from here
 		private readonly type: AnnouncementType,
 		private status: AnnouncementStatus
 	) {
 		super();
 	}
 
-	static create(
-		id: string,
-		title: string,
-		content: string,
-		publishDate: string,
-		type: string
-	): Announcement {
+	static create(id: string, title: string, type: string, content: string): Announcement {
+		const defaultPublishDate = new Date();
+		const defaultStatus = AnnouncementStatus.DRAFT;
 		const announcement = new Announcement(
 			new AnnouncementId(id),
 			new AnnouncementTitle(title),
 			new AnnouncementContent(content),
-			new AnnouncementPublishDate(publishDate),
+			new AnnouncementPublishDate(defaultPublishDate),
 			type as AnnouncementType,
-			AnnouncementStatus.DRAFT
+			defaultStatus
 		);
 
 		announcement.record(
-			new AnnouncementPostedDomainEvent(id, title, content, publishDate, type)
+			new AnnouncementPostedDomainEvent(
+				id,
+				title,
+				content,
+				defaultPublishDate.toISOString(),
+				type
+			)
 		);
 
 		return announcement;
@@ -61,7 +63,7 @@ export class Announcement extends AggregateRoot {
 			new AnnouncementId(plainData.id),
 			new AnnouncementTitle(plainData.title),
 			new AnnouncementContent(plainData.content),
-			new AnnouncementPublishDate(plainData.publishDate),
+			new AnnouncementPublishDate(new Date(plainData.publishDate)),
 			plainData.type as AnnouncementType,
 			plainData.status as AnnouncementStatus
 		);
@@ -109,5 +111,21 @@ export class Announcement extends AggregateRoot {
 	restore(): void {
 		this.status = AnnouncementStatus.DRAFT;
 		this.record(new AnnouncementRestoredDomainEvent(this.id.value));
+	}
+
+	getId(): string {
+		return this.id.value;
+	}
+
+	isDraft(): boolean {
+		return this.status === AnnouncementStatus.DRAFT;
+	}
+
+	isArchived(): boolean {
+		return this.status === AnnouncementStatus.ARCHIVED;
+	}
+
+	isPublished(): boolean {
+		return this.status === AnnouncementStatus.PUBLISHED;
 	}
 }

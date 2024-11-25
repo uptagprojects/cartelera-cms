@@ -53,10 +53,10 @@ export class Course extends AggregateRoot {
 		instructor: CourseInstructorPrimitives,
 		location: string,
 		duration: CourseDurationPrimitives,
-		price: number,
-		creation: string,
-		lastUpdate: string
+		price: number
 	): Course {
+		const defaultCreationDate = new Date();
+		const defaultLastUpdateDate = new Date();
 		const course = new Course(
 			new CourseId(id),
 			new CourseName(name),
@@ -66,8 +66,8 @@ export class Course extends AggregateRoot {
 			new CourseLocation(location),
 			CourseDuration.fromPrimitives(duration),
 			new CoursePrice(price),
-			new CourseCreation(new Date(creation)),
-			new CourseUpdate(new Date(lastUpdate))
+			new CourseCreation(defaultCreationDate),
+			new CourseUpdate(defaultLastUpdateDate)
 		);
 
 		course.record(
@@ -80,8 +80,8 @@ export class Course extends AggregateRoot {
 				location,
 				duration,
 				price,
-				creation,
-				lastUpdate
+				defaultCreationDate.toISOString(),
+				defaultLastUpdateDate.toISOString()
 			)
 		);
 

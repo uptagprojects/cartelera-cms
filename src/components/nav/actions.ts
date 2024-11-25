@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "../../app/auth";
+import { signIn } from "../../lib/auth";
 
 export async function signInAction(): Promise<void> {
 	"use server";

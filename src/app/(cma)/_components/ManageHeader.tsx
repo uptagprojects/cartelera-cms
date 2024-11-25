@@ -15,7 +15,7 @@ export function ManageHeader({
 }) {
 	return (
 		<header className={styles.header}>
-			<h2>{title}</h2>
+			<h4>{title}</h4>
 			<Button size="small" variant="primary" label={label} onClick={onClick} />
 		</header>
 	);

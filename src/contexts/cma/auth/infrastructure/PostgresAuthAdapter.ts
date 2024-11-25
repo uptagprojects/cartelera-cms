@@ -10,7 +10,7 @@ import { InvalidIdentifierError } from "../../../shared/domain/InvalidIdentifier
 import { UuidGenerator } from "../../../shared/domain/UuidGenerator";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { UserProviderConfirmer } from "../../users/application/confirm-from-provider/UserProviderConfirmer";
-import { UserDoesNotExist } from "../../users/domain/UserDoesNotExist";
+import { UserDoesNotExistError } from "../../users/domain/UserDoesNotExistError";
 import { UserEmail } from "../../users/domain/UserEmail";
 import { UserFinder } from "../../users/domain/UserFinder";
 import { UserId } from "../../users/domain/UserId";
@@ -78,7 +78,7 @@ export default function postgresAdapter(
 					status: primitives.status
 				};
 			} catch (err) {
-				if (err instanceof UserDoesNotExist) {
+				if (err instanceof UserDoesNotExistError) {
 					return {
 						id: user.id,
 						name: user.name ?? "",
@@ -169,7 +169,7 @@ export default function postgresAdapter(
 			const savedUser = await userRepository.search(new UserId(user.id));
 
 			if (!savedUser) {
-				throw new UserDoesNotExist(user.id);
+				throw new UserDoesNotExistError(user.id);
 			}
 
 			const { status } = savedUser.toPrimitives();

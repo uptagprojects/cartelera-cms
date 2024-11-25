@@ -1,14 +1,14 @@
 import { Service } from "diod";
 
-import { AnnouncementId } from "../../domain/AnnouncementId";
-import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
+import { CdaAnnouncementId } from "../../domain/CdaAnnouncementId";
+import { CdaAnnouncementRepository } from "../../domain/CdaAnnouncementRepository";
 
 @Service()
 export class UnpublishedAnnouncementRemover {
-	constructor(private readonly repository: AnnouncementRepository) {}
+	constructor(private readonly repository: CdaAnnouncementRepository) {}
 
 	async remove(id: string): Promise<void> {
-		const announcement = await this.repository.search(new AnnouncementId(id));
+		const announcement = await this.repository.search(new CdaAnnouncementId(id));
 		if (announcement) {
 			await this.repository.remove(announcement);
 		}

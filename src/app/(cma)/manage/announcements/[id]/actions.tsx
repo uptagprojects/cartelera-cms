@@ -1,9 +1,11 @@
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { customFetch } from "../../../../../lib/fetch";
+
 export const useGetAnnouncementDetails = async (id: string) => {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	let data = null;
-	const res = await fetch(`${base}/api/manage/announcements/${id}`);
+	const res = await customFetch(`/api/manage/announcements/${id}`);
 	if (res.status === 404) {
 		data = {
 			id: "",
@@ -24,6 +26,7 @@ export const useGetAnnouncementDetails = async (id: string) => {
 };
 
 const saveAnnouncementSchema = z.object({
+	id: z.string().uuid(),
 	title: z
 		.string({
 			invalid_type_error: "Invalid title"
@@ -42,7 +45,6 @@ const saveAnnouncementSchema = z.object({
 });
 
 export async function saveAnnouncement(_state: {}, formData: FormData) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	const validatedFields = saveAnnouncementSchema.safeParse({
 		id: formData.get("id"),
 		title: formData.get("title"),
@@ -56,7 +58,7 @@ export async function saveAnnouncement(_state: {}, formData: FormData) {
 
 	const body = JSON.stringify(validatedFields.data);
 
-	const res = await fetch(`${base}/api/manage/announcements/${formData.get("id") as string}`, {
+	const res = await customFetch(`/api/manage/announcements/${formData.get("id") as string}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -68,5 +70,5 @@ export async function saveAnnouncement(_state: {}, formData: FormData) {
 		return await res.json();
 	}
 
-	return {};
+	return redirect("/manage/announcements");
 }

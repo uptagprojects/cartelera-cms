@@ -82,7 +82,7 @@ export class Guide extends AggregateRoot {
 
 	archive(): void {
 		this.status = GuideStatus.ARCHIVED;
-		this.record(new GuideArchivedDomainEvent(this.id.value));
+		this.record(new GuideArchivedDomainEvent(this.id.value, this.ucId.value));
 	}
 
 	publish(): void {

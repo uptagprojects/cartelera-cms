@@ -10,7 +10,7 @@ interface DatabaseAnnouncement {
 	id: string;
 	title: string;
 	content: string;
-	publishDate: string;
+	publish_date: string;
 	type: string;
 	status: string;
 }
@@ -49,7 +49,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			id: res.id,
 			title: res.title,
 			content: res.content,
-			publishDate: res.publishDate,
+			publishDate: res.publish_date,
 			type: res.type,
 			status: res.status
 		});
@@ -61,14 +61,23 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 			[]
 		);
 
-		return res.map(r => Announcement.fromPrimitives(r));
+		return res.map(r =>
+			Announcement.fromPrimitives({
+				id: r.id,
+				title: r.title,
+				content: r.content,
+				publishDate: r.publish_date,
+				type: r.type,
+				status: r.status
+			})
+		);
 	}
 
 	async matching(criteria: Criteria): Promise<Announcement[]> {
 		const converter = new CriteriaToPostgresSqlConverter();
 		const { query, params } = converter.convert(
-			["id", "title", "content", "publish_date AS publishDate", "type", "status"],
-			"cda__announcements",
+			["id", "title", "content", "publish_date", "type", "status"],
+			"cma__announcements",
 			criteria
 		);
 
@@ -79,7 +88,7 @@ export class PostgresAnnouncementRepository implements AnnouncementRepository {
 				id: a.id,
 				title: a.title,
 				content: a.content,
-				publishDate: a.publishDate,
+				publishDate: a.publish_date,
 				type: a.type,
 				status: a.status
 			})

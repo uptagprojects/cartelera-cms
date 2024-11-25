@@ -22,8 +22,8 @@ export class PublishedGuideUpdater {
 	async update(
 		id: string,
 		title: string,
-		ucId: string,
 		content: string,
+		ucId: string,
 		authorId: string,
 		occurredOn: Date
 	): Promise<void> {

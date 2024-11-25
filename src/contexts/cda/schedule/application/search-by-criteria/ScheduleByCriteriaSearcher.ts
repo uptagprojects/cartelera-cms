@@ -4,19 +4,17 @@ import { Schedule } from "../../domain/Schedule";
 import { ScheduleRepository } from "../../domain/ScheduleRepository";
 
 export class GuideByCriteriaSearcher {
-    constructor(
-        private readonly repository: ScheduleRepository
-    ) {}
+	constructor(private readonly repository: ScheduleRepository) {}
 
-    async searchByCriteria(
-        filters: FiltersPrimitives[],
+	async searchByCriteria(
+		filters: FiltersPrimitives[],
 		orderBy: string | null,
 		orderType: string | null,
 		pageSize: number | null,
 		pageNumber: number | null
-    ): Promise<Schedule[]> {
-        const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
+	): Promise<Schedule[]> {
+		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
-        return this.repository.matching(criteria);
-    }
+		return this.repository.matching(criteria);
+	}
 }

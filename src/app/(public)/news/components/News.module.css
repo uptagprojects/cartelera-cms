@@ -2,11 +2,49 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-template-areas: "announcements events" "guides courses" "guides uc";
+    grid-template-rows: min-content repeat(3, 1fr);
+    grid-template-areas: "announcements announcements" "events events" "guides courses" "guides uc";
     gap: var(--size-4); /*repeat(auto-fill, minmax(300px, 1fr));*/
+    margin-bottom: var(--scale-6);
+}
+
+
+
+.recentAnnouncements {
+    grid-area: announcements;
+}
+
+.upcomingEvents {
+    grid-area: events;
+    border: 1px solid var(--gray-500);
+}
+
+.upcomingCourses {
+    grid-area: courses;
+    border: 1px solid var(--gray-500);
 }
 
 .recentGuides {
     grid-area: guides;
+    border: 1px solid var(--gray-500);
+    border-radius: 1cap;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: stretch;
+    gap: var(--size-3);
+}
+
+.recentGuidesFooter {
+    display: flex;
+    gap: var(--size-3);
+}
+
+.recentGuidesAuthor {
+    margin: 0px;
+}
+
+.uc {
+    grid-area: uc;
+    border: 1px solid var(--gray-500);
 }

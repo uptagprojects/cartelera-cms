@@ -1,18 +1,18 @@
 import { Service } from "diod";
 
-import { Announcement } from "../../domain/Announcement";
-import { AnnouncementId } from "../../domain/AnnouncementId";
-import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
+import { CdaAnnouncement } from "../../domain/CdaAnnouncement";
+import { CdaAnnouncementId } from "../../domain/CdaAnnouncementId";
+import { CdaAnnouncementRepository } from "../../domain/CdaAnnouncementRepository";
 
 @Service()
 export class PublishedAnnouncementUpdater {
-	constructor(private readonly repository: AnnouncementRepository) {}
+	constructor(private readonly repository: CdaAnnouncementRepository) {}
 
 	async update(id: string, title: string, content: string, type: string): Promise<void> {
-		let announcement = await this.repository.search(new AnnouncementId(id));
+		let announcement = await this.repository.search(new CdaAnnouncementId(id));
 
 		if (!announcement) {
-			announcement = Announcement.create(id, title, content, type);
+			announcement = CdaAnnouncement.create(id, title, content, type);
 		} else {
 			announcement.updateTitle(title);
 			announcement.updateContent(content);

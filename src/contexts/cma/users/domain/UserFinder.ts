@@ -1,7 +1,7 @@
 import { Service } from "diod";
 
 import { User } from "./User";
-import { UserDoesNotExist } from "./UserDoesNotExist";
+import { UserDoesNotExistError } from "./UserDoesNotExistError";
 import { UserEmail } from "./UserEmail";
 import { UserId } from "./UserId";
 import { UserRepository } from "./UserRepository";
@@ -13,7 +13,7 @@ export class UserFinder {
 	async find(id: string): Promise<User> {
 		const user = await this.repository.search(new UserId(id));
 		if (!user) {
-			throw new UserDoesNotExist(id);
+			throw new UserDoesNotExistError(id);
 		}
 
 		return user;
@@ -22,7 +22,7 @@ export class UserFinder {
 	async findByEmail(email: string): Promise<User> {
 		const user = await this.repository.searchByEmail(new UserEmail(email));
 		if (!user) {
-			throw new UserDoesNotExist(email);
+			throw new UserDoesNotExistError(email);
 		}
 
 		return user;

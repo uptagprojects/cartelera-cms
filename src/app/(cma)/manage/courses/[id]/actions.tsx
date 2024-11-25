@@ -1,9 +1,10 @@
 import { z } from "zod";
 
+import { customFetch } from "../../../../../lib/fetch";
+
 export const useGetCourseDetails = async (id: string) => {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	let data = null;
-	const res = await fetch(`${base}/api/manage/courses/${id}`);
+	const res = await customFetch(`/api/manage/courses/${id}`);
 	if (res.status === 404) {
 		data = {
 			id: "",
@@ -90,7 +91,6 @@ const saveCourseSchema = z.object({
 });
 
 export async function saveCourse(_state: {}, formData: FormData) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	const validatedFields = saveCourseSchema.safeParse({
 		id: formData.get("id"),
 		name: formData.get("name"),
@@ -129,7 +129,7 @@ export async function saveCourse(_state: {}, formData: FormData) {
 		}
 	});
 
-	const res = await fetch(`${base}/api/manage/courses/${formData.get("id") as string}`, {
+	const res = await customFetch(`/api/manage/courses/${formData.get("id") as string}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"

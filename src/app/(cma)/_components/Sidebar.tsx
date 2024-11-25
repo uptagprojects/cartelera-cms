@@ -7,16 +7,18 @@ import {
 	LucideNewspaper,
 	LucideSettings,
 	LucideSignal,
+	LucideTag,
 	LucideUserPlus
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 import styles from "./Sidebar.module.css";
 
 const menu = [
 	{ title: "Inicio", href: "/manage/onboarding", Icon: LucideNewspaper },
+	{ title: "Unidades Curriculares", href: "/manage/uc", Icon: LucideTag },
 	{ title: "Guias", href: "/manage/guides", Icon: LucideBook },
 	{ title: "Anuncios", href: "/manage/announcements", Icon: LucideSignal },
 	{ title: "Cursos", href: "/manage/courses", Icon: LucideAward },
@@ -42,7 +44,7 @@ export const Sidebar: FC = () => {
 							].join(" ")}
 						>
 							<Link href={href} className={styles.menuItemLink}>
-								<Icon />
+								{useMemo(() => <Icon />, [Icon])}
 								<span>{title}</span>
 							</Link>
 						</li>
