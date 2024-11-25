@@ -6,6 +6,7 @@ export class GuideArchivedDomainEvent extends GuideDomainEvent {
 
 	constructor(
 		public readonly id: string,
+		public readonly ucId: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -18,12 +19,13 @@ export class GuideArchivedDomainEvent extends GuideDomainEvent {
 		occurredOn: Date,
 		_attributes: DomainEventAttributes
 	): GuideArchivedDomainEvent {
-		return new GuideArchivedDomainEvent(aggregateId, eventId, occurredOn);
+		return new GuideArchivedDomainEvent(aggregateId, _attributes.ucId as string, eventId, occurredOn);
 	}
 
 	toPrimitives(): DomainEventAttributes {
 		return {
-			id: this.id
+			id: this.id,
+			ucId: this.ucId
 		};
 	}
 }

@@ -97,9 +97,9 @@ export class PostgresGuideRepository implements GuideRepository {
 	}
 
 	async remove(guide: Guide): Promise<void> {
-		const { id } = guide.toPrimitives();
+		const { id, ucId } = guide.toPrimitives();
 
-		guide.record(new GuideRemovedDomainEvent(id));
+		guide.record(new GuideRemovedDomainEvent(id, ucId));
 
 		await this.connection.execute("DELETE FROM cma__guides WHERE id = $1", [id]);
 	}

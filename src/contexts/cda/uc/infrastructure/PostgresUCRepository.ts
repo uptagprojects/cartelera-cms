@@ -28,8 +28,7 @@ export class PostgresUCRepository implements UCRepository {
 
 	async searchAll(): Promise<UC[]> {
 		const res = await this.connection.searchAll<DatabaseUC>(
-			"SELECT id, name, total_guides FROM cda__uc",
-			[]
+			"SELECT id, name, total_guides FROM cda__uc"
 		);
 
 		return res.map(r =>

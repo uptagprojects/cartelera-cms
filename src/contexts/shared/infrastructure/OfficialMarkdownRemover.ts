@@ -20,7 +20,7 @@ export class OfficialMarkdownRemover extends MarkdownRemover {
 			return sanitizedValue;
 		}
 
-		const cuttedContent = value.substring(0, maxValue - 3);
+		const cuttedContent = sanitizedValue.substring(0, maxValue - 3);
 
 		return `${cuttedContent.substring(0, cuttedContent.lastIndexOf(" "))}...`;
 	}

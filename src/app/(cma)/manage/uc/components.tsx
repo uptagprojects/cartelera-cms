@@ -6,7 +6,6 @@ import { memo, useCallback, useId, useState } from "react";
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
 import { deleteUC, IManageUC, updateUCName, useGetUCs } from "./actions";
-import styles from "./UC.module.css";
 
 export const UCHeader = () => {
 	const router = useRouter();
@@ -50,7 +49,7 @@ const UCListItem = ({ id, name, onDelete }: IManageUC & { onDelete: (id: string)
 	}, [id, onDelete]);
 
 	return (
-		<tr className={styles.tableRow}>
+		<tr>
 			<td>
 				{editing ? (
 					<TextInput
@@ -103,8 +102,8 @@ export const UCList = () => {
 	}
 
 	return (
-		<table className={styles.table}>
-			<thead className={styles.tableHeader}>
+		<table>
+			<thead>
 				<tr>
 					<th>Nombre</th>
 					<th>Acciones</th>
