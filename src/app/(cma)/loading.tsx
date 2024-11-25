@@ -1,11 +1,5 @@
-"use client";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { Container } from "octagon-ui";
+import ManageLoading from "./_components/ManageLoading";
 
-export default function LoadingManageOnboarding() {
-	return (
-		<Container display align="center">
-			<DotLottieReact src="/animations/ghost.lottie" loop autoplay />
-		</Container>
-	);
+export default function LoadingManagePage() {
+	return <ManageLoading />;
 }

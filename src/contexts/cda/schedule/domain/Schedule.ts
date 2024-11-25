@@ -30,8 +30,8 @@ export class Schedule {
 	toPrimitives(): SchedulePrimitives {
 		return {
 			id: this.id.value,
-			startDate: this.startDate.value.toString(),
-			endDate: this.endDate.value.toString()
+			startDate: this.startDate.value.toISOString(),
+			endDate: this.endDate.value.toISOString()
 		};
 	}
 }

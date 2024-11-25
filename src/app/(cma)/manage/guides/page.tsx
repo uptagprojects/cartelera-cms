@@ -21,10 +21,8 @@ export default async function GuidesPage() {
 				<p>
 					Publica informacion creando guias usando{" "}
 					<Link target="_blank" href="https://tutorialmarkdown.com/guia">
-						Markdown{" "}
-						<span>
-							<ExternalLinkIcon />
-						</span>
+						Markdown
+						<ExternalLinkIcon />
 					</Link>
 				</p>
 			</section>

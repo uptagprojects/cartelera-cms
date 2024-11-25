@@ -75,7 +75,7 @@ export const GuideForm = ({
 						name="title"
 						value={title}
 						disabled={isPending}
-						errorMessage={errors.title}
+						errorMessage={errors?.title}
 						onChange={e => setTitle(e.target.value)}
 					/>
 					<Select

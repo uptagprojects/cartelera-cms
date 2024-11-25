@@ -64,8 +64,8 @@ export class Event extends AggregateRoot {
 			id: this.id.value,
 			name: this.name.value,
 			location: this.location.value,
-			startDate: this.startDate.value.toString(),
-			endDate: this.endDate.value.toString()
+			startDate: this.startDate.value.toISOString(),
+			endDate: this.endDate.value.toISOString()
 		};
 	}
 

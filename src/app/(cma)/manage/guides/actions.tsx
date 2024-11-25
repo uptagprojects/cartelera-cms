@@ -1,6 +1,7 @@
 import qs from "qs";
 import { useEffect, useReducer } from "react";
 
+import { customFetch } from "../../../../lib/fetch";
 import { GuideAction, GuideActionTypes, GuideState, IManageGuide } from "./types";
 
 const PAGE_SIZE = 10;
@@ -80,7 +81,6 @@ export function useGetGuides(): {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 			const query = qs.stringify({
 				pageSize: PAGE_SIZE,
 				pageNumber: state.page,
@@ -89,7 +89,7 @@ export function useGetGuides(): {
 			});
 
 			try {
-				const data = await fetch(`${base}/api/manage/guides?${query}`).then(res =>
+				const data = await customFetch(`/api/manage/guides?${query}`).then(res =>
 					res.json()
 				);
 
@@ -128,9 +128,7 @@ export function useGetGuides(): {
 }
 
 export async function archiveGuide(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/guides/${_state.id}/archive`, {
+	const res = await customFetch(`/api/manage/guides/${_state.id}/archive`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -145,9 +143,7 @@ export async function archiveGuide(_state: { id: string }) {
 }
 
 export async function publishGuide(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/guides/${_state.id}/publish`, {
+	const res = await customFetch(`/api/manage/guides/${_state.id}/publish`, {
 		method: "PUT"
 	});
 
@@ -159,9 +155,7 @@ export async function publishGuide(_state: { id: string }) {
 }
 
 export async function restoreGuide(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/guides/${_state.id}/restore`, {
+	const res = await customFetch(`/api/manage/guides/${_state.id}/restore`, {
 		method: "PUT"
 	});
 
@@ -173,9 +167,7 @@ export async function restoreGuide(_state: { id: string }) {
 }
 
 export async function deleteGuide(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/guides/${_state.id}/remove`, {
+	const res = await customFetch(`/api/manage/guides/${_state.id}/remove`, {
 		method: "DELETE"
 	});
 

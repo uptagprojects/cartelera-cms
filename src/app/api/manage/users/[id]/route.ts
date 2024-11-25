@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { UserFinder } from "../../../../../contexts/cma/users/application/find/UserFinder";
 import { UserRegistrar } from "../../../../../contexts/cma/users/application/registrar/UserRegistrar";
-import { UserDoesNotExist } from "../../../../../contexts/cma/users/domain/UserDoesNotExist";
+import { UserDoesNotExistError } from "../../../../../contexts/cma/users/domain/UserDoesNotExistError";
 import { PostgresUserRepository } from "../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
 import { InvalidArgumentError } from "../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
@@ -62,7 +62,7 @@ export async function PUT(
 			)
 		).register(id, body.name, body.email, body.avatar);
 	} catch (error) {
-		if (error instanceof UserDoesNotExist) {
+		if (error instanceof UserDoesNotExistError) {
 			return new Response(
 				JSON.stringify({ code: "user_not_found", message: error.message }),
 				{
@@ -112,7 +112,7 @@ export async function GET(
 		const userFinder = new UserFinder(userRepository);
 		user = await userFinder.find(id);
 	} catch (error) {
-		if (error instanceof UserDoesNotExist) {
+		if (error instanceof UserDoesNotExistError) {
 			return new Response(
 				JSON.stringify({ code: "user_not_found", message: error.message }),
 				{

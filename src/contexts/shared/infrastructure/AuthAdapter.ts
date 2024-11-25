@@ -7,7 +7,7 @@ import {
 } from "@auth/core/adapters";
 
 import { User } from "../../cma/users/domain/User";
-import { UserDoesNotExist } from "../../cma/users/domain/UserDoesNotExist";
+import { UserDoesNotExistError } from "../../cma/users/domain/UserDoesNotExistError";
 import { UserEmail } from "../../cma/users/domain/UserEmail";
 import { UserId } from "../../cma/users/domain/UserId";
 import { PostgresUserRepository } from "../../cma/users/infrastructure/PostgresUserRepository";
@@ -168,7 +168,7 @@ export class AuthAdapter implements Adapter {
 		const savedUser = await this.userRepository.search(new UserId(user.id));
 
 		if (!savedUser) {
-			throw new UserDoesNotExist(user.id);
+			throw new UserDoesNotExistError(user.id);
 		}
 
 		if (user.name) {

@@ -51,6 +51,19 @@ export class HTTPNextResponse {
 		);
 	}
 
+	static unauthorizedError(): NextResponse {
+		return NextResponse.json(
+			{
+				code: "unauthorized_error",
+				message: STATUS_CODES[401],
+				data: {}
+			},
+			{
+				status: 401
+			}
+		);
+	}
+
 	static created(): NextResponse {
 		return new NextResponse(null, {
 			status: 201

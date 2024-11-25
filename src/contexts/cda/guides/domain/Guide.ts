@@ -78,7 +78,7 @@ export class Guide extends AggregateRoot {
 			contentWrapped: this.contentWrapped.value,
 			area: this.area.value,
 			professor: this.professor.toPrimitives(),
-			publishDate: this.publishDate.value.toString(),
+			publishDate: this.publishDate.value.toISOString(),
 			attachments: this.attachments.map(v => v.value)
 		};
 	}

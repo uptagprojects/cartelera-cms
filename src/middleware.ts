@@ -1,11 +1,12 @@
-import NextAuth from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 
-import { authConfig } from "./app/auth.config";
+export async function middleware(_: NextRequest): Promise<NextResponse> {
+	// you can use getToken() to get the current user
 
-const { auth } = NextAuth(authConfig);
-export const middleware = auth;
+	return NextResponse.next();
+}
 
 export const config = {
 	// https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-	matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"]
+	matcher: ["/((?!_next/static|_next/image|.*\\.png$).*)"]
 };

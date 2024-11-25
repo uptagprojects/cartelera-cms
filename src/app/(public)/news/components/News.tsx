@@ -24,17 +24,17 @@ type NewsProps = {
 	events: IEvent[];
 	guides: IRecentGuide[];
 	courses: ICourse[];
-	uc: IUC[];
+	ucs: IUC[];
 };
 
-export function News({ announcements, events, guides, courses, uc }: NewsProps) {
+export function News({ announcements, events, guides, courses, ucs }: NewsProps) {
 	return (
 		<div className={styles.newsContainer}>
 			<NewsAnnouncementBox announcements={announcements} />
 			<NewsUpcomingEventsBox events={events} />
 			<NewsRecentGuidesBox guides={guides} />
 			<NewsUpcomingCoursesBox courses={courses} />
-			<NewsCurricularUnitsBox uc={uc} />
+			<NewsCurricularUnitsBox ucs={ucs} />
 		</div>
 	);
 }

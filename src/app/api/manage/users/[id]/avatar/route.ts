@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 
 import { UserAvatarUpdater } from "../../../../../../contexts/cma/users/application/update-avatar/UserAvatarUpdater";
-import { UserDoesNotExist } from "../../../../../../contexts/cma/users/domain/UserDoesNotExist";
+import { UserDoesNotExistError } from "../../../../../../contexts/cma/users/domain/UserDoesNotExistError";
 import { PostgresUserRepository } from "../../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
 import { InvalidArgumentError } from "../../../../../../contexts/shared/domain/InvalidArgumentError";
 import { DomainEventFailover } from "../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
@@ -42,7 +42,7 @@ export async function PUT(
 			)
 		).update(id, parsed.data.avatar);
 	} catch (error) {
-		if (error instanceof UserDoesNotExist) {
+		if (error instanceof UserDoesNotExistError) {
 			return new Response(
 				JSON.stringify({ code: "user_not_found", message: error.message }),
 				{

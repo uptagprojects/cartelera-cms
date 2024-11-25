@@ -1,18 +1,22 @@
-import NextAuth from "next-auth";
-import nodemailer from "next-auth/providers/nodemailer";
+import NextAuth, { customFetch } from "next-auth";
+import Google from "next-auth/providers/google";
+import Resend from "next-auth/providers/resend";
 
+import { authConfig } from "../../auth.config";
 import postgresAdapter from "../contexts/cma/auth/infrastructure/PostgresAuthAdapter";
 import { OfficialUuidGenerator } from "../contexts/shared/infrastructure/OfficialUuidGenerator";
 import { PostgresConnection } from "../contexts/shared/infrastructure/PostgresConnection";
-import { authConfig } from "./auth.config";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
 	...authConfig,
 	providers: [
 		...authConfig.providers,
-		nodemailer({
-			from: process.env.EMAIL_FROM,
-			server: process.env.EMAIL_SERVER
+		Google({
+			allowDangerousEmailAccountLinking: process.env.NODE_ENV === "development",
+			[customFetch]: fetch
+		}),
+		Resend({
+			from: "no-reply@pnfi.pro"
 		})
 	],
 	session: { strategy: "jwt" },

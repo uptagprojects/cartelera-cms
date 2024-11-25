@@ -28,6 +28,7 @@ export abstract class DatabaseConnection {
 
 			return result;
 		} catch (error) {
+			// TODO: Log error
 			await this.rollback();
 			await this.release();
 

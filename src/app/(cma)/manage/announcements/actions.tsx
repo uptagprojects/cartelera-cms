@@ -2,6 +2,7 @@ import qs from "qs";
 import { useEffect, useReducer } from "react";
 import { z } from "zod";
 
+import { customFetch } from "../../../../lib/fetch";
 import {
 	AnnouncementAction,
 	AnnouncementActionTypes,
@@ -86,7 +87,6 @@ export function useGetAnnouncements(): {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 			const query = qs.stringify({
 				pageSize: PAGE_SIZE,
 				pageNumber: state.page,
@@ -95,7 +95,7 @@ export function useGetAnnouncements(): {
 			});
 
 			try {
-				const data = await fetch(`${base}/api/manage/announcements?${query}`).then(res =>
+				const data = await customFetch(`/api/manage/announcements?${query}`).then(res =>
 					res.json()
 				);
 
@@ -145,9 +145,7 @@ export async function updateAnnouncementTitle(_state: { id: string; title: strin
 		return validated.error.message;
 	}
 
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/title`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/title`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -176,9 +174,7 @@ export async function updateAnnouncementContent(_state: { id: string; content: s
 		return validated.error.message;
 	}
 
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/content`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/content`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -196,9 +192,7 @@ export async function updateAnnouncementContent(_state: { id: string; content: s
 }
 
 export async function archiveAnnouncement(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/archive`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/archive`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -213,9 +207,7 @@ export async function archiveAnnouncement(_state: { id: string }) {
 }
 
 export async function publishAnnouncement(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/publish`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/publish`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -230,9 +222,7 @@ export async function publishAnnouncement(_state: { id: string }) {
 }
 
 export async function restoreAnnouncement(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/restore`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/restore`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -247,9 +237,7 @@ export async function restoreAnnouncement(_state: { id: string }) {
 }
 
 export async function deleteAnnouncement(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/announcements/${_state.id}/remove`, {
+	const res = await customFetch(`/api/manage/announcements/${_state.id}/remove`, {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json"

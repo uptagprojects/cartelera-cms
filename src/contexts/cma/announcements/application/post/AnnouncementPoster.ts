@@ -3,8 +3,14 @@ import { InvalidArgumentError } from "../../../../shared/domain/InvalidArgumentE
 import { InvalidIdentifierError } from "../../../../shared/domain/InvalidIdentifierError";
 import { Announcement } from "../../domain/Announcement";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";
+import { AnnouncementTitleIsEmptyError } from "../../domain/AnnouncementTitleIsEmptyError";
+import { AnnouncementTitleTooLongError } from "../../domain/AnnouncementTitleTooLongError";
 
-export type AnnouncementPosterErrors = InvalidIdentifierError | InvalidArgumentError;
+export type AnnouncementPosterErrors =
+	| InvalidIdentifierError
+	| InvalidArgumentError
+	| AnnouncementTitleIsEmptyError
+	| AnnouncementTitleTooLongError;
 
 export class AnnouncementPoster {
 	constructor(

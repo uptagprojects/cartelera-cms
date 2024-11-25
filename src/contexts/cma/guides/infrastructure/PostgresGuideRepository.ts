@@ -10,7 +10,7 @@ interface DatabaseGuide {
 	id: string;
 	title: string;
 	content: string;
-	uc_id: string;
+	area_id: string;
 	author_id: string;
 	status: string;
 }
@@ -31,7 +31,7 @@ export class PostgresGuideRepository implements GuideRepository {
 		];
 
 		await this.connection.execute(
-			`INSERT INTO cma__guides (id, title, content, uc_id, author_id, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3, uc_id =$4, status = $6`,
+			`INSERT INTO cma__guides (id, title, content, area_id, author_id, status) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id) DO UPDATE SET title = $2, content = $3, area_id = $4, status = $6`,
 			params
 		);
 	}
@@ -50,7 +50,7 @@ export class PostgresGuideRepository implements GuideRepository {
 			id: res.id,
 			title: res.title,
 			content: res.content,
-			ucId: res.uc_id,
+			ucId: res.area_id,
 			authorId: res.author_id,
 			status: res.status
 		});
@@ -58,7 +58,7 @@ export class PostgresGuideRepository implements GuideRepository {
 
 	async searchAll(): Promise<Guide[]> {
 		const res = await this.connection.searchAll<DatabaseGuide>(
-			"SELECT id, title, content, uc_id, author_id, status FROM cma__guides",
+			"SELECT id, title, content, area_id, author_id, status FROM cma__guides",
 			[]
 		);
 
@@ -67,7 +67,7 @@ export class PostgresGuideRepository implements GuideRepository {
 				id: row.id,
 				title: row.title,
 				content: row.content,
-				ucId: row.uc_id,
+				ucId: row.area_id,
 				authorId: row.author_id,
 				status: row.status
 			})
@@ -89,7 +89,7 @@ export class PostgresGuideRepository implements GuideRepository {
 				id: row.id,
 				title: row.title,
 				content: row.content,
-				ucId: row.uc_id,
+				ucId: row.area_id,
 				authorId: row.author_id,
 				status: row.status
 			})

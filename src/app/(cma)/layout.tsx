@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import { PageFooter } from "../../components/footer/PageFooter";
 import { Nav } from "../../components/nav/Nav";
-import { auth } from "../auth";
+import { auth } from "../../lib/auth";
 import { Sidebar } from "./_components/Sidebar";
 import styles from "./ManageLayout.module.css";
 

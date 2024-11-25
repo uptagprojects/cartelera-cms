@@ -1,20 +1,24 @@
 "use client";
 
-import { MdViewer } from "octagon-ui";
+import { Avatar, Container, MdViewer, Tag } from "octagon-ui";
 
 import { IGuide } from "../../../../lib/guides/IGuide";
 
-export function GuideReader({ title, area, content, publishDate }: IGuide) {
+export function GuideReader({ title, area, professor, content, publishDate }: IGuide) {
 	return (
-		<article>
+		<Container align="center">
 			<header>
-				<h1>{title}</h1>
-				<h3>{area}</h3>
+				<h2>{title}</h2>
 			</header>
+			<time dateTime={publishDate}>Publicado en {new Date(publishDate).toLocaleString()} en <Tag outline color="orange" label={area} /></time>
 			<MdViewer content={content} />
 			<footer>
-				<time dateTime={publishDate}>{new Date(publishDate).toLocaleString()}</time>
+				<Avatar size={120} src={professor.avatar} alt={professor.name} />
+				<div>
+					<p>{professor.name}</p>
+					<p>Publicado en {area}</p>
+				</div>
 			</footer>
-		</article>
+		</Container>
 	);
 }

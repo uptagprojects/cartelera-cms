@@ -28,6 +28,20 @@
     grid-area: guides;
     border: 1px solid var(--gray-500);
     border-radius: 1cap;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: stretch;
+    gap: var(--size-3);
+}
+
+.recentGuidesFooter {
+    display: flex;
+    gap: var(--size-3);
+}
+
+.recentGuidesAuthor {
+    margin: 0px;
 }
 
 .uc {

@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
+import { customFetch } from "../../../../lib/fetch";
+
 export interface IManageUC {
 	id: string;
 	name: string;
@@ -15,9 +17,7 @@ export function useGetUCs(): {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-			const data = await fetch(`${base}/api/manage/uc`).then(res => res.json());
+			const data = await customFetch(`/api/manage/uc`).then(res => res.json());
 
 			setUcs(data);
 		};
@@ -48,8 +48,7 @@ export async function saveUCContent(_state: { id: string }, formData: FormData) 
 		return validated.error.flatten().fieldErrors;
 	}
 
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-	const res = await fetch(`${base}/api/manage/uc/${_state.id}/rename`, {
+	const res = await customFetch(`/api/manage/uc/${_state.id}/rename`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -78,9 +77,7 @@ export async function updateUCName(_state: { id: string; name: string }) {
 		return validated.error.message;
 	}
 
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/uc/${_state.id}/rename`, {
+	const res = await customFetch(`/api/manage/uc/${_state.id}/rename`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
@@ -98,9 +95,7 @@ export async function updateUCName(_state: { id: string; name: string }) {
 }
 
 export async function deleteUC(_state: { id: string }) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/uc/${_state.id}/remove`, {
+	const res = await customFetch(`/api/manage/uc/${_state.id}/remove`, {
 		method: "DELETE",
 		headers: {
 			"Content-Type": "application/json"

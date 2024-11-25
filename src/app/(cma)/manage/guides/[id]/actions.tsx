@@ -1,14 +1,11 @@
-"use server";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { auth } from "../../../../auth";
+import { customFetch } from "../../../../../lib/fetch";
 import { IManageGuide } from "../types";
 
 export const useGetGuideDetails = async (id: string) => {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
-
-	const res = await fetch(`${base}/api/manage/guides/${id}`);
+	const res = await customFetch(`/api/manage/guides/${id}`);
 	if (res.ok) {
 		const data = await res.json();
 
@@ -31,23 +28,15 @@ const saveGuideSchema = z.object({
 			required_error: "guide_title_required"
 		})
 		.min(1, { message: "This field has to be filled." }),
-	ucId: z.string().uuid(),
-	authorId: z.string().uuid()
+	ucId: z.string().uuid()
 });
 
 export async function saveGuide(_state: { initGuide: IManageGuide | null }, formData: FormData) {
-	const session = await auth();
-	if (!session) {
-		return null;
-	}
-
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	const validatedFields = saveGuideSchema.safeParse({
 		id: formData.get("id"),
 		title: formData.get("title"),
 		content: formData.get("content"),
-		ucId: formData.get("ucId"),
-		authorId: session.user?.id
+		ucId: formData.get("ucId")
 	});
 
 	if (!validatedFields.success) {
@@ -56,12 +45,12 @@ export async function saveGuide(_state: { initGuide: IManageGuide | null }, form
 
 	const body = JSON.stringify(validatedFields.data);
 
-	const res = await fetch(`${base}/api/manage/guides/${formData.get("id") as string}`, {
+	const res = await customFetch(`/api/manage/guides/${formData.get("id") as string}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
 		},
-        credentials: "include",
+		credentials: "include",
 		body
 	});
 

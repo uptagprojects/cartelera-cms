@@ -73,8 +73,12 @@ export class User extends AggregateRoot {
 		};
 	}
 
-	getId(): UserId {
-		return this.id;
+	getId(): string {
+		return this.id.value;
+	}
+
+	isActive(): boolean {
+		return this.status === UserStatus.ACTIVE;
 	}
 
 	updateEmail(email: string): void {

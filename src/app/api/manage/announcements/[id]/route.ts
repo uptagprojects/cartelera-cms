@@ -55,6 +55,8 @@ export async function PUT(
 			switch (error.type) {
 				case "invalid_identifier_error":
 				case "invalid_argument_error":
+				case "announcement_title_is_empty_error":
+				case "announcement_title_too_long_error":
 					return HTTPNextResponse.domainError(error, 422);
 				default:
 					assertNever(error);

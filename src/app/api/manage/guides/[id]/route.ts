@@ -2,101 +2,96 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { GuideFinder } from "../../../../../contexts/cma/guides/application/find/GuideFinder";
-import { GuidePoster } from "../../../../../contexts/cma/guides/application/post/GuidePoster";
+import {
+	GuidePoster,
+	GuidePosterErrors
+} from "../../../../../contexts/cma/guides/application/post/GuidePoster";
 import { GuideDoesNotExist } from "../../../../../contexts/cma/guides/domain/GuideDoesNotExist";
 import { PostgresGuideRepository } from "../../../../../contexts/cma/guides/infrastructure/PostgresGuideRepository";
 import { UCFinder } from "../../../../../contexts/cma/uc/application/find/UCFinder";
 import { PostgresUCRepository } from "../../../../../contexts/cma/uc/infrastructure/PostgresUCRepository";
+import {
+	UserEmailFinder,
+	UserEmailFinderErrors
+} from "../../../../../contexts/cma/users/application/find-by-email/UserEmailFinder";
 import { UserFinder } from "../../../../../contexts/cma/users/domain/UserFinder";
 import { PostgresUserRepository } from "../../../../../contexts/cma/users/infrastructure/PostgresUserRepository";
+import { assertNever } from "../../../../../contexts/shared/domain/assertNever";
 import { DomainEventFailover } from "../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
+import { executeWithErrorHandling } from "../../../../../contexts/shared/infrastructure/http/executeWithErrorHandling";
+import { HTTPNextResponse } from "../../../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../../../contexts/shared/infrastructure/PostgresConnection";
-import { auth } from "../../../../auth";
+import { auth } from "../../../../../lib/auth";
 
 const validator = z.object({
 	id: z.string().uuid(),
 	title: z.string(),
 	content: z.string(),
-	areaId: z.string().uuid()
+	ucId: z.string().uuid()
 });
 
-export const PUT = auth(async (request, { params }): Promise<Response> => {
-	const { id } = await (params as unknown as Promise<{ id: string }>);
-	console.log("Auth", request.auth);
-	console.log("id", id);
+export async function PUT(
+	request: NextRequest,
+	{ params }: { params: Promise<{ id: string }> }
+): Promise<Response> {
+	return executeWithErrorHandling(
+		async () => {
+			const { id } = await params;
+			const session = await auth();
 
-	const session = request.auth;
-
-	if (!session?.user?.id) return new Response("Unauthorized", { status: 401 });
-
-	const json = await request.json();
-	const parsed = validator.safeParse(json);
-	if (!parsed.success) {
-		return new Response(JSON.stringify({ message: parsed.error.message }), {
-			status: 422,
-			headers: {
-				"Content-Type": "application/json"
+			if (!session?.user?.email) {
+				return HTTPNextResponse.unauthorizedError();
 			}
-		});
-	}
 
-	if (id !== parsed.data.id) {
-		return new Response(
-			JSON.stringify({
-				code: "invalid_guide_id",
-				message: "The guide id in the URL does not match the guide id in the body"
-			}),
-			{
-				status: 400,
-				headers: {
-					"Content-Type": "application/json"
-				}
+			const pgConnection = new PostgresConnection();
+			const userRepository = new PostgresUserRepository(pgConnection);
+
+			const user = await new UserEmailFinder(userRepository).find(session.user.email);
+
+			const json = await request.json();
+			const parsed = validator.safeParse(json);
+			if (!parsed.success) {
+				return HTTPNextResponse.validationError(parsed.error, 422);
 			}
-		);
-	}
 
-	const { data: body } = parsed;
+			const body = parsed.data;
 
-	const postgresConnection = new PostgresConnection();
+			await pgConnection.transactional(async () => {
+				await new GuidePoster(
+					new PostgresGuideRepository(pgConnection),
+					new UserFinder(userRepository),
+					new UCFinder(new PostgresUCRepository(pgConnection)),
+					new RabbitMQEventBus(
+						new RabbitMQConnection(),
+						new DomainEventFailover(pgConnection)
+					)
+				).post(id, body.title, body.content, body.ucId, user.id);
+			});
 
-	try {
-		await new GuidePoster(
-			new PostgresGuideRepository(postgresConnection),
-			new UserFinder(new PostgresUserRepository(postgresConnection)),
-			new UCFinder(new PostgresUCRepository(postgresConnection)),
-			new RabbitMQEventBus(
-				new RabbitMQConnection(),
-				new DomainEventFailover(postgresConnection)
-			)
-		).post(id, body.title, body.content, body.areaId, session.user.id);
-
-		return new Response(null, { status: 204 });
-	} catch (error) {
-		if (error instanceof GuideDoesNotExist) {
-			return new Response(
-				JSON.stringify({ code: "guide_not_found", message: error.message }),
-				{
-					status: 404,
-					headers: {
-						"Content-Type": "application/json"
-					}
-				}
-			);
+			return HTTPNextResponse.created();
+		},
+		(error: GuidePosterErrors | UserEmailFinderErrors) => {
+			switch (error.type) {
+				case "user_does_not_exist_error":
+				case "user_email_is_not_valid_error":
+				case "user_is_not_active_error":
+					return HTTPNextResponse.domainError(error, 403);
+				case "invalid_identifier_error":
+					return HTTPNextResponse.domainError(error, 400);
+				case "invalid_argument_error":
+				case "guide_title_is_empty_error":
+				case "guide_title_too_long_error":
+				case "guide_content_is_empty_error":
+				case "uc_does_not_exist_error":
+					return HTTPNextResponse.domainError(error, 422);
+				default:
+					assertNever(error);
+			}
 		}
-
-		return new Response(
-			JSON.stringify({ code: "unexpected_error", message: "Something happened" }),
-			{
-				status: 503,
-				headers: {
-					"Content-Type": "application/json"
-				}
-			}
-		);
-	}
-});
+	);
+}
 
 export async function GET(
 	_: NextRequest,

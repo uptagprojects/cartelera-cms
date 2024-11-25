@@ -4,6 +4,7 @@ export interface IRecentGuide {
 	contentWrapped: string;
 	image: string;
 	area: string;
+	publishDate: string;
 	professor: {
 		id: string;
 		name: string;

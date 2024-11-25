@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+import { customFetch } from "../../../../../lib/fetch";
+
 export const useGetUCDetails = async (id: string) => {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	let data = null;
-	const res = await fetch(`${base}/api/manage/uc/${id}`);
+	const res = await customFetch(`/api/manage/uc/${id}`);
 	if (res.status === 404) {
 		data = {
 			id: "",
@@ -30,7 +31,6 @@ const saveUCSchema = z.object({
 });
 
 export async function saveUC(_state: {}, formData: FormData) {
-	const base = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 	const validatedFields = saveUCSchema.safeParse({
 		id: formData.get("id"),
 		name: formData.get("name")
@@ -42,7 +42,7 @@ export async function saveUC(_state: {}, formData: FormData) {
 
 	const body = JSON.stringify(validatedFields.data);
 
-	const res = await fetch(`${base}/api/manage/uc/${formData.get("id") as string}`, {
+	const res = await customFetch(`/api/manage/uc/${formData.get("id") as string}`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"

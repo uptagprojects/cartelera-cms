@@ -13,9 +13,13 @@ interface DatabaseGuide {
 	content: string;
 	content_wrapped: string;
 	area: string;
-	professor: string;
+	professor: {
+		id: string;
+		name: string;
+		avatar: string;
+	};
 	published_date: string;
-	attachments: string;
+	attachments: Array<string>;
 }
 
 @Service()
@@ -56,9 +60,9 @@ export class PostgresGuideRepository implements GuideRepository {
 			content: res.content,
 			contentWrapped: res.content_wrapped,
 			area: res.area,
-			professor: JSON.parse(res.professor),
+			professor: res.professor,
 			publishDate: res.published_date,
-			attachments: JSON.parse(res.attachments)
+			attachments: res.attachments
 		});
 	}
 
@@ -88,9 +92,9 @@ export class PostgresGuideRepository implements GuideRepository {
 				content: a.content,
 				contentWrapped: a.content_wrapped,
 				area: a.area,
-				professor: JSON.parse(a.professor),
+				professor: a.professor,
 				publishDate: a.published_date,
-				attachments: JSON.parse(a.attachments)
+				attachments: a.attachments
 			})
 		);
 	}
