@@ -4,6 +4,7 @@ import { useActionState, useCallback, useState } from "react";
 
 import { IManageUser } from "../types";
 import { saveUser } from "./actions";
+import { customFetch } from "../../../../../lib/fetch";
 
 export const UserForm = ({ id, initUser }: { id: string; initUser?: IManageUser }) => {
 	const [errors, saveFormAction, isPending] = useActionState(saveUser, {});
@@ -18,7 +19,7 @@ export const UserForm = ({ id, initUser }: { id: string; initUser?: IManageUser 
 			const formData = new FormData();
 			setAvatar(URL.createObjectURL(image));
 			formData.append("image", image);
-			fetch(`/api/manage/image/upload`, {
+			customFetch(`/api/manage/image/upload`, {
 				method: "POST",
 				body: formData
 			})
