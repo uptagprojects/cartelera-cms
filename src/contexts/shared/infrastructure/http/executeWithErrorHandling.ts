@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { DomainError } from "../../domain/DomainError";
-import { HTTPNextResponse } from "./HTTPNextResponse";
 import { logger } from "../telemetry/telemetry";
+import { HTTPNextResponse } from "./HTTPNextResponse";
 
 export async function executeWithErrorHandling<T extends DomainError>(
 	fn: () => Promise<NextResponse>,

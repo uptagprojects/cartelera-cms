@@ -31,6 +31,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 		return HTTPNextResponse.json(announcements);
 	} catch (error: unknown) {
 		logger.error("Error getting announcements", error);
+
 		return HTTPNextResponse.internalServerError();
 	}
 }

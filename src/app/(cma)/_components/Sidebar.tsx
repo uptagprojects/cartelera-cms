@@ -44,7 +44,12 @@ export const Sidebar: FC = () => {
 							].join(" ")}
 						>
 							<Link href={href} className={styles.menuItemLink}>
-								{useMemo(() => <Icon />, [Icon])}
+								{useMemo(
+									() => (
+										<Icon />
+									),
+									[Icon]
+								)}
 								<span>{title}</span>
 							</Link>
 						</li>

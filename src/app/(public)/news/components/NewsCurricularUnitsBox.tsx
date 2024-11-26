@@ -18,12 +18,14 @@ export const NewsCurricularUnitsBox: FC<NewsCurricularUnitsBoxProps> = ({ ucs })
 			<CardHeader title="Unidades Curriculares" />
 			<table>
 				<tbody>
-				{ucs.map((unit, i) => (
-					<tr key={unit.name}>
-						<td>{unit.name}</td>
-						<td><Tag color={colors[i % 4]} label={`${unit.totalGuides} guías`} /></td>
-					</tr>
-				))}
+					{ucs.map((unit, i) => (
+						<tr key={unit.name}>
+							<td>{unit.name}</td>
+							<td>
+								<Tag color={colors[i % 4]} label={`${unit.totalGuides} guías`} />
+							</td>
+						</tr>
+					))}
 				</tbody>
 			</table>
 		</Card>

@@ -1,5 +1,6 @@
 import amqplib, { ConsumeMessage } from "amqplib";
 import { Service } from "diod";
+
 import { logger } from "../../telemetry/telemetry";
 
 export const retrySuffix = ".retry";
@@ -101,7 +102,9 @@ export class RabbitMQConnection {
 	}
 
 	private async amqpConnect(): Promise<amqplib.Connection> {
-		const connection = await amqplib.connect(process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost:5672//");
+		const connection = await amqplib.connect(
+			process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost:5672//"
+		);
 
 		connection.on("error", (error: unknown) => {
 			logger.error("RabbitMQ connection error", error);

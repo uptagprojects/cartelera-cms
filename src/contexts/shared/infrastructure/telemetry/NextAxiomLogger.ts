@@ -18,7 +18,7 @@ export class NextAxiomLogger implements Logger {
 			return {
 				name: logValues.name,
 				message: logValues.message,
-				stack: logValues.stack?.toString(),
+				stack: logValues.stack?.toString()
 			};
 		}
 
@@ -27,10 +27,14 @@ export class NextAxiomLogger implements Logger {
 		}
 
 		if (logValues instanceof Object) {
-			return Object.keys(logValues).reduce((acc, key) => {
-				acc[key] = String((logValues as any)[key]);
-				return acc;
-			}, {} as { [key: string]: string | undefined });
+			return Object.keys(logValues).reduce(
+				(acc, key) => {
+					acc[key] = String((logValues as any)[key]);
+
+					return acc;
+				},
+				{} as { [key: string]: string | undefined }
+			);
 		}
 
 		return { value: String(logValues) };

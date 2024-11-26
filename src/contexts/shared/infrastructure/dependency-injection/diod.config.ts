@@ -59,7 +59,7 @@ import { UserUpdatedNotificationEmailSender } from "../../../system/email/applic
 import { SendWelcomeEmailOnUserRegistered } from "../../../system/email/application/send-welcome-email/SendWelcomeEmailOnUserRegistered";
 import { WelcomeEmailSender } from "../../../system/email/application/send-welcome-email/WelcomeEmailSender";
 import { EmailSender } from "../../../system/email/domain/EmailSender";
-import { MailjetEmailSender } from "../../../system/email/infrastructure/MailjetEmailSender";
+import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
 import { EventBus } from "../../domain/event/EventBus";
 import { FileStorage } from "../../domain/FileStorage";
 import { MarkdownRemover } from "../../domain/MarkdownRemover";
@@ -72,7 +72,6 @@ import { DropboxFileStorage } from "../file-storage/dropbox/DropboxFileStorage";
 import { OfficialMarkdownRemover } from "../OfficialMarkdownRemover";
 import { OfficialUuidGenerator } from "../OfficialUuidGenerator";
 import { PostgresConnection } from "../PostgresConnection";
-import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
 
 const builder = new ContainerBuilder();
 

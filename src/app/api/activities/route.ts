@@ -30,6 +30,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 		return HTTPNextResponse.json(activities);
 	} catch (error: unknown) {
 		logger.error("Error getting activities", error);
+
 		return HTTPNextResponse.internalServerError();
 	}
 }

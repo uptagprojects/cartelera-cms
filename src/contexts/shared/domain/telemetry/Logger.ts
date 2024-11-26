@@ -1,4 +1,4 @@
-export type LogValues =  unknown;
+export type LogValues = unknown;
 
 export interface Logger {
 	debug(message: string, values?: LogValues): void;
