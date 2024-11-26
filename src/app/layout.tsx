@@ -1,6 +1,7 @@
 import "octagon-ui/dist/index.css";
 import "./rootLayout.css";
 
+// eslint-disable-next-line import/no-unresolved
 import { Analytics } from "@vercel/analytics/react";
 
 export default function RootLayout({

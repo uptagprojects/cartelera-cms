@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { customFetch } from "../../../../../lib/fetch";
 
-export const useGetUserDetails = async (id: string) => {
+export const useGetUserDetails = async (id: string): Promise<unknown> => {
 	let data = null;
 	const res = await customFetch(`/api/manage/users/${id}`);
 	if (res.status === 404) {
