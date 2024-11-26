@@ -1,6 +1,7 @@
 import { DomainEvent } from "../../domain/event/DomainEvent";
 import { DomainEventSubscriber } from "../../domain/event/DomainEventSubscriber";
 import { EventBus } from "../../domain/event/EventBus";
+import { logger } from "../telemetry/telemetry";
 
 export class InMemoryEventBus implements EventBus {
 	private readonly subscriptions: Map<string, Function[]> = new Map();
@@ -22,8 +23,8 @@ export class InMemoryEventBus implements EventBus {
 			}
 		});
 
-		await Promise.all(executions).catch(() => {
-			// TO DO: Add logger
+		await Promise.all(executions).catch((errors: Array<unknown>) => {
+			logger.error("Error publishing events", errors);
 		});
 	}
 

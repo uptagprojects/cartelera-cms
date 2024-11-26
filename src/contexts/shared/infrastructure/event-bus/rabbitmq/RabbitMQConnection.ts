@@ -1,5 +1,6 @@
 import amqplib, { ConsumeMessage } from "amqplib";
 import { Service } from "diod";
+import { logger } from "../../telemetry/telemetry";
 
 export const retrySuffix = ".retry";
 export const deadLetterSuffix = ".dead_letter";
@@ -129,8 +130,7 @@ export class RabbitMQConnection {
 		});
 
 		connection.on("error", (error: unknown) => {
-			// TO DO: Add logger
-			throw error;
+			logger.error("RabbitMQ connection error", error);
 		});
 
 		return connection;

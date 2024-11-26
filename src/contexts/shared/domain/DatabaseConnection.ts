@@ -1,3 +1,5 @@
+import { logger } from "../infrastructure/telemetry/telemetry";
+
 export type ColumnValue = string | number | boolean | Date | null;
 
 export abstract class DatabaseConnection {
@@ -27,10 +29,11 @@ export abstract class DatabaseConnection {
 			await this.release();
 
 			return result;
-		} catch (error) {
-			// TODO: Log error
+		} catch (error: unknown) {
 			await this.rollback();
 			await this.release();
+
+			logger.error("Error executing transaction", { error });
 
 			throw error;
 		}
