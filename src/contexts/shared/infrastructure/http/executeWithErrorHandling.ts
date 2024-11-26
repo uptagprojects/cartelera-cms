@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { DomainError } from "../../domain/DomainError";
+import { logger } from "../telemetry/telemetry";
 import { HTTPNextResponse } from "./HTTPNextResponse";
 
 export async function executeWithErrorHandling<T extends DomainError>(
@@ -16,6 +17,8 @@ export async function executeWithErrorHandling<T extends DomainError>(
 				return response;
 			}
 		}
+
+		logger.error("Error executing request", error);
 
 		return HTTPNextResponse.internalServerError();
 	}

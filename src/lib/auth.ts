@@ -12,11 +12,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 	providers: [
 		...authConfig.providers,
 		Google({
-			allowDangerousEmailAccountLinking: process.env.NODE_ENV === "development",
 			[customFetch]: fetch
 		}),
 		Resend({
-			from: "no-reply@pnfi.pro"
+			from: "PNFi <no-reply@pnfi.pro>"
 		})
 	],
 	session: { strategy: "jwt" },

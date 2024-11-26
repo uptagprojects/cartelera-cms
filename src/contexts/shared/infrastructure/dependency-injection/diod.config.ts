@@ -59,7 +59,7 @@ import { UserUpdatedNotificationEmailSender } from "../../../system/email/applic
 import { SendWelcomeEmailOnUserRegistered } from "../../../system/email/application/send-welcome-email/SendWelcomeEmailOnUserRegistered";
 import { WelcomeEmailSender } from "../../../system/email/application/send-welcome-email/WelcomeEmailSender";
 import { EmailSender } from "../../../system/email/domain/EmailSender";
-import { MailjetEmailSender } from "../../../system/email/infrastructure/MailjetEmailSender";
+import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
 import { EventBus } from "../../domain/event/EventBus";
 import { FileStorage } from "../../domain/FileStorage";
 import { MarkdownRemover } from "../../domain/MarkdownRemover";
@@ -88,7 +88,7 @@ builder.registerAndUse(DropboxConnection);
 builder.register(FileStorage).use(DropboxFileStorage);
 
 // system/email
-builder.register(EmailSender).use(MailjetEmailSender);
+builder.register(EmailSender).use(ResendEmailSender);
 builder.register(UserRepository).use(PostgresUserRepository);
 builder.registerAndUse(UserFinder);
 builder.registerAndUse(SendWelcomeEmailOnUserRegistered).addTag("subscriber");

@@ -110,8 +110,8 @@ export const UCList = () => {
 				</tr>
 			</thead>
 			<tbody>
-				{ucs.map(announcement => (
-					<UCListItem key={announcement.id} onDelete={remove} {...announcement} />
+				{ucs.map(uc => (
+					<UCListItem key={uc.id} onDelete={remove} {...uc} />
 				))}
 			</tbody>
 		</table>

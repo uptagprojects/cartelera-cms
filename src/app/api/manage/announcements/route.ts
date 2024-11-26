@@ -5,6 +5,7 @@ import { PostgresAnnouncementRepository } from "../../../../contexts/cma/announc
 import { SearchParamsCriteriaFiltersParser } from "../../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { HTTPNextResponse } from "../../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
+import { logger } from "../../../../contexts/shared/infrastructure/telemetry/telemetry";
 
 const searcher = new AnnouncementsByCriteriaSearcher(
 	new PostgresAnnouncementRepository(new PostgresConnection())
@@ -28,7 +29,9 @@ export async function GET(request: NextRequest): Promise<Response> {
 		);
 
 		return HTTPNextResponse.json(announcements);
-	} catch (_error) {
+	} catch (error: unknown) {
+		logger.error("Error getting announcements", error);
+
 		return HTTPNextResponse.internalServerError();
 	}
 }

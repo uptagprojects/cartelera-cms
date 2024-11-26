@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 
+import { useGetProfile } from "./actions";
 import { Profile } from "./components";
 
 export const metadata: Metadata = {
@@ -7,10 +8,12 @@ export const metadata: Metadata = {
 	description: "Programa Nacional de Formacion en Informatica"
 };
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+	const user = await useGetProfile();
+
 	return (
 		<div>
-			<Profile />
+			<Profile {...user} />
 		</div>
 	);
 }
