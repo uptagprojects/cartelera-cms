@@ -1,13 +1,15 @@
 import { Service } from "diod";
 
 import { UCCreatedDomainEvent } from "../../../../cma/uc/domain/event/UCCreatedDomainEvent";
+import { UCRenamedDomainEvent } from "../../../../cma/uc/domain/event/UCRenamedDomainEvent";
 import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
 import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
 import { PublishedUCUpdater } from "./PublishedUCUpdater";
-import { UCRenamedDomainEvent } from "../../../../cma/uc/domain/event/UCRenamedDomainEvent";
 
 @Service()
-export class UpdateUCOnPublished implements DomainEventSubscriber<UCCreatedDomainEvent | UCRenamedDomainEvent> {
+export class UpdateUCOnPublished
+	implements DomainEventSubscriber<UCCreatedDomainEvent | UCRenamedDomainEvent>
+{
 	constructor(private readonly updater: PublishedUCUpdater) {}
 
 	async on(event: UCCreatedDomainEvent | UCRenamedDomainEvent): Promise<void> {

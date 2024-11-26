@@ -1,3 +1,8 @@
 nextjs-portal {
     background: transparent;
 }
+
+body dialog.oct-modal::backdrop {
+    background: transparent;
+}
+

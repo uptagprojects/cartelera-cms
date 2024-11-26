@@ -19,7 +19,12 @@ export class GuideRemovedDomainEvent extends GuideDomainEvent {
 		occurredOn: Date,
 		_attributes: DomainEventAttributes
 	): GuideRemovedDomainEvent {
-		return new GuideRemovedDomainEvent(aggregateId, _attributes.ucId as string, eventId, occurredOn);
+		return new GuideRemovedDomainEvent(
+			aggregateId,
+			_attributes.ucId as string,
+			eventId,
+			occurredOn
+		);
 	}
 
 	toPrimitives(): DomainEventAttributes {

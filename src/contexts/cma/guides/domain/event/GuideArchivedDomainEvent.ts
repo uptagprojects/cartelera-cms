@@ -19,7 +19,12 @@ export class GuideArchivedDomainEvent extends GuideDomainEvent {
 		occurredOn: Date,
 		_attributes: DomainEventAttributes
 	): GuideArchivedDomainEvent {
-		return new GuideArchivedDomainEvent(aggregateId, _attributes.ucId as string, eventId, occurredOn);
+		return new GuideArchivedDomainEvent(
+			aggregateId,
+			_attributes.ucId as string,
+			eventId,
+			occurredOn
+		);
 	}
 
 	toPrimitives(): DomainEventAttributes {

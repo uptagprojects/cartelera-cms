@@ -5,6 +5,7 @@ import { PostgresActivityRepository } from "../../../contexts/cda/activities/inf
 import { SearchParamsCriteriaFiltersParser } from "../../../contexts/shared/infrastructure/criteria/SearchParamsCriteriaFiltersParser";
 import { HTTPNextResponse } from "../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
+import { logger } from "../../../contexts/shared/infrastructure/telemetry/telemetry";
 
 export async function GET(request: NextRequest): Promise<Response> {
 	const { searchParams } = new URL(request.url);
@@ -27,7 +28,9 @@ export async function GET(request: NextRequest): Promise<Response> {
 		);
 
 		return HTTPNextResponse.json(activities);
-	} catch (_error) {
+	} catch (error: unknown) {
+		logger.error("Error getting activities", error);
+
 		return HTTPNextResponse.internalServerError();
 	}
 }

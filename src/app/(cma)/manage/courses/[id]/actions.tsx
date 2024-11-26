@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { customFetch } from "../../../../../lib/fetch";
@@ -141,5 +142,5 @@ export async function saveCourse(_state: {}, formData: FormData) {
 		return await res.json();
 	}
 
-	return {};
+	return redirect("/manage/courses");
 }

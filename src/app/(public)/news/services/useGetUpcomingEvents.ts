@@ -1,7 +1,7 @@
 import qs from "qs";
 
-import { IEvent } from "../components/IEvent";
 import { customFetch } from "../../../../lib/fetch";
+import { IEvent } from "../components/IEvent";
 
 export async function useGetUpcomingEvents(): Promise<IEvent[]> {
 	const query = qs.stringify({

@@ -1,5 +1,6 @@
 import amqplib, { ConsumeMessage } from "amqplib";
 import { Service } from "diod";
+
 import { logger } from "../../telemetry/telemetry";
 
 export const retrySuffix = ".retry";
@@ -8,29 +9,10 @@ export const exchangeName = "domain_events";
 export const retryExchange = `${exchangeName}${retrySuffix}`;
 export const deadLetterExchange = `${exchangeName}${deadLetterSuffix}`;
 
-export type Settings = {
-	username: string;
-	password: string;
-	vhost: string;
-	connection: {
-		hostname: string;
-		port: number;
-	};
-};
-
 @Service()
 export class RabbitMQConnection {
 	private amqpConnection?: amqplib.Connection;
 	private amqpChannel?: amqplib.ConfirmChannel;
-	private readonly settings: Settings = {
-		username: process.env.RABBITMQ_USERNAME ?? "cartelera",
-		password: process.env.RABBITMQ_PASSWORD ?? "cartelera",
-		vhost: process.env.RABBITMQ_VHOST ?? "/",
-		connection: {
-			hostname: process.env.RABBITMQ_HOSTNAME ?? "localhost",
-			port: parseInt(process.env.RABBITMQ_PORT ?? "5672", 10)
-		}
-	};
 
 	async connect(): Promise<void> {
 		this.amqpConnection = await this.amqpConnect();
@@ -120,14 +102,9 @@ export class RabbitMQConnection {
 	}
 
 	private async amqpConnect(): Promise<amqplib.Connection> {
-		const connection = await amqplib.connect({
-			protocol: "amqp",
-			hostname: this.settings.connection.hostname,
-			port: this.settings.connection.port,
-			username: this.settings.username,
-			password: this.settings.password,
-			vhost: this.settings.vhost
-		});
+		const connection = await amqplib.connect(
+			process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost:5672//"
+		);
 
 		connection.on("error", (error: unknown) => {
 			logger.error("RabbitMQ connection error", error);
