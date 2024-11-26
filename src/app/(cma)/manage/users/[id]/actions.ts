@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { customFetch } from "../../../../../lib/fetch";
 
-export const useGetUserDetails = async (id: string): Promise<unknown> => {
+export const useGetUserDetails = async (id: string) => {
 	let data = null;
 	const res = await customFetch(`/api/manage/users/${id}`);
 	if (res.status === 404) {
@@ -47,7 +49,7 @@ const saveUserSchema = z.object({
 		.url({ message: "Instructor avatar is needed for aesthetic purposes." })
 });
 
-export async function saveUser(_state: {}, formData: FormData): Promise<unknown> {
+export async function saveUser(_state: {}, formData: FormData) {
 	const validatedFields = saveUserSchema.safeParse({
 		id: formData.get("id"),
 		name: formData.get("name"),
