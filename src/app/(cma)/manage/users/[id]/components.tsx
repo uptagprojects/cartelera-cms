@@ -2,9 +2,9 @@
 import { Alert, Avatar, Button, Container, FileUploader, Modal, TextInput } from "octagon-ui";
 import { useActionState, useCallback, useState } from "react";
 
+import { customFetch } from "../../../../../lib/fetch";
 import { IManageUser } from "../types";
 import { saveUser } from "./actions";
-import { customFetch } from "../../../../../lib/fetch";
 
 export const UserForm = ({ id, initUser }: { id: string; initUser?: IManageUser }) => {
 	const [errors, saveFormAction, isPending] = useActionState(saveUser, {});

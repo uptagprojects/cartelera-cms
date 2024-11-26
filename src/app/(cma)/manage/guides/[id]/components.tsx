@@ -2,10 +2,10 @@
 import { Alert, Button, Select, TextEditor, TextInput } from "octagon-ui";
 import { useActionState, useCallback, useState } from "react";
 
+import { customFetch } from "../../../../../lib/fetch";
 import { IManageUC } from "../../uc/actions";
 import { IManageGuide } from "../types";
 import { saveGuide } from "./actions";
-import { customFetch } from "../../../../../lib/fetch";
 /*
 export const GuideAttachmentForm = ({ guideId }: { guideId: string }) => {
 	const [attachments, setAttachments] = useState<IManageGuideAttachment[]>([]);
@@ -65,25 +65,24 @@ export const GuideForm = ({
 	const [ucId, setUcId] = useState(initGuide?.ucId ?? "");
 	const [imageUploadError, setImageUploadError] = useState<string | null>(null);
 
+	const handleImageUpload = useCallback(async (image: File): Promise<string> => {
+		const formData = new FormData();
+		formData.append("image", image);
+		try {
+			const res = await customFetch(`/api/manage/image/upload`, {
+				method: "POST",
+				body: formData
+			});
+			const { url } = await res.json();
 
-	const handleImageUpload = useCallback(
-		async (image: File): Promise<string> => {
-			const formData = new FormData();
-			formData.append("image", image);
-			try {
-				const res = await customFetch(`/api/manage/image/upload`, {
-					method: "POST",
-					body: formData
-				});
-				const { url } = await res.json();
-				return url
-			} catch {
-				setImageUploadError('error subiendo imagen');
-				return URL.createObjectURL(image);
-			}
-		},
-		[]
-	);
+			return url;
+		} catch {
+			setImageUploadError("error subiendo imagen");
+
+			return URL.createObjectURL(image);
+		}
+	}, []);
+
 	return (
 		<>
 			{imageUploadError && (
@@ -124,7 +123,11 @@ export const GuideForm = ({
 					</Select>
 				</header>
 
-				<TextEditor value={content} onChange={setContent} uploadRequest={handleImageUpload} />
+				<TextEditor
+					value={content}
+					onChange={setContent}
+					uploadRequest={handleImageUpload}
+				/>
 
 				<Button type="submit" disabled={isPending} label="Guardar" />
 			</form>
