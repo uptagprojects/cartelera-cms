@@ -1,5 +1,6 @@
 import amqplib, { ConsumeMessage } from "amqplib";
 import { Service } from "diod";
+
 import { logger } from "../../telemetry/telemetry";
 
 export const retrySuffix = ".retry";

@@ -9,33 +9,6 @@ export class NextAxiomLogger implements Logger {
 		this.logger = new AxiomLogger();
 	}
 
-	private formatValues(logValues: LogValues): { [key: string]: string | undefined } {
-		if (logValues === undefined) {
-			return {};
-		}
-
-		if (logValues instanceof Error) {
-			return {
-				name: logValues.name,
-				message: logValues.message,
-				stack: logValues.stack?.toString(),
-			};
-		}
-
-		if (logValues instanceof Array) {
-			return { values: JSON.stringify(logValues) };
-		}
-
-		if (logValues instanceof Object) {
-			return Object.keys(logValues).reduce((acc, key) => {
-				acc[key] = String((logValues as any)[key]);
-				return acc;
-			}, {} as { [key: string]: string | undefined });
-		}
-
-		return { value: String(logValues) };
-	}
-
 	debug(message: string, values?: LogValues): void {
 		this.logger.debug(message, this.formatValues(values));
 	}
@@ -50,5 +23,36 @@ export class NextAxiomLogger implements Logger {
 
 	warn(message: string, values?: LogValues): void {
 		this.logger.warn(message, this.formatValues(values));
+	}
+
+	private formatValues(logValues: LogValues): { [key: string]: string | undefined } {
+		if (logValues === undefined) {
+			return {};
+		}
+
+		if (logValues instanceof Error) {
+			return {
+				name: logValues.name,
+				message: logValues.message,
+				stack: logValues.stack?.toString()
+			};
+		}
+
+		if (logValues instanceof Array) {
+			return { values: JSON.stringify(logValues) };
+		}
+
+		if (logValues instanceof Object) {
+			return Object.keys(logValues).reduce(
+				(acc, key) => {
+					acc[key] = String((logValues as { [x: string]: unknown })[key]);
+
+					return acc;
+				},
+				{} as { [key: string]: string | undefined }
+			);
+		}
+
+		return { value: String(logValues) };
 	}
 }

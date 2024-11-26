@@ -1,9 +1,9 @@
 "use client";
 import {
-	LucideAward,
+	//	LucideAward,
 	LucideBook,
-	LucideCalendar,
-	LucideClapperboard,
+	//	LucideCalendar,
+	//	LucideClapperboard,
 	LucideNewspaper,
 	LucideSettings,
 	LucideSignal,
@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 import styles from "./Sidebar.module.css";
 
@@ -21,9 +21,9 @@ const menu = [
 	{ title: "Unidades Curriculares", href: "/manage/uc", Icon: LucideTag },
 	{ title: "Guias", href: "/manage/guides", Icon: LucideBook },
 	{ title: "Anuncios", href: "/manage/announcements", Icon: LucideSignal },
-	{ title: "Cursos", href: "/manage/courses", Icon: LucideAward },
+	/*	{ title: "Cursos", href: "/manage/courses", Icon: LucideAward },
 	{ title: "Eventos", href: "/manage/events", Icon: LucideClapperboard },
-	{ title: "Horarios", href: "/manage/schedules", Icon: LucideCalendar },
+	{ title: "Horarios", href: "/manage/schedules", Icon: LucideCalendar },*/
 	{ title: "Usuarios", href: "/manage/users", Icon: LucideUserPlus },
 	{ title: "Perfil", href: "/manage/profile", Icon: LucideSettings }
 ];
@@ -44,7 +44,7 @@ export const Sidebar: FC = () => {
 							].join(" ")}
 						>
 							<Link href={href} className={styles.menuItemLink}>
-								{useMemo(() => <Icon />, [Icon])}
+								<Icon className={styles.menuItemIcon} />
 								<span>{title}</span>
 							</Link>
 						</li>

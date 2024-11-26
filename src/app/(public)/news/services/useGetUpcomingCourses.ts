@@ -1,7 +1,7 @@
 import qs from "qs";
 
-import { ICourse } from "../components/ICourse";
 import { customFetch } from "../../../../lib/fetch";
+import { ICourse } from "../components/ICourse";
 
 export async function useGetUpcomingCourses(): Promise<ICourse[]> {
 	const query = qs.stringify({

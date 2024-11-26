@@ -43,6 +43,10 @@
     gap: 1cap;
 }
 
+a.menuItemLink .menuItemIcon {
+    height: auto;
+}
+
 @media (prefers-color-scheme: dark) {
     .menuItem:hover {
         color: var(--cyan-200);
