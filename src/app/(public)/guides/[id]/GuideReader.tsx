@@ -10,7 +10,10 @@ export function GuideReader({ title, area, professor, content, publishDate }: IG
 			<header>
 				<h2>{title}</h2>
 			</header>
-			<time dateTime={publishDate}>Publicado en {new Date(publishDate).toLocaleString()} en <Tag outline color="orange" label={area} /></time>
+			<time dateTime={publishDate}>
+				Publicado en {new Date(publishDate).toLocaleString()} en{" "}
+				<Tag outline color="orange" label={area} />
+			</time>
 			<MdViewer content={content} />
 			<footer>
 				<Avatar size={120} src={professor.avatar} alt={professor.name} />

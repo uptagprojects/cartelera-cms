@@ -72,6 +72,7 @@ import { DropboxFileStorage } from "../file-storage/dropbox/DropboxFileStorage";
 import { OfficialMarkdownRemover } from "../OfficialMarkdownRemover";
 import { OfficialUuidGenerator } from "../OfficialUuidGenerator";
 import { PostgresConnection } from "../PostgresConnection";
+import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
 
 const builder = new ContainerBuilder();
 
@@ -88,7 +89,7 @@ builder.registerAndUse(DropboxConnection);
 builder.register(FileStorage).use(DropboxFileStorage);
 
 // system/email
-builder.register(EmailSender).use(MailjetEmailSender);
+builder.register(EmailSender).use(ResendEmailSender);
 builder.register(UserRepository).use(PostgresUserRepository);
 builder.registerAndUse(UserFinder);
 builder.registerAndUse(SendWelcomeEmailOnUserRegistered).addTag("subscriber");

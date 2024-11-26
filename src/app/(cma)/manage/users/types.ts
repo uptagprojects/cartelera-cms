@@ -2,7 +2,8 @@ export interface IManageUser {
 	id: string;
 	name: string;
 	email: string;
-    emailVerified: string;
+	emailVerified: string | null;
+	avatar: string;
 	status: string;
 }
 

@@ -3,12 +3,7 @@ import { useEffect, useReducer } from "react";
 import { z } from "zod";
 
 import { customFetch } from "../../../../lib/fetch";
-import {
-	UserAction,
-    UserActionTypes,
-    UserState,
-    IManageUser
-} from "./types";
+import { IManageUser, UserAction, UserActionTypes, UserState } from "./types";
 
 const PAGE_SIZE = 10;
 
@@ -61,7 +56,7 @@ function userReducer(state: UserState, action: UserAction) {
 	}
 }
 
-export function useGetAnnouncements(): {
+export function useGetUsers(): {
 	loading: boolean;
 	users: IManageUser[];
 	noMoreAvailable: boolean;
@@ -111,7 +106,7 @@ export function useGetAnnouncements(): {
 	};
 }
 
-export async function renameUser(_state: { id: string; name: string }) {
+export async function renameUser(_state: { id: string; name: string }): Promise<unknown> {
 	const nameSchema = z
 		.string()
 		.min(1, "This field has to be filled.")
@@ -123,13 +118,13 @@ export async function renameUser(_state: { id: string; name: string }) {
 		return validated.error.message;
 	}
 
-	const res = await customFetch(`/api/manage/users/${_state.id}/title`, {
+	const res = await customFetch(`/api/manage/users/${_state.id}/rename`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
 		},
 		body: JSON.stringify({
-			title: validated.data
+			name: validated.data
 		})
 	});
 
@@ -140,25 +135,22 @@ export async function renameUser(_state: { id: string; name: string }) {
 	return {};
 }
 
-export async function updateAnnouncementContent(_state: { id: string; content: string }) {
-	const contentSchema = z
-		.string()
-		.min(1, "This field has to be filled.")
-		.max(320, "This field is too long.");
+export async function updateUserEmail(_state: { id: string; email: string }): Promise<unknown> {
+	const emailSchema = z.string().email("Invalid email address.");
 
-	const validated = contentSchema.safeParse(_state.content);
+	const validated = emailSchema.safeParse(_state.email);
 
 	if (!validated.success) {
 		return validated.error.message;
 	}
 
-	const res = await customFetch(`/api/manage/users/${_state.id}/content`, {
+	const res = await customFetch(`/api/manage/users/${_state.id}/email`, {
 		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
 		},
 		body: JSON.stringify({
-			content: validated.data
+			email: validated.data
 		})
 	});
 
@@ -169,7 +161,7 @@ export async function updateAnnouncementContent(_state: { id: string; content: s
 	return {};
 }
 
-export async function archiveAnnouncement(_state: { id: string }) {
+export async function archiveUser(_state: { id: string }): Promise<unknown> {
 	const res = await customFetch(`/api/manage/users/${_state.id}/archive`, {
 		method: "PUT",
 		headers: {
@@ -184,22 +176,7 @@ export async function archiveAnnouncement(_state: { id: string }) {
 	return {};
 }
 
-export async function publishAnnouncement(_state: { id: string }) {
-	const res = await customFetch(`/api/manage/users/${_state.id}/publish`, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json"
-		}
-	});
-
-	if (res.status >= 400) {
-		return await res.json();
-	}
-
-	return {};
-}
-
-export async function restoreAnnouncement(_state: { id: string }) {
+export async function restoreUser(_state: { id: string }): Promise<unknown> {
 	const res = await customFetch(`/api/manage/users/${_state.id}/restore`, {
 		method: "PUT",
 		headers: {
@@ -214,9 +191,9 @@ export async function restoreAnnouncement(_state: { id: string }) {
 	return {};
 }
 
-export async function deleteAnnouncement(_state: { id: string }) {
-	const res = await customFetch(`/api/manage/users/${_state.id}/remove`, {
-		method: "DELETE",
+export async function blockUser(_state: { id: string }): Promise<unknown> {
+	const res = await customFetch(`/api/manage/users/${_state.id}/block`, {
+		method: "PUT",
 		headers: {
 			"Content-Type": "application/json"
 		}

@@ -1,11 +1,19 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Container, Spinner, TextInput } from "octagon-ui";
+import { Avatar, Button, Container, Modal, Spinner, Tag, TextInput } from "octagon-ui";
 import { memo, useCallback, useId, useState } from "react";
 
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
-import { deleteUC, IManageUC, updateUCName, useGetUCs } from "./actions";
+import {
+	archiveUser,
+	blockUser,
+	renameUser,
+	restoreUser,
+	updateUserEmail,
+	useGetUsers
+} from "./actions";
 import { IManageUser } from "./types";
 
 export const UserHeader = () => {
@@ -23,18 +31,35 @@ export const UserHeader = () => {
 	);
 };
 
+enum statusColor {
+	"active" = "moss",
+	"archived" = "orange",
+	"pending_confirmation" = "cyan",
+	"blocked" = "magenta"
+}
+
+enum statusLabel {
+	"active" = "activo",
+	"archived" = "archivado",
+	"pending_confirmation" = "pendiente",
+	"blocked" = "bloqueado"
+}
+
 export const UserLoader = () => (
 	<Container display align="center">
 		<Spinner />
 	</Container>
 );
 
-const UserListItem = ({ id, name, email }: IManageUser & { onBlock: (id: string) => void }) => {
+const UserListItem = ({ id, name, email, avatar, status }: IManageUser) => {
 	const htmlId = useId();
 	const [editing, setEditing] = useState<boolean>(false);
 	const [nameValue, setNameValue] = useState<string>(name);
 	const [emailValue, setEmailValue] = useState<string>(email);
-	const [statusValue, setStatusValue] = useState<string>(status);
+	const [statusValue, setStatusValue] = useState<keyof typeof statusColor>(
+		status as keyof typeof statusColor
+	);
+	const [confirmBlock, setConfirmBlock] = useState<boolean>(false);
 
 	const handleEditing = useCallback(async () => {
 		if (editing) {
@@ -43,7 +68,7 @@ const UserListItem = ({ id, name, email }: IManageUser & { onBlock: (id: string)
 				name: nameValue
 			});
 
-			await updateEmail({
+			await updateUserEmail({
 				id,
 				email: emailValue
 			});
@@ -58,60 +83,113 @@ const UserListItem = ({ id, name, email }: IManageUser & { onBlock: (id: string)
 			await archiveUser({ id });
 		}
 
-		setStatusValue(state => (state === "archived" ? "draft" : "archived"));
+		setStatusValue(state => (state === "archived" ? "active" : "archived"));
 	}, [statusValue, setStatusValue, id]);
 
 	const handleBlock = useCallback(() => {
 		void blockUser({ id });
-	}, [id, onBlock]);
+		setStatusValue("blocked");
+		setConfirmBlock(false);
+	}, [id]);
 
 	return (
-		<tr>
-			<td>
-				{editing ? (
-					<TextInput
-						id={htmlId}
-						label="nombre"
-						size="small"
-						value={nameValue}
-						onChange={e => setNameValue(e.target.value)}
-					/>
-				) : (
-					<p id={htmlId}>{nameValue}</p>
-				)}
-			</td>
-			<td>
-				<Button
-					icon={editing ? "Check" : "Pencil"}
-					variant="secondary"
-					label={editing ? "terminar edicion" : "editar"}
-					size="small"
-					onClick={() => {
-						void handleEditing();
-					}}
-				/>
-				<div>
+		<>
+			<tr>
+				<td>
+					<Link href={`/manage/users/${id}`}>
+						<Avatar size={48} src={avatar} alt="foto de perfil" />
+					</Link>
+				</td>
+				<td>
+					{editing ? (
+						<TextInput
+							id={htmlId}
+							label="nombre"
+							size="small"
+							value={nameValue}
+							onChange={e => setNameValue(e.target.value)}
+						/>
+					) : (
+						<p id={htmlId}>
+							<strong>{nameValue}</strong>
+						</p>
+					)}
+				</td>
+				<td>
+					{editing ? (
+						<TextInput
+							id={htmlId}
+							label="Correo Electrónico"
+							size="small"
+							value={emailValue}
+							onChange={e => setEmailValue(e.target.value)}
+						/>
+					) : (
+						<p id={htmlId}>{emailValue}</p>
+					)}
+				</td>
+				<td>
+					<Tag color={statusColor[statusValue]} label={statusLabel[statusValue]} />
+				</td>
+				<td>
 					<Button
-						icon={statusValue === "archived" ? "ArchiveRestore" : "Archive"}
-						variant="tertiary"
-						label={statusValue === "archived" ? "restaurar" : "archivar"}
+						icon={editing ? "Check" : "Pencil"}
+						variant="secondary"
+						label={editing ? "guardar" : "editar"}
 						size="small"
 						onClick={() => {
-							void handleArchive();
+							void handleEditing();
 						}}
 					/>
-					<Button
-						icon="UserX"
-						variant="tertiary"
-						label="eliminar"
-						size="small"
-						onClick={() => {
-							void handleBlock();
-						}}
-					/>
-				</div>
-			</td>
-		</tr>
+				</td>
+				<td>
+					{statusValue === "active" ? (
+						<>
+							<Button
+								icon="Archive"
+								variant="tertiary"
+								label="archivar"
+								size="small"
+								onClick={() => {
+									void handleArchive();
+								}}
+							/>
+							<Button
+								icon="UserX"
+								variant="tertiary"
+								label="bloquear"
+								size="small"
+								onClick={() => {
+									setConfirmBlock(true);
+								}}
+							/>
+						</>
+					) : (
+						<Button
+							icon="UserCheck"
+							variant="tertiary"
+							label="restaurar"
+							size="small"
+							onClick={() => {
+								void restoreUser({ id });
+								setStatusValue("active");
+							}}
+						/>
+					)}
+					<Modal
+						open={confirmBlock}
+						actionLabel="Bloquear"
+						closeLabel="Cancelar"
+						onAction={handleBlock}
+						onClose={() => setConfirmBlock(false)}
+					>
+						<Container align="center">
+							¿Estás seguro de que deseas bloquear a este usuario?
+						</Container>
+					</Modal>
+				</td>
+			</tr>
+		</>
 	);
 };
 
@@ -133,12 +211,6 @@ export const UserList = () => {
 
 	return (
 		<table>
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>Acciones</th>
-				</tr>
-			</thead>
 			<tbody>
 				{users.map(user => (
 					<UserListItem key={user.id} {...user} />

@@ -1,9 +1,9 @@
 import { Service } from "diod";
 import Mailjet from "node-mailjet";
 
+import { logger } from "../../../shared/infrastructure/telemetry/telemetry";
 import { Email } from "../domain/Email";
 import { EmailSender } from "../domain/EmailSender";
-import { logger } from "../../../shared/infrastructure/telemetry/telemetry";
 
 @Service()
 export class MailjetEmailSender implements EmailSender {
