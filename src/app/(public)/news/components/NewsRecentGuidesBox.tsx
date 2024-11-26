@@ -15,7 +15,7 @@ export const NewsRecentGuidesBox: FC<NewsRecentGuidesBoxProps> = ({ guides }) =>
 		<Container className={styles.recentGuides}>
 			<CardHeader title="Publicaciones recientes" />
 				{guides.map(guide => (
-					<div onClick={() => router.push(`/guides/${guide.id}`)}>
+					<div key={guide.id} onClick={() => router.push(`/guides/${guide.id}`)}>
 						<Card key={guide.id}>
 							<CardHeader title={guide.title} />
 							<Tag label={guide.area} />

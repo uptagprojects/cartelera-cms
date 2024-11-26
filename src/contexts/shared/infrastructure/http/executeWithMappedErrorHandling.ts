@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { DomainError } from "../../domain/DomainError";
 import { HTTPNextResponse } from "./HTTPNextResponse";
+import { logger } from "../telemetry/telemetry";
 
 export async function executeWithMappedErrorHandling(
 	fn: () => Promise<NextResponse>,
@@ -14,6 +15,8 @@ export async function executeWithMappedErrorHandling(
 			return HTTPNextResponse.domainError(error, errorMap[error.constructor.name]);
 		}
 
+		logger.error("Error executing request", error);
+		
 		return HTTPNextResponse.internalServerError();
 	}
 }
