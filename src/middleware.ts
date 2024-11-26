@@ -1,7 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
-export async function middleware(_: NextRequest): Promise<NextResponse> {
+import { loggerWrapper } from "./contexts/shared/infrastructure/telemetry/telemetry";
+
+export async function middleware(
+	request: NextRequest,
+	event: NextFetchEvent
+): Promise<NextResponse> {
 	// you can use getToken() to get the current user
+
+	event.waitUntil(loggerWrapper.middleware(request));
 
 	return NextResponse.next();
 }

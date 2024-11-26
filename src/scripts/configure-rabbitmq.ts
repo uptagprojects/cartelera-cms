@@ -4,6 +4,7 @@ import { DomainEvent } from "../contexts/shared/domain/event/DomainEvent";
 import { DomainEventSubscriber } from "../contexts/shared/domain/event/DomainEventSubscriber";
 import { container } from "../contexts/shared/infrastructure/dependency-injection/diod.config";
 import { RabbitMQConnection } from "../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
+import { logger } from "../contexts/shared/infrastructure/telemetry/telemetry";
 
 const connection = new RabbitMQConnection();
 
@@ -32,6 +33,6 @@ async function main(): Promise<void> {
 	await connection.close();
 }
 
-main().catch(() => {
-	// TO DO: log error
+main().catch((error: unknown) => {
+	logger.error("Error configuring RabbitMQ", error);
 });

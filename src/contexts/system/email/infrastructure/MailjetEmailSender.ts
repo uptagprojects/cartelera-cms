@@ -3,6 +3,7 @@ import Mailjet from "node-mailjet";
 
 import { Email } from "../domain/Email";
 import { EmailSender } from "../domain/EmailSender";
+import { logger } from "../../../shared/infrastructure/telemetry/telemetry";
 
 @Service()
 export class MailjetEmailSender implements EmailSender {
@@ -31,8 +32,8 @@ export class MailjetEmailSender implements EmailSender {
 					}
 				]
 			});
-		} catch (_error: unknown) {
-			// TO DO: Handle error and log it
+		} catch (error: unknown) {
+			logger.error("Error sending email via Mailjet", error);
 		}
 	}
 }

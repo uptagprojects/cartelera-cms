@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS cma__schedules (
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);

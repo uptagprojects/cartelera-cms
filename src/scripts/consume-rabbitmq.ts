@@ -8,6 +8,7 @@ import { DomainEventSubscriber } from "../contexts/shared/domain/event/DomainEve
 import { container } from "../contexts/shared/infrastructure/dependency-injection/diod.config";
 import { DomainEventJSONDeserializer } from "../contexts/shared/infrastructure/event-bus/DomainEventJSONDeserializer";
 import { RabbitMQConnection } from "../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
+import { logger } from "../contexts/shared/infrastructure/telemetry/telemetry";
 
 const connection = new RabbitMQConnection();
 
@@ -43,6 +44,6 @@ function consume(subscriber: DomainEventSubscriber<DomainEvent>) {
 	};
 }
 
-main().catch(() => {
-	// TO DO: handle error
+main().catch((error: unknown) => {
+	logger.error("Error consuming RabbitMQ", error);
 });
