@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import qs from "qs";
 import { useEffect, useReducer } from "react";
 import { z } from "zod";
@@ -106,7 +108,7 @@ export function useGetUsers(): {
 	};
 }
 
-export async function renameUser(_state: { id: string; name: string }): Promise<unknown> {
+export async function renameUser(_state: { id: string; name: string }) {
 	const nameSchema = z
 		.string()
 		.min(1, "This field has to be filled.")
@@ -135,7 +137,7 @@ export async function renameUser(_state: { id: string; name: string }): Promise<
 	return {};
 }
 
-export async function updateUserEmail(_state: { id: string; email: string }): Promise<unknown> {
+export async function updateUserEmail(_state: { id: string; email: string }) {
 	const emailSchema = z.string().email("Invalid email address.");
 
 	const validated = emailSchema.safeParse(_state.email);
@@ -161,7 +163,7 @@ export async function updateUserEmail(_state: { id: string; email: string }): Pr
 	return {};
 }
 
-export async function archiveUser(_state: { id: string }): Promise<unknown> {
+export async function archiveUser(_state: { id: string }) {
 	const res = await customFetch(`/api/manage/users/${_state.id}/archive`, {
 		method: "PUT",
 		headers: {
@@ -176,7 +178,7 @@ export async function archiveUser(_state: { id: string }): Promise<unknown> {
 	return {};
 }
 
-export async function restoreUser(_state: { id: string }): Promise<unknown> {
+export async function restoreUser(_state: { id: string }) {
 	const res = await customFetch(`/api/manage/users/${_state.id}/restore`, {
 		method: "PUT",
 		headers: {
@@ -191,7 +193,7 @@ export async function restoreUser(_state: { id: string }): Promise<unknown> {
 	return {};
 }
 
-export async function blockUser(_state: { id: string }): Promise<unknown> {
+export async function blockUser(_state: { id: string }) {
 	const res = await customFetch(`/api/manage/users/${_state.id}/block`, {
 		method: "PUT",
 		headers: {
