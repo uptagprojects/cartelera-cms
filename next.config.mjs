@@ -1,5 +1,7 @@
+import { withAxiom } from 'next-axiom';
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+let nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true
 	},
@@ -20,5 +22,9 @@ const nextConfig = {
 		return config;
 	}
 };
+
+if(process.env.NODE_ENV === 'production') {
+	nextConfig = withAxiom(nextConfig);
+}
 
 export default nextConfig;
