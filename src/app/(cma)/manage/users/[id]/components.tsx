@@ -2,6 +2,7 @@
 import { Alert, Avatar, Button, Container, FileUploader, Modal, TextInput } from "octagon-ui";
 import { useActionState, useCallback, useState } from "react";
 
+import { customFetch } from "../../../../../lib/fetch";
 import { IManageUser } from "../types";
 import { saveUser } from "./actions";
 
@@ -18,7 +19,7 @@ export const UserForm = ({ id, initUser }: { id: string; initUser?: IManageUser 
 			const formData = new FormData();
 			setAvatar(URL.createObjectURL(image));
 			formData.append("image", image);
-			fetch(`/api/manage/image/upload`, {
+			customFetch(`/api/manage/image/upload`, {
 				method: "POST",
 				body: formData
 			})

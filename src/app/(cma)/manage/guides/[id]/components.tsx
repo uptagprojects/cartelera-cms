@@ -1,7 +1,8 @@
 "use client";
-import { Button, Select, TextEditor, TextInput } from "octagon-ui";
-import { useActionState, useState } from "react";
+import { Alert, Button, Select, TextEditor, TextInput } from "octagon-ui";
+import { useActionState, useCallback, useState } from "react";
 
+import { customFetch } from "../../../../../lib/fetch";
 import { IManageUC } from "../../uc/actions";
 import { IManageGuide } from "../types";
 import { saveGuide } from "./actions";
@@ -62,9 +63,37 @@ export const GuideForm = ({
 	const [title, setTitle] = useState(initGuide?.title ?? "");
 	const [content, setContent] = useState(initGuide?.content ?? "");
 	const [ucId, setUcId] = useState(initGuide?.ucId ?? "");
+	const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+
+	const handleImageUpload = useCallback(async (image: File): Promise<string> => {
+		const formData = new FormData();
+		formData.append("image", image);
+		try {
+			const res = await customFetch(`/api/manage/image/upload`, {
+				method: "POST",
+				body: formData
+			});
+			const { url } = await res.json();
+
+			return url;
+		} catch {
+			setImageUploadError("error subiendo imagen");
+
+			return URL.createObjectURL(image);
+		}
+	}, []);
 
 	return (
 		<>
+			{imageUploadError && (
+				<Alert
+					title="Ocurrió un error subiendo la imagen"
+					message={imageUploadError}
+					onClose={() => {
+						setImageUploadError(null);
+					}}
+				/>
+			)}
 			<form action={saveFormAction}>
 				<input type="hidden" name="id" value={id} />
 				<input type="hidden" name="content" value={content} />
@@ -94,7 +123,11 @@ export const GuideForm = ({
 					</Select>
 				</header>
 
-				<TextEditor value={content} onChange={setContent} />
+				<TextEditor
+					value={content}
+					onChange={setContent}
+					uploadRequest={handleImageUpload}
+				/>
 
 				<Button type="submit" disabled={isPending} label="Guardar" />
 			</form>
