@@ -65,7 +65,7 @@ export const GuideForm = ({
 	const [ucId, setUcId] = useState(initGuide?.ucId ?? "");
 	const [imageUploadError, setImageUploadError] = useState<string | null>(null);
 
-	const handleImageUpload = useCallback(async (image: File): Promise<string> => {
+	const handleImageUpload = useCallback(async (image: File, blobUrl: string): Promise<void> => {
 		const formData = new FormData();
 		formData.append("image", image);
 		try {
@@ -75,11 +75,9 @@ export const GuideForm = ({
 			});
 			const { url } = await res.json();
 
-			return url;
+			setContent(c => c.replace(blobUrl, url));
 		} catch {
 			setImageUploadError("error subiendo imagen");
-
-			return URL.createObjectURL(image);
 		}
 	}, []);
 

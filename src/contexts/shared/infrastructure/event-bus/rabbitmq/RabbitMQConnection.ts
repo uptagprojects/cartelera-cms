@@ -103,7 +103,7 @@ export class RabbitMQConnection {
 
 	private async amqpConnect(): Promise<amqplib.Connection> {
 		const connection = await amqplib.connect(
-			process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost:5672//"
+			process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost//"
 		);
 
 		connection.on("error", (error: unknown) => {
