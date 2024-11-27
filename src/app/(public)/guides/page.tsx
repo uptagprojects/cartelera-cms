@@ -7,6 +7,6 @@ export const metadata: Metadata = {
 	description: "Programa Nacional de Formacion en Informatica"
 };
 
-export default function PageGuides() {
+export default async function PageGuides() {
 	return <GuideList />;
 }
