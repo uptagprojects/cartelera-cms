@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, Card, CardFooter, CardHeader, Container, Tag } from "octagon-ui";
 import React, { FC } from "react";
 
+import { formatDate } from "../../../../lib/formatDate";
 import { IRecentGuide } from "./IRecentGuide";
 import styles from "./News.module.css";
 
@@ -28,9 +29,7 @@ export const NewsRecentGuidesBox: FC<NewsRecentGuidesBoxProps> = ({ guides }) =>
 									<p className={styles.recentGuidesAuthor}>
 										{guide.professor.name}
 									</p>
-									<time>
-										Publicado {new Date(guide.publishDate).toLocaleString()}
-									</time>
+									<time>Publicado {formatDate(guide.publishDate)}</time>
 								</div>
 							</div>
 						</CardFooter>

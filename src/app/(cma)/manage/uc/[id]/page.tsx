@@ -8,7 +8,7 @@ export default async function UCEditorPage({ params }: { params: Promise<{ id: s
 
 	return (
 		<section>
-			<ManageReturnHeader title="Crear unidad curricular" />
+			<ManageReturnHeader title="Editar unidad curricular" />
 			<UCForm id={id} initUC={data} />
 		</section>
 	);

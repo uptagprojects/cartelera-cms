@@ -19,7 +19,7 @@ import styles from "./Sidebar.module.css";
 const menu = [
 	{ title: "Inicio", href: "/manage/onboarding", Icon: LucideNewspaper },
 	{ title: "Unidades Curriculares", href: "/manage/uc", Icon: LucideTag },
-	{ title: "Guias", href: "/manage/guides", Icon: LucideBook },
+	{ title: "Guías", href: "/manage/guides", Icon: LucideBook },
 	{ title: "Anuncios", href: "/manage/announcements", Icon: LucideSignal },
 	/*	{ title: "Cursos", href: "/manage/courses", Icon: LucideAward },
 	{ title: "Eventos", href: "/manage/events", Icon: LucideClapperboard },

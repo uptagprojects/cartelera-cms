@@ -13,7 +13,7 @@ export default async function PublicLayout({
 
 	return (
 		<>
-			<Nav session={Boolean(session)} />
+			<Nav session={Boolean(session?.user?.email)} />
 			<main>{children}</main>
 			<PageFooter />
 		</>

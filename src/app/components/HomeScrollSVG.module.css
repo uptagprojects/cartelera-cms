@@ -1,5 +1,11 @@
 .svg {
     width: 100%;
+    height: auto;
+    position: absolute;
+    overflow: hidden;
     margin-left: -2dvw;
-    margin-top: -10dvh;
+    margin-top: 70dvh;
+    top: 0px;
+    left: 0px;
+    z-index: -2;
 }

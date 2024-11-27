@@ -1,7 +1,8 @@
 "use client";
 
-import { Avatar, Container, MdViewer, Tag } from "octagon-ui";
+import { Avatar, CardFooter, Container, MdViewer, Tag } from "octagon-ui";
 
+import { formatDate } from "../../../../lib/formatDate";
 import { IGuide } from "../../../../lib/guides/IGuide";
 
 export function GuideReader({ title, area, professor, content, publishDate }: IGuide) {
@@ -10,18 +11,27 @@ export function GuideReader({ title, area, professor, content, publishDate }: IG
 			<header>
 				<h2>{title}</h2>
 			</header>
-			<time dateTime={publishDate}>
-				Publicado en {new Date(publishDate).toLocaleString()} en{" "}
-				<Tag outline color="orange" label={area} />
-			</time>
+			<div>
+				<p>
+					Publicado {formatDate(publishDate)} en {""}
+					<Tag style={{ height: "0.95em" }} outline color="orange" label={area} />
+				</p>
+			</div>
+			<div></div>
 			<MdViewer content={content} />
-			<footer>
-				<Avatar size={120} src={professor.avatar} alt={professor.name} />
+			<CardFooter>
+				<Avatar size={80} src={professor.avatar} alt={professor.name} />
 				<div>
-					<p>{professor.name}</p>
-					<p>Publicado en {area}</p>
+					<p>
+						Por <strong>{professor.name}</strong> en{" "}
+						<Tag style={{ height: "0.95em" }} outline color="orange" label={area} />
+					</p>
+					<p>
+						Publicado el{" "}
+						<time dateTime={publishDate}>{new Date(publishDate).toLocaleString()}</time>
+					</p>
 				</div>
-			</footer>
+			</CardFooter>
 		</Container>
 	);
 }

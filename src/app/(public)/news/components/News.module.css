@@ -2,7 +2,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: min-content repeat(3, 1fr);
+    grid-template-rows: min-content repeat(2, 1fr);
     grid-template-areas: "announcements announcements" "events events" "guides courses" "guides uc";
     gap: var(--size-4); /*repeat(auto-fill, minmax(300px, 1fr));*/
     margin-bottom: var(--scale-6);

@@ -10,6 +10,7 @@ export const NewsUpcomingEventsBox: FC<{ events: IEvent[] }> = ({ events }) => {
 	return (
 		<Card className={styles.upcomingEvents} hover={false}>
 			<CardHeader title="Proximos Eventos" />
+			{events.length === 0 && <p>Aún no hay eventos disponibles</p>}
 			{events.map(event => (
 				<div key={event.name}>
 					<h3>{event.name}</h3>

@@ -15,7 +15,7 @@ export const Nav = ({ session }: { session: boolean }) => {
 				<Link href="/news">Noticias</Link>
 			</NavItem>
 			<NavItem>
-				<Link href="/guides">Guias</Link>
+				<Link href="/guides">Guías</Link>
 			</NavItem>
 			{session ? (
 				<NavItem>

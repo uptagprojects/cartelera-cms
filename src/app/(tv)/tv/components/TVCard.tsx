@@ -3,12 +3,11 @@ import React, { FC } from "react";
 
 type TVCardProps = {
 	title: string;
-	image: string;
 };
 
-export const TVCard: FC<TVCardProps> = ({ title, image }) => {
+export const TVCard: FC<TVCardProps> = ({ title }) => {
 	return (
-		<Card image={image} aspectRatio="portrait">
+		<Card aspectRatio="portrait">
 			<p>{title}</p>
 		</Card>
 	);

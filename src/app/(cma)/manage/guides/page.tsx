@@ -6,7 +6,7 @@ import { useServerGetManageUCs } from "../uc/serverActions";
 import { GuideHeader, GuideList } from "./components";
 
 export const metadata: Metadata = {
-	title: "PNFi | CMS | Guias",
+	title: "PNFi | CMS | Guías",
 	description: "Programa Nacional de Formacion en Informatica"
 };
 
@@ -19,7 +19,7 @@ export default async function GuidesPage() {
 			<GuideHeader />
 			<section>
 				<p>
-					Publica informacion creando guias usando{" "}
+					Publica información creando guías usando{" "}
 					<Link target="_blank" href="https://tutorialmarkdown.com/guia">
 						Markdown
 						<ExternalLinkIcon />
