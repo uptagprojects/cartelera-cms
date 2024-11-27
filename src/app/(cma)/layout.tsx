@@ -15,7 +15,7 @@ export default async function CMALayout({
 }>) {
 	const session = await auth();
 
-	if (!session?.user?.email) {
+	if (!session) {
 		redirect("/");
 	}
 

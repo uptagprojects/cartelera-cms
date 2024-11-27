@@ -20,18 +20,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 		})
 	],
 	session: { strategy: "jwt" },
-	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator()),
-	callbacks: {
-		async jwt({ token, user }) {
-			token.id = user.id;
-			token.email = user.email;
-			token.name = user.name;
-
-			return token;
-		},
-
-		async signIn() {
-			return true;
-		}
-	}
+	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator())
 });
