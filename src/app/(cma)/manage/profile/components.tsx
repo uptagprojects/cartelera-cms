@@ -1,9 +1,9 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import { Avatar, Button, Container } from "octagon-ui";
 
 import { IManageUser } from "../users/types";
-import { handleSignOut } from "./actions";
 
 export const Profile = ({ email, avatar }: IManageUser) => {
 	return (
@@ -12,7 +12,10 @@ export const Profile = ({ email, avatar }: IManageUser) => {
 			<h3>{email}</h3>
 			<Button
 				onClick={() => {
-					void handleSignOut();
+					void signOut({
+						redirectTo: "/",
+						redirect: true
+					});
 				}}
 				variant="primary"
 				label="cerrar sesion"
