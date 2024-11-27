@@ -17,7 +17,7 @@ export type BlockedEmailPrimitives = {
 };
 
 export class RestoredEmail extends Email {
-	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@octaogn.uptag.net";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "octagon@pnfi.pro";
 
 	private constructor(
 		id: EmailId,
