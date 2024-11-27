@@ -17,7 +17,7 @@ export type BlockedEmailPrimitives = {
 };
 
 export class BlockedEmail extends Email {
-	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <no-reply@pnfi.pro>";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <octagon@pnfi.pro>";
 
 	private constructor(
 		id: EmailId,
