@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
+import { OfficialMarkdownRemover } from "../../../contexts/shared/infrastructure/OfficialMarkdownRemover";
 import { TV } from "./components/TV";
 import { useGetActivities } from "./services/useGetActivities";
-import { OfficialMarkdownRemover } from "../../../contexts/shared/infrastructure/OfficialMarkdownRemover";
 
 export const metadata: Metadata = {
 	title: "PNFi | TV",
@@ -12,11 +12,13 @@ export const metadata: Metadata = {
 const mdRemover = new OfficialMarkdownRemover();
 
 export default async function TVPage() {
-	let activities = await useGetActivities();
+	const activities = await useGetActivities();
 
-	activities.map(async (activity, i) => {
-		activities[i].context = await mdRemover.remove(activity.context, 180);
-	});
+	await Promise.all(
+		activities.map(async (activity, i) => {
+			activities[i].context = await mdRemover.remove(activity.context, 180);
+		})
+	);
 
 	return <TV activities={activities} />;
 }

@@ -5,6 +5,7 @@ import { Button, Card, CardFooter, CardHeader, Container, Spinner, Tag } from "o
 import { memo, useCallback, useEffect, useState } from "react";
 
 import { OfficialMarkdownRemover } from "../../../../contexts/shared/infrastructure/OfficialMarkdownRemover";
+import { logger } from "../../../../contexts/shared/infrastructure/telemetry/telemetry";
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
 import { ManageListContainer } from "../../_components/ManageListContainer";
@@ -59,7 +60,12 @@ const GuideListItem = ({
 	const [cleanContent, setCleanContent] = useState<string>(content);
 
 	useEffect(() => {
-		mdRemover.remove(content, MAX_CONTENT_LENGTH).then(setCleanContent);
+		mdRemover
+			.remove(content, MAX_CONTENT_LENGTH)
+			.then(setCleanContent)
+			.catch(err => {
+				logger.error("error removing md from content", err);
+			});
 	}, [content, setCleanContent]);
 
 	const handlePublish = useCallback(async () => {

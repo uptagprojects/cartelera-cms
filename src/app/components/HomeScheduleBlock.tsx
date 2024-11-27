@@ -8,13 +8,19 @@ type HomeScheduleBlockProps = {
 
 export const HomeScheduleBlock: FC<HomeScheduleBlockProps> = ({ schedule }) => {
 	return (
-		<Container align="left" display>
+		<Container
+			align="left"
+			display
+			style={{ height: "150%", position: "relative", right: "-25%" }}
+		>
 			<h3>
 				{schedule ? "Nuevos horarios publicados" : "Aún no tenemos horarios disponibles"}
 			</h3>
-			<Link href={`/schedules/${schedule}`}>
-				<Button variant="tertiary" label="Ver nuevos horarios" />
-			</Link>
+			{schedule && (
+				<Link href={`/schedules/${schedule}`}>
+					<Button variant="tertiary" label="Ver nuevos horarios" />
+				</Link>
+			)}
 		</Container>
 	);
 };

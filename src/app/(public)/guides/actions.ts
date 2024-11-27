@@ -1,8 +1,10 @@
+import qs from "qs";
 import { useEffect, useReducer } from "react";
+
+import { customFetch } from "../../../lib/fetch";
 import { IRecentGuide } from "../news/components/IRecentGuide";
 import { GuideAction, GuideActionTypes, GuideState } from "./types";
-import qs from "qs";
-import { customFetch } from "../../../lib/fetch";
+
 const PAGE_SIZE = 10;
 
 const initialList: GuideState = {
@@ -72,9 +74,7 @@ export function useGetGuides(): {
 			});
 
 			try {
-				const data = await customFetch(`/api/guides?${query}`).then(res =>
-					res.json()
-				);
+				const data = await customFetch(`/api/guides?${query}`).then(res => res.json());
 
 				dispatch({
 					type: GuideActionTypes.LOAD_MORE_SUCCESS,

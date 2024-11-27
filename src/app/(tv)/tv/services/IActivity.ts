@@ -6,5 +6,4 @@ export interface IActivity {
 	publishedDate: string;
 }
 
-
 export type ActivityType = "announcement" | "guide" | "event" | "course" | "schedule";

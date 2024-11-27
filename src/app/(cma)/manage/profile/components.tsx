@@ -7,6 +7,7 @@ import { useGetProfile } from "./actions";
 
 export const Profile = () => {
 	const { name, email, avatar } = useGetProfile();
+
 	return (
 		<Container align="center">
 			<Avatar alt="foto de perfil" size={180} src={avatar} />

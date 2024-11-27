@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 
-import { useGetProfile } from "./actions";
 import { Profile } from "./components";
 
 export const metadata: Metadata = {
@@ -9,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-
 	return (
 		<div>
 			<Profile />

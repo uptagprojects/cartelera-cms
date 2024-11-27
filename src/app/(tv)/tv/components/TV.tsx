@@ -2,11 +2,10 @@
 
 import { FC, useEffect, useState } from "react";
 
-import { IActivity, ActivityType } from "../services/IActivity";
-import styles from "./TV.module.css";
-
-import { TVContent } from "./TVContent";
 import { formatDate } from "../../../../lib/formatDate";
+import { ActivityType, IActivity } from "../services/IActivity";
+import styles from "./TV.module.css";
+import { TVContent } from "./TVContent";
 
 type TVModeProps = {
 	activities: IActivity[];
@@ -17,8 +16,8 @@ const locale: Record<ActivityType, string> = {
 	guide: "Guía",
 	event: "Evento",
 	course: "Curso",
-	schedule: "Horario",
-}
+	schedule: "Horario"
+};
 
 export const TV: FC<TVModeProps> = ({ activities }) => {
 	const [currentActivity, setCurrentActivity] = useState(0);
@@ -40,7 +39,7 @@ export const TV: FC<TVModeProps> = ({ activities }) => {
 		title: "Nada que informar",
 		context: "Atento a las proximas novedades",
 		type: "announcement",
-		publishedDate: new Date(),
+		publishedDate: new Date()
 	};
 
 	return (
@@ -50,7 +49,12 @@ export const TV: FC<TVModeProps> = ({ activities }) => {
 				backgroundImage: "var(--sunset-gradient)"
 			}}
 		>
-			<TVContent title={activity.title} type={locale[activity.type as ActivityType]} subtitle={formatDate(activity.publishedDate)} content={activity.context.substring(0, 320)} />
+			<TVContent
+				title={activity.title}
+				type={locale[activity.type as ActivityType]}
+				subtitle={formatDate(activity.publishedDate)}
+				content={activity.context.substring(0, 320)}
+			/>
 		</div>
 	);
 };

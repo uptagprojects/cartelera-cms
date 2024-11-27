@@ -1,6 +1,5 @@
 import { IRecentGuide } from "../news/components/IRecentGuide";
 
-
 export type IManageGuideAttachment = string;
 
 export enum GuideActionTypes {
