@@ -29,7 +29,7 @@ export const TVCardSlides: FC<TVCardSlidesProps> = ({ activities, currentIndex }
 		<Container className={styles.tvCardSlides}>
 			<div className={styles.tvCardSlidesWrapper}>
 				{activities.map((activity, index) => (
-					<TVCard key={index} title={activity.event} image={activity.image} />
+					<TVCard key={index} title={activity.title} />
 				))}
 			</div>
 			<nav className={styles.tvCardSlidesNavigation}>

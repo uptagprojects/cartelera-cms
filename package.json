@@ -40,6 +40,7 @@
     "diod": "^3.0.0",
     "dropbox": "^10.34.0",
     "gsap": "^3.12.5",
+    "javascript-time-ago": "^2.5.11",
     "lucide-react": "^0.454.0",
     "migrate": "^2.1.0",
     "next": "^15.0.2",

@@ -1,24 +1,30 @@
-"use server";
-
-import { auth } from "../../../../lib/auth";
+import { redirect } from "next/navigation";
 import { customFetch } from "../../../../lib/fetch";
 import { IManageUser } from "../users/types";
+import { useEffect, useState } from "react";
 
-export async function useGetProfile(): Promise<IManageUser> {
-	const session = await auth();
+export function useGetProfile(): IManageUser {
+	const [user, setUser] = useState<IManageUser>({
+		id: "",
+		name: "",
+		email: "",
+		emailVerified: null,
+		avatar: "",
+		status: "active"
+	});
 
-	if (!session?.user?.id) {
-		return {
-			id: "",
-			name: "",
-			email: "",
-			emailVerified: null,
-			avatar: "",
-			status: "active"
-		};
-	}
-	const req = await customFetch(session.user.id);
-	const user: IManageUser = await req.json();
+	useEffect(() => {
+		(async () => {
+			const req = await customFetch("/api/manage/users/me");
+
+			if(req.status >= 400) {
+				redirect("/news");
+			}
+			const user: IManageUser = await req.json();
+
+			setUser(user);
+		})();
+	}, []);
 
 	return user;
 }

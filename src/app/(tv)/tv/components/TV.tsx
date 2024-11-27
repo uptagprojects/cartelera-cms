@@ -2,19 +2,26 @@
 
 import { FC, useEffect, useState } from "react";
 
-import { IActivity } from "../services/IActivity";
-import { usePreloadImages } from "../services/usePreloadImages";
+import { IActivity, ActivityType } from "../services/IActivity";
 import styles from "./TV.module.css";
-import { TVCardSlides } from "./TVCardSlides";
+
 import { TVContent } from "./TVContent";
+import { formatDate } from "../../../../lib/formatDate";
 
 type TVModeProps = {
 	activities: IActivity[];
 };
 
+const locale: Record<ActivityType, string> = {
+	announcement: "Anuncio",
+	guide: "Guía",
+	event: "Evento",
+	course: "Curso",
+	schedule: "Horario",
+}
+
 export const TV: FC<TVModeProps> = ({ activities }) => {
 	const [currentActivity, setCurrentActivity] = useState(0);
-	usePreloadImages(activities.map(act => act.image));
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -28,24 +35,22 @@ export const TV: FC<TVModeProps> = ({ activities }) => {
 		return () => clearInterval(interval);
 	}, [activities.length]);
 
-	const activity = activities[currentActivity] ?? {
+	const activity: IActivity = activities[currentActivity] ?? {
 		id: "",
-		event: "Nada que informar",
-		content: "Atento a las proximas novedades",
-		image: ""
+		title: "Nada que informar",
+		context: "Atento a las proximas novedades",
+		type: "announcement",
+		publishedDate: new Date(),
 	};
 
 	return (
 		<div
 			className={styles.tvMode}
 			style={{
-				backgroundImage: URL.canParse(activity.image)
-					? `url(${activity.image})`
-					: "var(--sunset-gradient)"
+				backgroundImage: "var(--sunset-gradient)"
 			}}
 		>
-			<TVContent title={activity.event} subtitle={""} content={activity.content} />
-			<TVCardSlides activities={activities} currentIndex={currentActivity} />
+			<TVContent title={activity.title} type={locale[activity.type as ActivityType]} subtitle={formatDate(activity.publishedDate)} content={activity.context.substring(0, 320)} />
 		</div>
 	);
 };

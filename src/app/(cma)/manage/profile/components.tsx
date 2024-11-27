@@ -3,12 +3,14 @@
 import { signOut } from "next-auth/react";
 import { Avatar, Button, Container } from "octagon-ui";
 
-import { IManageUser } from "../users/types";
+import { useGetProfile } from "./actions";
 
-export const Profile = ({ email, avatar }: IManageUser) => {
+export const Profile = () => {
+	const { name, email, avatar } = useGetProfile();
 	return (
 		<Container align="center">
 			<Avatar alt="foto de perfil" size={180} src={avatar} />
+			<p>Hola, {name}</p>
 			<h3>{email}</h3>
 			<Button
 				onClick={() => {

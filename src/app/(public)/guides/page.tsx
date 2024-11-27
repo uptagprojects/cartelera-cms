@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { GuideList } from "./components";
 
 export const metadata: Metadata = {
-	title: "PNFi | Guias",
+	title: "PNFi | Guías",
 	description: "Programa Nacional de Formacion en Informatica"
 };
 

@@ -1,6 +1,10 @@
 export interface IActivity {
 	id: string;
-	event: string;
-	content: string;
-	image: string;
+	type: string;
+	title: string;
+	context: string;
+	publishedDate: string;
 }
+
+
+export type ActivityType = "announcement" | "guide" | "event" | "course" | "schedule";

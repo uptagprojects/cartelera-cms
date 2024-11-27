@@ -14,7 +14,7 @@
 
 .tvContent {
     font-size: var(--scale-6);
-    padding: var(--scale-8) var(--scale-6);
+    padding: var(--scale-8) var(--scale-8);
     box-sizing: border-box;
     grid-area: content;
     max-height: 60dvh;

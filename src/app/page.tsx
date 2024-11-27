@@ -23,7 +23,7 @@ export default async function HomePage() {
 
 	return (
 		<>
-			<Nav session={Boolean(session)} />
+			<Nav session={Boolean(session?.user?.email)} />
 			<main>
 				<Home week={week} schedule={schedules[0]?.id} />
 			</main>

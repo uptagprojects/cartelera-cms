@@ -1,0 +1,19 @@
+
+.recentGuides {
+    border: 1px solid var(--gray-500);
+    border-radius: 1cap;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: stretch;
+    gap: var(--scale-4);
+}
+
+.recentGuidesFooter {
+    display: flex;
+    gap: var(--scale-6);
+}
+
+.recentGuidesAuthor {
+    margin: 0px;
+}

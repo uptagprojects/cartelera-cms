@@ -143,7 +143,7 @@ const UserListItem = ({ id, name, email, avatar, status }: IManageUser) => {
 					/>
 				</td>
 				<td>
-					{statusValue === "active" ? (
+					{(statusValue === "active" || statusValue === "pending_confirmation") ? (
 						<>
 							<Button
 								icon="Archive"

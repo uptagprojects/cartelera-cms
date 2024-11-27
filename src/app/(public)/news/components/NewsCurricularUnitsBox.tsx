@@ -22,7 +22,10 @@ export const NewsCurricularUnitsBox: FC<NewsCurricularUnitsBoxProps> = ({ ucs })
 						<tr key={unit.name}>
 							<td>{unit.name}</td>
 							<td>
-								<Tag color={colors[i % 4]} label={`${unit.totalGuides} guías`} />
+								<Tag
+									color={colors[i % 4]}
+									label={`${unit.totalGuides} guía${unit.totalGuides === 1 ? "" : "s"}`}
+								/>
 							</td>
 						</tr>
 					))}

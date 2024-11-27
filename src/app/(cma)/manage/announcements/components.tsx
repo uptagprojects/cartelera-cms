@@ -13,8 +13,10 @@ import {
 } from "octagon-ui";
 import { Suspense, useCallback, useState } from "react";
 
+import { formatDate } from "../../../../lib/formatDate";
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
+import { ManageListContainer } from "../../_components/ManageListContainer";
 import {
 	archiveAnnouncement,
 	deleteAnnouncement,
@@ -126,7 +128,7 @@ const AnnouncementListItem = ({
 						title={`${emojis[type as keyof typeof emojis]} ${titleValue}`}
 						subtitle={
 							statusValue === "published"
-								? `publicado el ${new Date(publishDate).toLocaleDateString()}`
+								? `publicado el ${formatDate(publishDate)}`
 								: undefined
 						}
 					/>
@@ -195,9 +197,15 @@ export const AnnouncementList = () => {
 
 	return (
 		<Suspense fallback={<AnnouncementLoader />}>
-			{announcements.map(announcement => (
-				<AnnouncementListItem key={announcement.id} onDelete={remove} {...announcement} />
-			))}
+			<ManageListContainer>
+				{announcements.map(announcement => (
+					<AnnouncementListItem
+						key={announcement.id}
+						onDelete={remove}
+						{...announcement}
+					/>
+				))}
+			</ManageListContainer>
 			<Container align="center">
 				{!noMoreAvailable && (
 					<Button

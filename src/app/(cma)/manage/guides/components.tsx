@@ -1,20 +1,25 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Button, Card, CardFooter, Container, Spinner, Tag } from "octagon-ui";
-import { memo, useCallback, useState } from "react";
+import { Button, Card, CardFooter, CardHeader, Container, Spinner, Tag } from "octagon-ui";
+import { memo, useCallback, useEffect, useState } from "react";
 
+import { OfficialMarkdownRemover } from "../../../../contexts/shared/infrastructure/OfficialMarkdownRemover";
 import { ManageEmpty } from "../../_components/ManageEmpty";
 import { ManageHeader } from "../../_components/ManageHeader";
+import { ManageListContainer } from "../../_components/ManageListContainer";
 import { IManageUC } from "../uc/actions";
 import { archiveGuide, deleteGuide, publishGuide, restoreGuide, useGetGuides } from "./actions";
 import { IManageGuide } from "./types";
+
+const mdRemover = new OfficialMarkdownRemover();
 
 export const GuideHeader = () => {
 	const router = useRouter();
 
 	return (
 		<ManageHeader
-			title="Guias"
+			title="Guías"
 			label="crear guia"
 			onClick={() => {
 				const id = globalThis.crypto.randomUUID();
@@ -39,15 +44,23 @@ const EmptyGuide = memo(() => (
 
 EmptyGuide.displayName = "EmptyGuide";
 
+const MAX_CONTENT_LENGTH = 240;
+
 const GuideListItem = ({
 	id,
 	title,
 	uc,
 	status,
+	content,
 	onDelete
 }: IManageGuide & { uc: IManageUC | null; onDelete: (id: string) => void }) => {
 	const router = useRouter();
 	const [statusValue, setStatusValue] = useState<string>(status);
+	const [cleanContent, setCleanContent] = useState<string>(content);
+
+	useEffect(() => {
+		mdRemover.remove(content, MAX_CONTENT_LENGTH).then(setCleanContent);
+	}, [content, setCleanContent]);
 
 	const handlePublish = useCallback(async () => {
 		await publishGuide({ id });
@@ -71,9 +84,14 @@ const GuideListItem = ({
 
 	return (
 		<Card>
-			<h4>
-				{title} <Tag label={uc?.name ?? "area no disponible"} />
-			</h4>
+			<CardHeader title={title} />
+			<p>
+				Para la unidad curricular{" "}
+				<Link href={`/manage/uc/${uc?.id ?? ""}`}>
+					<Tag label={uc?.name ?? "area no disponible"} />
+				</Link>
+			</p>
+			<p>{cleanContent}</p>
 			<CardFooter>
 				{statusValue === "draft" && (
 					<>
@@ -131,18 +149,20 @@ export const GuideList = ({ ucs }: { ucs: { [k: string]: IManageUC } }) => {
 
 	return (
 		<>
-			{guides.map(guide => (
-				<GuideListItem
-					key={guide.id}
-					onDelete={remove}
-					uc={ucs[guide.ucId] ?? null}
-					{...guide}
-				/>
-			))}
+			<ManageListContainer>
+				{guides.map(guide => (
+					<GuideListItem
+						key={guide.id}
+						onDelete={remove}
+						uc={ucs[guide.ucId] ?? null}
+						{...guide}
+						content={guide.content.substring(0, MAX_CONTENT_LENGTH + 3)}
+					/>
+				))}
+			</ManageListContainer>
 			<Container align="center">
-				{!noMoreAvailable && loading ? (
-					<Spinner />
-				) : (
+				{loading && <Spinner />}
+				{!noMoreAvailable && (
 					<Button
 						size="small"
 						variant="secondary"

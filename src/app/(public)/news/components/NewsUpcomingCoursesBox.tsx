@@ -9,6 +9,7 @@ export const NewsUpcomingCoursesBox: FC<{ courses: ICourse[] }> = ({ courses }) 
 	return (
 		<Card className={styles.upcomingCourses} hover={false}>
 			<CardHeader title="Proximos Cursos" />
+			{courses.length === 0 && <p>Próximamente</p>}
 			{courses.map(course => (
 				<article key={course.id}>
 					<header>

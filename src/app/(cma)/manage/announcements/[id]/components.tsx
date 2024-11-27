@@ -37,8 +37,8 @@ export const AnnouncementForm = ({
 				onChange={e => setType(e.target.value)}
 			>
 				{[
-					{ name: "Informacion", value: "info" },
-					{ name: "Celebracion", value: "success" },
+					{ name: "Información", value: "info" },
+					{ name: "Celebración", value: "success" },
 					{ name: "Alerta", value: "warning" }
 				].map(type => (
 					<option key={type.value} value={type.value}>

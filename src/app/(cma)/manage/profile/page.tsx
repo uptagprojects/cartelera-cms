@@ -9,11 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ProfilePage() {
-	const user = await useGetProfile();
 
 	return (
 		<div>
-			<Profile {...user} />
+			<Profile />
 		</div>
 	);
 }
