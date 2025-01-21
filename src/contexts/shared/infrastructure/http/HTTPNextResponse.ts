@@ -64,6 +64,19 @@ export class HTTPNextResponse {
 		);
 	}
 
+	static invalidHeadersError(): NextResponse {
+		return NextResponse.json(
+			{
+				code: "invalid_headers_error",
+				message: STATUS_CODES[403],
+				data: {}
+			},
+			{
+				status: 403
+			}
+		);
+	}
+
 	static created(): NextResponse {
 		return new NextResponse(null, {
 			status: 201
