@@ -16,7 +16,21 @@ export class NextPinoLoggerWrapper implements LoggerWrapper<NextRequest> {
 			);
 	}
 
-	async middleware(_: NextRequest): Promise<void> {
+	async middleware(request: NextRequest): Promise<void> {
+		const req = {
+			origin: request.headers.get("origin"),
+			forwardRef: request.headers.get("x-forwarded-for"),
+			method: request.method,
+			host: request.nextUrl.hostname,
+			path: request.nextUrl.pathname,
+			scheme: request.nextUrl.protocol.split(":")[0],
+			referer: request.headers.get("Referer"),
+			userAgent: request.headers.get("user-agent")
+		};
+
+		const log = new PinoLogger();
+		log.info(`[${req.method}] ${req.path}`, req);
+
 		return Promise.resolve();
 	}
 }
