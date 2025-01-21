@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   db:
-    name: cms_db
     image: cgr.dev/chainguard/postgres:latest
     ports:
       - 5432:5432
@@ -22,7 +21,6 @@ services:
       retries: 5
   rebac:
     image: docker.io/openfga/openfga:v1.8
-    name: cms_rebac
     command: run
     ports:
       - 3001:3000
@@ -37,8 +35,7 @@ services:
     networks:
       - default
   rabbitmq:
-    name: cms_rabbitmq
-    image: cgr.dev/chainguard/rabbitmq
+    image: docker.io/rabbitmq:4.0
     restart: unless-stopped
     networks:
       - default
