@@ -1,9 +1,10 @@
 import { UserId } from "../../../cma/users/domain/UserId";
 import { EmailAddress } from "../../../shared/domain/EmailAddress";
 import { Email } from "./Email";
-import { EmailBody } from "./EmailBody";
+import { EmailHTMLBody } from "./EmailHTMLBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
+import { EmailTextBody } from "./EmailTextBody";
 import { WelcomeEmailSentDomainEvent } from "./event/WelcomeEmailSentDomainEvent";
 
 export type BlockedEmailPrimitives = {
@@ -13,7 +14,8 @@ export type BlockedEmailPrimitives = {
 	from: string;
 	to: string;
 	subject: string;
-	body: string;
+	html: string;
+	text: string;
 };
 
 export class RestoredEmail extends Email {
@@ -24,24 +26,27 @@ export class RestoredEmail extends Email {
 		from: EmailAddress,
 		to: EmailAddress,
 		subject: EmailSubject,
-		body: EmailBody,
+		html: EmailHTMLBody,
+		text: EmailTextBody,
 		private readonly userId: UserId,
 		private readonly userName: string
 	) {
-		super(id, from, to, subject, body);
+		super(id, from, to, subject, html, text);
 	}
 
 	static send(id: string, userId: string, name: string, emailAddress: string): RestoredEmail {
 		const from = new EmailAddress(RestoredEmail.from);
 		const subject = RestoredEmail.generateSubject(name);
-		const body = RestoredEmail.generateBody(name);
+		const html = RestoredEmail.generateHTML(name);
+		const text = RestoredEmail.generateText(name);
 
 		const email = new RestoredEmail(
 			new EmailId(id),
 			from,
 			new EmailAddress(emailAddress),
 			subject,
-			body,
+			html,
+			text,
 			new UserId(userId),
 			name
 		);
@@ -54,7 +59,8 @@ export class RestoredEmail extends Email {
 				from.value,
 				emailAddress,
 				subject.value,
-				body.value
+				html.value,
+				text.value
 			)
 		);
 
@@ -67,7 +73,8 @@ export class RestoredEmail extends Email {
 			new EmailAddress(primitives.from),
 			new EmailAddress(primitives.to),
 			new EmailSubject(primitives.subject),
-			new EmailBody(primitives.body),
+			new EmailHTMLBody(primitives.html),
+			new EmailTextBody(primitives.text),
 			new UserId(primitives.userId),
 			primitives.userName
 		);
@@ -77,8 +84,14 @@ export class RestoredEmail extends Email {
 		return new EmailSubject(`Bienvenido de vuelta, ${userName}`);
 	}
 
-	private static generateBody(userName: string): EmailBody {
-		return new EmailBody(
+	private static generateHTML(userName: string): EmailHTMLBody {
+		return new EmailHTMLBody(
+			`<p>Bienvenido de vuelta, ${userName}.</p><p>Tu acceso al PNFi ha sido restaurado. Si tienes alguna pregunta, no dudes en contactarnos.</p>`
+		);
+	}
+
+	private static generateText(userName: string): EmailTextBody {
+		return new EmailTextBody(
 			`Bienvenido de vuelta, ${userName}.\n\nTu acceso al PNFi ha sido restaurado. Si tienes alguna pregunta, no dudes en contactarnos.`
 		);
 	}
@@ -91,7 +104,8 @@ export class RestoredEmail extends Email {
 			from: this.from.value,
 			to: this.to.value,
 			subject: this.subject.value,
-			body: this.body.value
+			html: this.html.value,
+			text: this.text.value
 		};
 	}
 }

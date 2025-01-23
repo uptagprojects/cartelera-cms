@@ -65,15 +65,12 @@ export class PostgresConnection extends DatabaseConnection {
 
 	async commit(): Promise<void> {
 		await this.connection?.query("COMMIT");
-	}
-
-	async release(): Promise<void> {
-		this.connection?.release(true);
-		this.connection = null;
+		await this.release();
 	}
 
 	async rollback(): Promise<void> {
 		await this.connection?.query("ROLLBACK");
+		await this.release();
 	}
 
 	async close(): Promise<void> {
@@ -88,5 +85,10 @@ export class PostgresConnection extends DatabaseConnection {
 		}
 
 		return this.connection;
+	}
+
+	private async release(): Promise<void> {
+		this.connection?.release(true);
+		this.connection = null;
 	}
 }

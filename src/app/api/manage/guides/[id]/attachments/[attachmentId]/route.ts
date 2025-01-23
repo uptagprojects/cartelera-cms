@@ -5,9 +5,9 @@ import { PostgresGuideAttachmentRepository } from "../../../../../../../contexts
 import { DomainEventFailover } from "../../../../../../../contexts/shared/infrastructure/event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../../../../../../../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQEventBus";
-import { DropboxConnection } from "../../../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxConnection";
-import { DropboxFileStorage } from "../../../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxFileStorage";
 import { PostgresConnection } from "../../../../../../../contexts/shared/infrastructure/PostgresConnection";
+import { DropboxFileStorage } from "../../../../../../../contexts/shared/infrastructure/file-storage/dropbox/DropboxFileStorage";
+import { DropboxConnection } from ".../../../../../../../contexts/shared/infrastructure/shared-file-storage/DropboxFileStorage
 
 export async function PUT(
 	request: NextRequest,

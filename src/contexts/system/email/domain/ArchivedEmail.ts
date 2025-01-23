@@ -1,10 +1,11 @@
 import { UserId } from "../../../cma/users/domain/UserId";
 import { EmailAddress } from "../../../shared/domain/EmailAddress";
 import { Email } from "./Email";
-import { EmailBody } from "./EmailBody";
+import { EmailHTMLBody } from "./EmailHTMLBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
-import { WelcomeEmailSentDomainEvent } from "./event/WelcomeEmailSentDomainEvent";
+import { EmailTextBody } from "./EmailTextBody";
+import { ArchivedEmailSentDomainEvent } from "./event/ArchivedEmailSentDomainEvent";
 
 export type ArchivedEmailPrimitives = {
 	id: string;
@@ -13,7 +14,8 @@ export type ArchivedEmailPrimitives = {
 	from: string;
 	to: string;
 	subject: string;
-	body: string;
+	html: string;
+	text: string;
 };
 
 export class ArchivedEmail extends Email {
@@ -24,37 +26,41 @@ export class ArchivedEmail extends Email {
 		from: EmailAddress,
 		to: EmailAddress,
 		subject: EmailSubject,
-		body: EmailBody,
+		html: EmailHTMLBody,
+		text: EmailTextBody,
 		private readonly userId: UserId,
 		private readonly userName: string
 	) {
-		super(id, from, to, subject, body);
+		super(id, from, to, subject, html, text);
 	}
 
 	static send(id: string, userId: string, name: string, emailAddress: string): ArchivedEmail {
 		const from = new EmailAddress(ArchivedEmail.from);
 		const subject = ArchivedEmail.generateSubject(name);
-		const body = ArchivedEmail.generateBody(name);
+		const html = ArchivedEmail.generateHTML(name);
+		const text = ArchivedEmail.generateText(name);
 
 		const email = new ArchivedEmail(
 			new EmailId(id),
 			from,
 			new EmailAddress(emailAddress),
 			subject,
-			body,
+			html,
+			text,
 			new UserId(userId),
 			name
 		);
 
 		email.record(
-			new WelcomeEmailSentDomainEvent(
+			new ArchivedEmailSentDomainEvent(
 				id,
 				userId,
 				name,
 				from.value,
 				emailAddress,
 				subject.value,
-				body.value
+				html.value,
+				text.value
 			)
 		);
 
@@ -67,7 +73,8 @@ export class ArchivedEmail extends Email {
 			new EmailAddress(primitives.from),
 			new EmailAddress(primitives.to),
 			new EmailSubject(primitives.subject),
-			new EmailBody(primitives.body),
+			new EmailHTMLBody(primitives.html),
+			new EmailTextBody(primitives.text),
 			new UserId(primitives.userId),
 			primitives.userName
 		);
@@ -77,8 +84,14 @@ export class ArchivedEmail extends Email {
 		return new EmailSubject(`Esperamos volver a verte, ${userName}`);
 	}
 
-	private static generateBody(userName: string): EmailBody {
-		return new EmailBody(
+	private static generateHTML(userName: string): EmailHTMLBody {
+		return new EmailHTMLBody(
+			`Hola, ${userName}\n\nTu usuario ha sido eliminado del PNFi. Si deseas volver a utilizar el servicio, por favor, ponte en contacto con nosotros.\n\nSaludos,\nEl equipo de PNFi`
+		);
+	}
+
+	private static generateText(userName: string): EmailTextBody {
+		return new EmailTextBody(
 			`Hola, ${userName}\n\nTu usuario ha sido eliminado del PNFi. Si deseas volver a utilizar el servicio, por favor, ponte en contacto con nosotros.\n\nSaludos,\nEl equipo de PNFi`
 		);
 	}
@@ -91,7 +104,8 @@ export class ArchivedEmail extends Email {
 			from: this.from.value,
 			to: this.to.value,
 			subject: this.subject.value,
-			body: this.body.value
+			html: this.html.value,
+			text: this.text.value
 		};
 	}
 }

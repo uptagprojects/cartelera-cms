@@ -17,8 +17,6 @@ export abstract class DatabaseConnection {
 
 	abstract rollback(): Promise<void>;
 
-	abstract release(): Promise<void>;
-
 	async transactional<T>(fn: (connection: DatabaseConnection) => Promise<T>): Promise<T> {
 		try {
 			await this.beginTransaction();
@@ -26,12 +24,10 @@ export abstract class DatabaseConnection {
 			const result = await fn(this);
 
 			await this.commit();
-			await this.release();
 
 			return result;
 		} catch (error: unknown) {
 			await this.rollback();
-			await this.release();
 
 			logger.error("Error executing transaction", { error });
 

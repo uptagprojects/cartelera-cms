@@ -27,8 +27,8 @@ export class MailjetEmailSender implements EmailSender {
 							}
 						],
 						Subject: emailPrimitives.subject,
-						TextPart: emailPrimitives.body,
-						HTMLPart: emailPrimitives.body
+						TextPart: emailPrimitives.text,
+						HTMLPart: emailPrimitives.html
 					}
 				]
 			});

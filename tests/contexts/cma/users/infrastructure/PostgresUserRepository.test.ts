@@ -29,11 +29,12 @@ describe("PostgresUserRepository should", () => {
 	});
 
 	it("return existing user", async () => {
-		const user = UserMother.create();
+		const id = UserIdMother.create();
+		const user = UserMother.create({ id: id.value });
 
 		await repository.save(user);
 
-		expect(await repository.search(user.getId())).toStrictEqual(user);
+		expect(await repository.search(id)).toStrictEqual(user);
 	});
 
 	it("return null searching by email a non existent user", async () => {

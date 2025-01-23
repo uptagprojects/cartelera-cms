@@ -1,8 +1,9 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { EmailAddress } from "../../../shared/domain/EmailAddress";
-import { EmailBody } from "./EmailBody";
+import { EmailHTMLBody } from "./EmailHTMLBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
+import { EmailTextBody } from "./EmailTextBody";
 
 export abstract class Email extends AggregateRoot {
 	protected constructor(
@@ -10,7 +11,8 @@ export abstract class Email extends AggregateRoot {
 		protected readonly from: EmailAddress,
 		protected readonly to: EmailAddress,
 		protected readonly subject: EmailSubject,
-		protected readonly body: EmailBody
+		protected readonly html: EmailHTMLBody,
+		protected readonly text: EmailTextBody
 	) {
 		super();
 	}

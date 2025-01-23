@@ -61,14 +61,14 @@ import { WelcomeEmailSender } from "../../../system/email/application/send-welco
 import { EmailSender } from "../../../system/email/domain/EmailSender";
 import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
 import { EventBus } from "../../domain/event/EventBus";
-import { FileStorage } from "../../domain/FileStorage";
+import { FileStorage } from "../../domain/shared-file-storage/SharedFileStorage";
 import { MarkdownRemover } from "../../domain/MarkdownRemover";
 import { UuidGenerator } from "../../domain/UuidGenerator";
 import { DomainEventFailover } from "../event-bus/failover/DomainEventFailover";
 import { RabbitMQConnection } from "../event-bus/rabbitmq/RabbitMQConnection";
 import { RabbitMQEventBus } from "../event-bus/rabbitmq/RabbitMQEventBus";
-import { DropboxConnection } from "../file-storage/dropbox/DropboxConnection";
-import { DropboxFileStorage } from "../file-storage/dropbox/DropboxFileStorage";
+import { DropboxConnection } from "../file-storage/DropboxConnection";
+import { DropboxFileStorage } from "../file-storage/DropboxFileStorage";
 import { OfficialMarkdownRemover } from "../OfficialMarkdownRemover";
 import { OfficialUuidGenerator } from "../OfficialUuidGenerator";
 import { PostgresConnection } from "../PostgresConnection";

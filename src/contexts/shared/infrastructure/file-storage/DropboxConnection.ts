@@ -1,15 +1,11 @@
 import { Service } from "diod";
 import { Dropbox, DropboxAuth } from "dropbox";
 
-export interface DropboxFileMetadata {
-	id: string;
-	size: number;
-	revision: string;
-	previewUrl: string;
-}
+import { FileStorageConnection } from "../../domain/file-storage/FileStorageConnection";
+import { StoredFile } from "../../domain/file-storage/StoredFile";
 
 @Service()
-export class DropboxConnection {
+export class DropboxConnection extends FileStorageConnection {
 	private dropboxInstance: Dropbox | null = null;
 	private dropboxAuth: DropboxAuth | null = null;
 
@@ -35,23 +31,16 @@ export class DropboxConnection {
 		return this.dropboxInstance;
 	}
 
-	async upload(path: string, contents: Buffer): Promise<DropboxFileMetadata> {
-		const uploadedFile = await this.dbx.filesUpload({
+	async upload(path: string, contents: Buffer): Promise<void> {
+		await this.dbx.filesUpload({
 			path: `${path}`,
 			autorename: false,
 			mode: { ".tag": "overwrite" },
 			contents
 		});
-
-		return {
-			id: uploadedFile.result.id,
-			size: uploadedFile.result.size,
-			revision: uploadedFile.result.rev,
-			previewUrl: uploadedFile.result.preview_url as string
-		};
 	}
 
-	async search(path: string): Promise<DropboxFileMetadata | null> {
+	async search(path: string): Promise<StoredFile | null> {
 		const res = await this.dbx.filesGetMetadata({
 			path
 		});
@@ -60,12 +49,9 @@ export class DropboxConnection {
 			return null;
 		}
 
-		return {
-			id: res.result.id,
-			size: res.result.size,
-			revision: res.result.rev,
-			previewUrl: res.result.preview_url as string
-		};
+		const url = await this.share(path);
+
+		return StoredFile.fromPrimitives(path, url);
 	}
 
 	async remove(path: string): Promise<void> {
@@ -78,7 +64,7 @@ export class DropboxConnection {
 		});
 	}
 
-	async share(path: string): Promise<string> {
+	private async share(path: string): Promise<string> {
 		const links = await this.dbx.sharingListSharedLinks({
 			path
 		});

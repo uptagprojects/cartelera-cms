@@ -21,10 +21,11 @@ describe("SendWelcomeEmailOnUserRegistered should", () => {
 		const email = WelcomeEmailMother.create({
 			userId: event.id,
 			userName: event.name,
-			from: "noreply@pnfi.uptag.net",
+			from: "PNFi <octagon@pnfi.pro>",
 			to: event.email,
 			subject: `Bienvenido al PNFi, ${event.name}`,
-			body: `Bienvenido a la cartelera del PNFi, ${event.name}! Completa tu perfil en https://cartelerapnfi.uptag.net/profile`
+			html: `<html><h1>Bienvenido a la cartelera del PNFi, ${event.name} 🎉</h1><p>Antes de proseguir, debes confirmar tu correo electrónico iniciando sesión en:<br><a href="https://pnfi.pro/">https://pnfi.pro/</a></p></html>`,
+			text: `Bienvenido a la cartelera del PNFi, ${event.name} 🎉\nAntes de proseguir, debes confirmar tu correo electrónico iniciando sesión en:\nhttps://pnfi.pro/`
 		});
 
 		const expectedEmailPrimitives = email.toPrimitives();

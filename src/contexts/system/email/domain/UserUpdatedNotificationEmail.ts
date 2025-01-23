@@ -1,7 +1,7 @@
 import { UserId } from "../../../cma/users/domain/UserId";
 import { EmailAddress } from "../../../shared/domain/EmailAddress";
 import { Email } from "./Email";
-import { EmailBody } from "./EmailBody";
+import { EmailBody } from "./EmailBody/EmailHTMLBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
 import { UserUpdatedNotificationEmailSentDomainEvent } from "./event/UserUpdatedNotificationEmailSentDomainEvent";

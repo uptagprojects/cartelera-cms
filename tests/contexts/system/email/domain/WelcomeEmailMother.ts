@@ -5,9 +5,10 @@ import {
 import { UserIdMother } from "../../../cma/users/domain/UserIdMother";
 import { UserNameMother } from "../../../cma/users/domain/UserNameMother";
 import { EmailAddressMother } from "../../../shared/domain/EmailAddressMother";
-import { EmailBodyMother } from "./EmailBodyMother";
+import { EmailHTMLBodyMother } from "./EmailHTMLBodyMother";
 import { EmailIdMother } from "./EmailIdMother";
 import { EmailSubjectMother } from "./EmailSubjectMother";
+import { EmailTextBodyMother } from "./EmailTextBodyMother";
 
 export class WelcomeEmailMother {
 	static create(params?: Partial<WelcomeEmailPrimitives>): WelcomeEmail {
@@ -18,7 +19,8 @@ export class WelcomeEmailMother {
 			from: EmailAddressMother.create().value,
 			to: EmailAddressMother.create().value,
 			subject: EmailSubjectMother.create().value,
-			body: EmailBodyMother.create().value,
+			html: EmailHTMLBodyMother.create().value,
+			text: EmailTextBodyMother.create().value,
 			...params
 		};
 
