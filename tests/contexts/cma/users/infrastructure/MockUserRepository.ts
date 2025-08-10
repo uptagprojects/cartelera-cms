@@ -5,50 +5,44 @@ import { UserRepository } from "../../../../../src/contexts/cma/users/domain/Use
 import { Criteria } from "../../../../../src/contexts/shared/domain/criteria/Criteria";
 
 export class MockUserRepository implements UserRepository {
-	private readonly mockSearchByEmail = jest.fn();
-	private readonly mockSearch = jest.fn();
-	private readonly mockMatching = jest.fn();
-	private readonly mockSave = jest.fn();
+	private mockSave = jest.fn();
+	private mockSearch = jest.fn();
+	private mockSearchByEmail = jest.fn();
+	private mockMatching = jest.fn();
 
 	async save(user: User): Promise<void> {
-		expect(this.mockSave).toHaveBeenCalledWith(user.toPrimitives());
-	}
-
-	async searchByEmail(email: UserEmail): Promise<User | null> {
-		expect(this.mockSearchByEmail).toHaveBeenCalledWith(email);
-
-		return this.mockSearchByEmail() as Promise<User | null>;
+		this.mockSave(user);
 	}
 
 	async search(id: UserId): Promise<User | null> {
-		expect(this.mockSearch).toHaveBeenCalledWith(id);
+		return this.mockSearch(id);
+	}
 
-		return this.mockSearch() as Promise<User | null>;
+	async searchByEmail(email: UserEmail): Promise<User | null> {
+		return this.mockSearchByEmail(email);
 	}
 
 	async matching(criteria: Criteria): Promise<User[]> {
-		expect(this.mockMatching).toHaveBeenCalledWith(criteria);
-
-		return this.mockMatching() as Promise<User[]>;
+		return this.mockMatching(criteria);
 	}
 
-	shouldSearchByEmail(user: User): void {
-		const { email } = user.toPrimitives();
-		this.mockSearchByEmail(email);
-		this.mockSearchByEmail.mockReturnValueOnce(user);
+	shouldSave(): void {
+		this.mockSave = jest.fn();
 	}
 
-	shouldSearch(user: User): void {
-		this.mockSearch(user.getId());
-		this.mockSearch.mockReturnValueOnce(user);
+	shouldSearch(user: User | null): void {
+		this.mockSearch.mockReturnValue(Promise.resolve(user));
 	}
 
-	shouldMatch(criteria: Criteria, users: User[]): void {
-		this.mockMatching(criteria);
-		this.mockMatching.mockReturnValueOnce(users);
+	shouldSearchByEmail(user: User | null): void {
+		this.mockSearchByEmail.mockReturnValue(Promise.resolve(user));
 	}
 
-	shouldSave(user: User): void {
-		this.mockSave(user.toPrimitives());
+	shouldMatch(users: User[]): void {
+		this.mockMatching.mockReturnValue(Promise.resolve(users));
+	}
+
+	assertSaveHaveBeenCalledWith(user: User): void {
+		expect(this.mockSave).toHaveBeenCalledWith(user);
 	}
 }

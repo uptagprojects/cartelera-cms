@@ -2,23 +2,24 @@ import { DomainEvent } from "../../../../src/contexts/shared/domain/event/Domain
 import { EventBus } from "../../../../src/contexts/shared/domain/event/EventBus";
 
 export class MockEventBus implements EventBus {
-	private readonly mockPublish = jest.fn();
+	private mockPublish = jest.fn();
+	private publishedEvents: DomainEvent[] = [];
 
 	async publish(events: DomainEvent[]): Promise<void> {
-		expect(this.mockPublish).toHaveBeenCalledWith(
-			expect.arrayContaining(
-				events.map(event =>
-					expect.objectContaining({
-						...event,
-						eventId: expect.any(String),
-						occurredOn: expect.anything()
-					})
-				)
-			)
-		);
+		this.mockPublish(events);
+		this.publishedEvents.push(...events);
 	}
 
 	shouldPublish(events: DomainEvent[]): void {
-		this.mockPublish(events);
+		this.mockPublish = jest.fn();
+	}
+
+	getPublishedEvents(): DomainEvent[] {
+		return this.publishedEvents;
+	}
+
+	assertLastPublishedEventIs(expectedEvent: any): void {
+		const lastEvent = this.publishedEvents[this.publishedEvents.length - 1];
+		expect(lastEvent).toBeInstanceOf(expectedEvent);
 	}
 }

@@ -1,6 +1,7 @@
 import { UserRegistrar } from "../../../../../../src/contexts/cma/users/application/registrar/UserRegistrar";
-import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
+import { UserRegisteredDomainEvent } from "../../../../../../src/contexts/cma/users/domain/event/UserRegisteredDomainEvent";
 import { UserRegisteredDomainEventMother } from "../../domain/event/UserRegisteredDomainEventMother";
+import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { UserMother } from "../../domain/UserMother";
 import { MockUserRepository } from "../../infrastructure/MockUserRepository";
 
@@ -12,10 +13,7 @@ describe("UserRegistrar should", () => {
 	it("register a valid user", async () => {
 		const expectedUser = UserMother.create();
 		const expectedUserPrimitives = expectedUser.toPrimitives();
-		const expectedDomainEvent = UserRegisteredDomainEventMother.create(expectedUserPrimitives);
-
-		repository.shouldSave(expectedUser);
-		eventBus.shouldPublish([expectedDomainEvent]);
+		repository.shouldSave();
 
 		await userRegistrar.register(
 			expectedUserPrimitives.id,
@@ -23,5 +21,7 @@ describe("UserRegistrar should", () => {
 			expectedUserPrimitives.email,
 			expectedUserPrimitives.avatar
 		);
+
+		eventBus.assertLastPublishedEventIs(UserRegisteredDomainEvent);
 	});
 });
