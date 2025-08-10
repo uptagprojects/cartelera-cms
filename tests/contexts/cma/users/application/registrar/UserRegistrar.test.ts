@@ -1,4 +1,5 @@
 import { UserRegistrar } from "../../../../../../src/contexts/cma/users/application/registrar/UserRegistrar";
+import { UserStatus } from "../../../../../../src/contexts/cma/users/domain/UserStatus";
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { UserRegisteredDomainEventMother } from "../../domain/event/UserRegisteredDomainEventMother";
 import { UserMother } from "../../domain/UserMother";
@@ -10,10 +11,16 @@ describe("UserRegistrar should", () => {
 	const userRegistrar = new UserRegistrar(repository, eventBus);
 
 	it("register a valid user", async () => {
-		const expectedUser = UserMother.create();
+		const expectedUser = UserMother.create({
+			emailVerified: null,
+			status: UserStatus.PENDING_CONFIRMATION
+		});
+		const expectedPresenter = UserMother.create();
 		const expectedUserPrimitives = expectedUser.toPrimitives();
-		const expectedDomainEvent = UserRegisteredDomainEventMother.create(expectedUserPrimitives);
+		const expectedPresenterPrimitives = expectedPresenter.toPrimitives();
+		const expectedDomainEvent = UserRegisteredDomainEventMother.create(expectedUserPrimitives, expectedPresenterPrimitives);
 
+		repository.shouldSearch(expectedPresenter);
 		repository.shouldSave(expectedUser);
 		eventBus.shouldPublish([expectedDomainEvent]);
 
@@ -21,7 +28,8 @@ describe("UserRegistrar should", () => {
 			expectedUserPrimitives.id,
 			expectedUserPrimitives.name,
 			expectedUserPrimitives.email,
-			expectedUserPrimitives.avatar
+			expectedUserPrimitives.avatar,
+			expectedPresenterPrimitives.id
 		);
 	});
 });

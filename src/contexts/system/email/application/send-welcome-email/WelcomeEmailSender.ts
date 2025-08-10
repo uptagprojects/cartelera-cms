@@ -13,15 +13,21 @@ export class WelcomeEmailSender {
 		private readonly eventBus: EventBus
 	) {}
 
-	async send(userId: string, name: string, emailAddress: string): Promise<void> {
+	async send(userId: string, name: string, emailAddress: string, presenterName: string, presenterEmailAddress: string): Promise<void> {
 		const email = WelcomeEmail.send(
 			await this.uuidGenerator.generate(),
 			userId,
 			name,
-			emailAddress
+			emailAddress,
+			presenterName,
+			presenterEmailAddress,
 		);
 
 		await this.emailSender.send(email);
 		await this.eventBus.publish(email.pullDomainEvents());
+	}
+
+	private generateConfirmationUrl() {
+		return `https://pnfi.pro/confirm?`
 	}
 }

@@ -39,7 +39,7 @@ export class MockUserRepository implements UserRepository {
 	}
 
 	shouldSearch(user: User): void {
-		this.mockSearch(user.getId());
+		this.mockSearch(new UserId(user.getId()));
 		this.mockSearch.mockReturnValueOnce(user);
 	}
 

@@ -12,7 +12,7 @@ export class SendWelcomeEmailOnUserRegistered
 	constructor(private readonly sender: WelcomeEmailSender) {}
 
 	async on(event: UserRegisteredDomainEvent): Promise<void> {
-		await this.sender.send(event.id, event.name, event.email);
+		await this.sender.send(event.id, event.name, event.email, event.presenterName, event.presenterEmail);
 	}
 
 	subscribedTo(): DomainEventClass[] {

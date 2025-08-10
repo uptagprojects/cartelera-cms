@@ -1,20 +1,18 @@
 import { DomainEvent, DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
 
-export class UserUpdatedNotificationEmailSentDomainEvent extends DomainEvent {
-    static eventName = "pnfi.system.user_updated_notification_email.sent";
+export class MagicLinkEmailSentDomainEvent extends DomainEvent {
+    static eventName = "pnfi.system.magic_link_email.sent";
     constructor(
         public readonly id: string,
         public readonly userId: string,
         public readonly userName: string,
-        public readonly propertyChanged: string,
         public readonly fromEmailAddress: string,
         public readonly toEmailAddress: string,
         public readonly emailSubject: string,
-        public readonly emailBody: string,
         eventId?: string,
         occurredOn?: Date
     ) {
-        super(UserUpdatedNotificationEmailSentDomainEvent.eventName, id, eventId, occurredOn);
+        super(MagicLinkEmailSentDomainEvent.eventName, id, eventId, occurredOn);
     }
 
     static fromPrimitives(
@@ -22,16 +20,14 @@ export class UserUpdatedNotificationEmailSentDomainEvent extends DomainEvent {
         eventId: string,
         occurredOn: Date,
         attributes: DomainEventAttributes
-    ): UserUpdatedNotificationEmailSentDomainEvent {
-        return new UserUpdatedNotificationEmailSentDomainEvent(
+    ): MagicLinkEmailSentDomainEvent {
+        return new MagicLinkEmailSentDomainEvent(
             aggregateId,
             attributes.userId as string,
             attributes.userName as string,
-            attributes.propertyChanged as string,
             attributes.fromEmailAddress as string,
             attributes.toEmailAddress as string,
             attributes.emailSubject as string,
-            attributes.emailBody as string,
             eventId,
             occurredOn
         );
@@ -42,11 +38,9 @@ export class UserUpdatedNotificationEmailSentDomainEvent extends DomainEvent {
             id: this.id,
             userId: this.userId,
             userName: this.userName,
-            propertyChanged: this.propertyChanged,
             fromEmailAddress: this.fromEmailAddress,
             toEmailAddress: this.toEmailAddress,
-            emailSubject: this.emailSubject,
-            emailBody: this.emailBody
+            emailSubject: this.emailSubject
         };
     }
 }

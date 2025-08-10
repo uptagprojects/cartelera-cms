@@ -6,6 +6,8 @@ import { EmailSubject } from "./EmailSubject";
 import { EmailTextBody } from "./EmailTextBody";
 
 export abstract class Email extends AggregateRoot {
+	public static readonly template: string;
+
 	protected constructor(
 		protected readonly id: EmailId,
 		protected readonly from: EmailAddress,

@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 
 import { authConfig } from "../../auth.config";
-import postgresAdapter from "../contexts/cma/auth/infrastructure/PostgresAuthAdapter";
+import postgresAdapter from "../contexts/cma/preauth/infrastructure/PostgresAuthAdapter";
 import { OfficialUuidGenerator } from "../contexts/shared/infrastructure/OfficialUuidGenerator";
 import { PostgresConnection } from "../contexts/shared/infrastructure/PostgresConnection";
 

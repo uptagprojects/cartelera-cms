@@ -5,13 +5,12 @@ import { EmailHTMLBody } from "./EmailHTMLBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
 import { EmailTextBody } from "./EmailTextBody";
-import { UserUpdatedNotificationEmailSentDomainEvent } from "./event/UserUpdatedNotificationEmailSentDomainEvent";
+import { UserRestoredEmailSentDomainEvent } from "./event/UserRestoredEmailSentDomainEvent";
 
-export type UserUpdatedNotificationEmailPrimitives = {
+export type BlockedEmailPrimitives = {
     id: string;
     userId: string;
     userName: string;
-    propertyUpdated: string;
     from: string;
     to: string;
     subject: string;
@@ -19,8 +18,8 @@ export type UserUpdatedNotificationEmailPrimitives = {
     text: string;
 };
 
-export class UserUpdatedNotificationEmail extends Email {
-    private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <octagon@pnfi.pro>";
+export class UserRestoredEmail extends Email {
+    private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "octagon@pnfi.pro";
 
     private constructor(
         id: EmailId,
@@ -30,25 +29,18 @@ export class UserUpdatedNotificationEmail extends Email {
         html: EmailHTMLBody,
         text: EmailTextBody,
         private readonly userId: UserId,
-        private readonly userName: string,
-        private readonly propertyUpdated: string
+        private readonly userName: string
     ) {
         super(id, from, to, subject, html, text);
     }
 
-    static send(
-        id: string,
-        userId: string,
-        name: string,
-        propertyUpdated: string,
-        emailAddress: string
-    ): UserUpdatedNotificationEmail {
-        const from = new EmailAddress(UserUpdatedNotificationEmail.from);
-        const subject = UserUpdatedNotificationEmail.generateSubject(name, propertyUpdated);
-        const html = UserUpdatedNotificationEmail.generateHTMLBody(name, propertyUpdated);
-        const text = UserUpdatedNotificationEmail.generateTextBody(name, propertyUpdated);
+    static send(id: string, userId: string, name: string, emailAddress: string): UserRestoredEmail {
+        const from = new EmailAddress(UserRestoredEmail.from);
+        const subject = UserRestoredEmail.generateSubject(name);
+        const html = UserRestoredEmail.generateHTML(name);
+        const text = UserRestoredEmail.generateText(name);
 
-        const email = new UserUpdatedNotificationEmail(
+        const email = new UserRestoredEmail(
             new EmailId(id),
             from,
             new EmailAddress(emailAddress),
@@ -56,16 +48,14 @@ export class UserUpdatedNotificationEmail extends Email {
             html,
             text,
             new UserId(userId),
-            name,
-            propertyUpdated
+            name
         );
 
         email.record(
-            new UserUpdatedNotificationEmailSentDomainEvent(
+            new UserRestoredEmailSentDomainEvent(
                 id,
                 userId,
                 name,
-                propertyUpdated,
                 from.value,
                 emailAddress,
                 subject.value,
@@ -77,8 +67,8 @@ export class UserUpdatedNotificationEmail extends Email {
         return email;
     }
 
-    static fromPrimitives(primitives: UserUpdatedNotificationEmailPrimitives): UserUpdatedNotificationEmail {
-        return new UserUpdatedNotificationEmail(
+    static fromPrimitives(primitives: BlockedEmailPrimitives): UserRestoredEmail {
+        return new UserRestoredEmail(
             new EmailId(primitives.id),
             new EmailAddress(primitives.from),
             new EmailAddress(primitives.to),
@@ -86,16 +76,15 @@ export class UserUpdatedNotificationEmail extends Email {
             new EmailHTMLBody(primitives.html),
             new EmailTextBody(primitives.text),
             new UserId(primitives.userId),
-            primitives.userName,
-            primitives.propertyUpdated
+            primitives.userName
         );
     }
 
-    private static generateSubject(userName: string, propertyChanged: string): EmailSubject {
-        return new EmailSubject(`${userName}, tu ${propertyChanged} se ha cambiado`);
+    private static generateSubject(userName: string): EmailSubject {
+        return new EmailSubject(`Bienvenido de vuelta, ${userName}`);
     }
 
-    private static generateHTMLBody(userName: string, propertyChanged: string): EmailHTMLBody {
+    private static generateHTML(userName: string): EmailHTMLBody {
         return new EmailHTMLBody(
             `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="es">
@@ -108,9 +97,9 @@ export class UserUpdatedNotificationEmail extends Email {
   <div
     style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0"
   >
-    Si no has sido tú, por favor, contacta al equipo de PNFi
+    Ya puedes acceder nuevamente a tu cuenta del PNFi
     <div>
-       ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+       ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
     </div>
   </div>
   <body
@@ -154,8 +143,7 @@ export class UserUpdatedNotificationEmail extends Email {
             <h1
               style="color:rgb(0,0,0);font-size:24px;font-weight:400;text-align:center;padding:0px;margin-top:30px;margin-bottom:30px;margin-left:0px;margin-right:0px"
             >
-              Has cambiado tu
-              <!-- -->${propertyChanged}
+              Bienvenido de vuelta
             </h1>
             <p
               style="color:rgb(0,0,0);font-size:14px;line-height:24px;margin:16px 0"
@@ -166,14 +154,13 @@ export class UserUpdatedNotificationEmail extends Email {
             <p
               style="color:rgb(0,0,0);font-size:14px;line-height:24px;margin:16px 0"
             >
-              Esta es un correo informativo, para avisar que has cambiado tu<!-- -->
-              <!-- -->${propertyChanged}<!-- -->. Si no has sido tú, por favor,
-              contáctenos de inmediato.
+              Tu cuenta ha sido restaurada. Te invitamos a iniciar sesión y
+              seguir creando contenido en la plataforma.
             </p>
             <p
               style="color:rgb(0,0,0);font-size:14px;line-height:24px;margin:16px 0"
             >
-              Saludos, el equipo de PNFi
+              Saludos, El equipo de PNFi
             </p>
             <hr
               style="border-width:1px;border-style:solid;border-color:rgb(234,234,234);margin-top:26px;margin-bottom:26px;margin-left:0px;margin-right:0px;width:100%;border:none;border-top:1px solid #eaeaea"
@@ -197,16 +184,16 @@ export class UserUpdatedNotificationEmail extends Email {
         );
     }
 
-    private static generateTextBody(userName: string, propertyChanged: string): EmailTextBody {
+    private static generateText(userName: string): EmailTextBody {
         return new EmailTextBody(
-            `HAS CAMBIADO TU ${propertyChanged}
+            `BIENVENIDO DE VUELTA
 
 Hola, ${userName}
 
-Esta es un correo informativo, para avisar que has cambiado tu password. Si no
-has sido tú, por favor, contáctenos de inmediato.
+Tu cuenta ha sido restaurada. Te invitamos a iniciar sesión y seguir creando
+contenido en la plataforma.
 
-Saludos, el equipo de PNFi
+Saludos, El equipo de PNFi
 
 --------------------------------------------------------------------------------
 
@@ -216,12 +203,11 @@ contacte con soporte@pnfi.pro y nos pondremos en contacto contigo.`
         );
     }
 
-    toPrimitives(): UserUpdatedNotificationEmailPrimitives {
+    toPrimitives(): BlockedEmailPrimitives {
         return {
             id: this.id.value,
             userId: this.userId.value,
             userName: this.userName,
-            propertyUpdated: this.propertyUpdated,
             from: this.from.value,
             to: this.to.value,
             subject: this.subject.value,
