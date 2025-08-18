@@ -1,5 +1,3 @@
-import { UserEmail } from "../../../cma/users/domain/UserEmail";
-import { UserId } from "../../../cma/users/domain/UserId";
 import { EmailAddress } from "../../../shared/domain/EmailAddress";
 import { Email } from "./Email";
 import { EmailHTMLBody } from "./EmailHTMLBody";
@@ -9,120 +7,104 @@ import { EmailTextBody } from "./EmailTextBody";
 import { WelcomeEmailSentDomainEvent } from "./event/WelcomeEmailSentDomainEvent";
 
 export type WelcomeEmailPrimitives = {
-    id: string;
-    userId: string;
-    userName: string;
-    presenterName: string;
-    presenterEmailAddress: string;
-    from: string;
-    to: string;
-    subject: string;
-    html: string;
-    text: string;
+  id: string;
+  from: string;
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
 };
 
 export class WelcomeEmail extends Email {
-    public static readonly template = "welcome_email";
-    private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <octagon@pnfi.pro>";
+  public static readonly template = "welcome_email";
+  public static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <octagon@pnfi.pro>";
 
-    private constructor(
-        id: EmailId,
-        from: EmailAddress,
-        to: EmailAddress,
-        subject: EmailSubject,
-        html: EmailHTMLBody,
-        text: EmailTextBody,
-        private readonly userId: UserId,
-        private readonly userName: string,
-        private readonly presenterName: string,
-        private readonly presenterEmailAddress: UserEmail
-    ) {
-        super(id, from, to, subject, html, text);
-    }
+  private constructor(
+    id: EmailId,
+    from: EmailAddress,
+    to: EmailAddress,
+    subject: EmailSubject,
+    html: EmailHTMLBody,
+    text: EmailTextBody
+  ) {
+    super(id, from, to, subject, html, text);
+  }
 
-    static send(
-        id: string,
-        userId: string,
-        name: string,
-        emailAddress: string,
-        presenterName: string,
-        presenterEmailAddress: string,
-        confirmationUrl: string
-    ): WelcomeEmail {
-        const from = new EmailAddress(WelcomeEmail.from);
-        const subject = WelcomeEmail.generateSubject(name);
-        const html = WelcomeEmail.generateHTML(
-            name,
-            emailAddress,
-            presenterName,
-            presenterEmailAddress,
-            confirmationUrl
-        );
-        const text = WelcomeEmail.generateText(
-            name,
-            emailAddress,
-            presenterName,
-            presenterEmailAddress,
-            confirmationUrl
-        );
+  static send(
+    id: string,
+    userName: string,
+    userEmailAddress: string,
+    presenterName: string,
+    presenterEmailAddress: string,
+    confirmationUrl: string
+  ): WelcomeEmail {
+    const emailId = new EmailId(id);
+    const from = new EmailAddress(WelcomeEmail.from);
+    const to = new EmailAddress(userEmailAddress);
+    const subject = WelcomeEmail.generateSubject(userName);
+    const html = WelcomeEmail.generateHTML(
+      userName,
+      to.value,
+      presenterName,
+      presenterEmailAddress,
+      confirmationUrl
+    );
 
-        const email = new WelcomeEmail(
-            new EmailId(id),
-            from,
-            new EmailAddress(emailAddress),
-            subject,
-            html,
-            text,
-            new UserId(userId),
-            name,
-            presenterName,
-            new UserEmail(presenterEmailAddress)
-        );
+    const text = WelcomeEmail.generateText(
+      userName,
+      to.value,
+      presenterName,
+      presenterEmailAddress,
+      confirmationUrl
+    );
 
-        email.record(
-            new WelcomeEmailSentDomainEvent(
-                id,
-                userId,
-                name,
-                from.value,
-                emailAddress,
-                subject.value,
-                html.value,
-                text.value
-            )
-        );
+    const email = new WelcomeEmail(
+      emailId,
+      from,
+      to,
+      subject,
+      html,
+      text
+    );
 
-        return email;
-    }
+    email.record(
+      new WelcomeEmailSentDomainEvent(
+        id,
+        from.value,
+        to.value,
+        subject.value,
+        html.value,
+        text.value
+      )
+    );
 
-    static fromPrimitives(primitives: WelcomeEmailPrimitives): WelcomeEmail {
-        return new WelcomeEmail(
-            new EmailId(primitives.id),
-            new EmailAddress(primitives.from),
-            new EmailAddress(primitives.to),
-            new EmailSubject(primitives.subject),
-            new EmailHTMLBody(primitives.html),
-            new EmailTextBody(primitives.text),
-            new UserId(primitives.userId),
-            primitives.userName,
-            primitives.presenterName,
-            new UserEmail(primitives.presenterEmailAddress)
-        );
-    }
+    return email;
+  }
 
-    private static generateSubject(userName: string): EmailSubject {
-        return new EmailSubject(`Bienvenido al PNFi, ${userName}`);
-    }
+  static fromPrimitives(primitives: WelcomeEmailPrimitives): WelcomeEmail {
+    return new WelcomeEmail(
+      new EmailId(primitives.id),
+      new EmailAddress(primitives.from),
+      new EmailAddress(primitives.to),
+      new EmailSubject(primitives.subject),
+      new EmailHTMLBody(primitives.html),
+      new EmailTextBody(primitives.text)
+    );
+  }
 
-    private static generateHTML(
-        userName: string,
-        userEmail: string,
-        inviteFromUserName: string,
-        inviteFromUserEmail: string,
-        confirmationUrl: string
-    ): EmailHTMLBody {
-        return new EmailHTMLBody(
-            `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  static generateSubject(userName: string): EmailSubject {
+    return new EmailSubject(`Bienvenido al PNFi, ${userName}`);
+  }
+
+  static generateHTML(
+    userName: string,
+    userEmail: string,
+    inviteFromUserName: string,
+    inviteFromUserEmail: string,
+    confirmationUrl: string
+  ): EmailHTMLBody {
+    return new EmailHTMLBody(
+      `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html dir="ltr" lang="es">
   <head>
     <link rel="preload" as="image" href="https://pnfi.pro/octagon.png" />
@@ -269,18 +251,18 @@ export class WelcomeEmail extends Email {
 </html>
 
 `
-        );
-    }
+    );
+  }
 
-    private static generateText(
-        userName: string,
-        userEmail: string,
-        inviteFromUserName: string,
-        inviteFromUserEmail: string,
-        confirmationUrl: string
-    ): EmailTextBody {
-        return new EmailTextBody(
-            `ÚNETE A LA CARTELERA DEL PNFI
+  static generateText(
+    userName: string,
+    userEmail: string,
+    inviteFromUserName: string,
+    inviteFromUserEmail: string,
+    confirmationUrl: string
+  ): EmailTextBody {
+    return new EmailTextBody(
+      `ÚNETE A LA CARTELERA DEL PNFI
 
 Hola ${userName},
 
@@ -300,21 +282,17 @@ Esta invitación es exclusiva para ${userEmail}. Si no esperabas esta invitació
 puedes ignorar este email. Si estás interesado en la seguridad de tu cuenta, por
 favor contacte con soporte@pnfi.pro y nos pondremos en contacto contigo.
 `
-        );
-    }
+    );
+  }
 
-    toPrimitives(): WelcomeEmailPrimitives {
-        return {
-            id: this.id.value,
-            userId: this.userId.value,
-            userName: this.userName,
-            presenterName: this.presenterName,
-            presenterEmailAddress: this.presenterEmailAddress.value,
-            from: this.from.value,
-            to: this.to.value,
-            subject: this.subject.value,
-            html: this.html.value,
-            text: this.text.value
-        };
-    }
+  toPrimitives(): WelcomeEmailPrimitives {
+    return {
+      id: this.id.value,
+      from: this.from.value,
+      to: this.to.value,
+      subject: this.subject.value,
+      html: this.html.value,
+      text: this.text.value
+    };
+  }
 }

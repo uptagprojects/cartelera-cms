@@ -4,12 +4,11 @@ export class WelcomeEmailSentDomainEvent extends DomainEvent {
 	static eventName = "pnfi.system.welcome_email.sent";
 	constructor(
 		public readonly id: string,
-		public readonly userId: string,
-		public readonly userName: string,
 		public readonly fromEmailAddress: string,
 		public readonly toEmailAddress: string,
 		public readonly emailSubject: string,
-		public readonly emailBody: string,
+		public readonly emailHTMLBody: string,
+		public readonly emailTextBody: string,
 		eventId?: string,
 		occurredOn?: Date
 	) {
@@ -24,12 +23,11 @@ export class WelcomeEmailSentDomainEvent extends DomainEvent {
 	): WelcomeEmailSentDomainEvent {
 		return new WelcomeEmailSentDomainEvent(
 			aggregateId,
-			attributes.userId as string,
-			attributes.userName as string,
 			attributes.fromEmailAddress as string,
 			attributes.toEmailAddress as string,
 			attributes.emailSubject as string,
-			attributes.emailBody as string,
+			attributes.emailHTMLBody as string,
+			attributes.emailTextBody as string,
 			eventId,
 			occurredOn
 		);
@@ -38,12 +36,11 @@ export class WelcomeEmailSentDomainEvent extends DomainEvent {
 	toPrimitives(): Record<string, unknown> {
 		return {
 			id: this.id,
-			userId: this.userId,
-			userName: this.userName,
 			fromEmailAddress: this.fromEmailAddress,
 			toEmailAddress: this.toEmailAddress,
 			emailSubject: this.emailSubject,
-			emailBody: this.emailBody
+			emailHTMLBody: this.emailHTMLBody,
+			emailTextBody: this.emailTextBody
 		};
 	}
 }

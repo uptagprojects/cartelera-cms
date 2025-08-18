@@ -2,20 +2,21 @@ import { DomainEvent } from "../../../../src/contexts/shared/domain/event/Domain
 import { EventBus } from "../../../../src/contexts/shared/domain/event/EventBus";
 
 export class MockEventBus implements EventBus {
-	private readonly mockPublish = jest.fn();
-
+	private mockPublish = jest.fn();
 	async publish(events: DomainEvent[]): Promise<void> {
 		expect(this.mockPublish).toHaveBeenCalledWith(
 			expect.arrayContaining(
-				events.map(event =>
+				events.map((event) =>
 					expect.objectContaining({
 						...event,
-						eventId: expect.any(String),
-						occurredOn: expect.anything()
-					})
-				)
-			)
+						occurredOn: expect.anything(),
+						eventId: expect.anything(),
+					}),
+				),
+			),
 		);
+
+		return Promise.resolve();
 	}
 
 	shouldPublish(events: DomainEvent[]): void {

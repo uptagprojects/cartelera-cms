@@ -1,7 +1,7 @@
 import { UserRegistrar } from "../../../../../../src/contexts/cma/users/application/registrar/UserRegistrar";
 import { UserStatus } from "../../../../../../src/contexts/cma/users/domain/UserStatus";
-import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { UserRegisteredDomainEventMother } from "../../domain/event/UserRegisteredDomainEventMother";
+import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { UserMother } from "../../domain/UserMother";
 import { MockUserRepository } from "../../infrastructure/MockUserRepository";
 
@@ -31,5 +31,6 @@ describe("UserRegistrar should", () => {
 			expectedUserPrimitives.avatar,
 			expectedPresenterPrimitives.id
 		);
+		
 	});
 });
