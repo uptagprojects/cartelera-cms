@@ -22,6 +22,86 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Testing
+
+This project follows a comprehensive testing strategy with three levels of testing: unit tests, integration tests, and acceptance tests.
+
+### Test Structure
+
+Tests are organized in the `tests/` directory following the same structure as the source code:
+
+- **Unit Tests** (`tests/contexts/**/*/application`): Test application layer logic in isolation
+- **Integration Tests** (`tests/contexts/**/*/infrastructure`): Test infrastructure components and external integrations
+- **Acceptance Tests** (`tests/features/**/*.feature`): Behavior-driven tests written in Gherkin format using Cucumber
+
+### Running Tests
+
+#### Run All Tests
+
+```bash
+npm test
+```
+
+This command runs the complete test suite: unit tests, integration tests, and acceptance tests.
+
+#### Run Unit Tests Only
+
+```bash
+npm run test:unit
+```
+
+Unit tests verify the business logic in the application layer. They run fast and don't require external dependencies.
+
+#### Run Integration Tests Only
+
+```bash
+npm run test:integration
+```
+
+Integration tests verify that infrastructure components (repositories, external services, etc.) work correctly.
+
+#### Run Acceptance Tests Only
+
+```bash
+npm run test:acceptance
+```
+
+Acceptance tests are end-to-end tests that verify complete user scenarios. They build the application, configure dependencies (like RabbitMQ), and run Cucumber feature files.
+
+#### Run Individual Feature Tests
+
+```bash
+npm run test:features
+```
+
+This runs just the Cucumber feature files without the build and configuration steps.
+
+### Test Frameworks
+
+- **Jest**: Used for unit and integration tests (TypeScript)
+- **Cucumber**: Used for acceptance/BDD tests with Gherkin syntax
+- **Playwright**: Configured for browser-based end-to-end tests
+
+### Writing Tests
+
+Tests follow the Object Mother pattern for creating test data. You can find test data builders (Mothers) in the `tests/contexts/**/domain` directories.
+
+Example unit test structure:
+```typescript
+describe("Component should", () => {
+  it("perform expected behavior", async () => {
+    // Arrange: Create test data using Mothers
+    const expectedData = DataMother.create();
+    
+    // Act: Execute the behavior
+    await component.execute(expectedData);
+    
+    // Assert: Verify the outcome
+    expect(mock).toHaveBeenCalledWith(expectedData);
+  });
+});
+```
+
 ## Glossary
 - CMS: Content Management System.
 - CMA: Content Management Application. This is the part of a CMS which provides our users design, create, modify and remove their content without the need for HTML knowledge.
