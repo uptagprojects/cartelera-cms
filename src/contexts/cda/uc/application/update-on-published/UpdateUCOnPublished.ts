@@ -7,20 +7,18 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { PublishedUCUpdater } from "./PublishedUCUpdater";
 
 @Service()
-export class UpdateUCOnPublished
-	implements DomainEventSubscriber<UCCreatedDomainEvent | UCRenamedDomainEvent>
-{
-	constructor(private readonly updater: PublishedUCUpdater) {}
+export class UpdateUCOnPublished implements DomainEventSubscriber<UCCreatedDomainEvent | UCRenamedDomainEvent> {
+    constructor(private readonly updater: PublishedUCUpdater) {}
 
-	async on(event: UCCreatedDomainEvent | UCRenamedDomainEvent): Promise<void> {
-		await this.updater.update(event.id, event.name);
-	}
+    async on(event: UCCreatedDomainEvent | UCRenamedDomainEvent): Promise<void> {
+        await this.updater.update(event.id, event.name);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [UCCreatedDomainEvent, UCRenamedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [UCCreatedDomainEvent, UCRenamedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.update_uc_on_published";
-	}
+    name(): string {
+        return "pnfi.cda.update_uc_on_published";
+    }
 }

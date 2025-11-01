@@ -6,28 +6,20 @@ import { ScheduleAttachment } from "../../domain/ScheduleAttachment";
 import { ScheduleAttachmentRepository } from "../../domain/ScheduleAttachmentRepository";
 
 export class ScheduleAttachmentUploader {
-	constructor(
-		private readonly repository: ScheduleAttachmentRepository,
-		private readonly fileStorage: FileStorage,
-		private readonly eventBus: EventBus
-	) {}
+    constructor(
+        private readonly repository: ScheduleAttachmentRepository,
+        private readonly fileStorage: FileStorage,
+        private readonly eventBus: EventBus
+    ) {}
 
-	async upload(id: string, scheduleId: string, file: File): Promise<void> {
-		const path = `/schedule-attachments/${id}${extname(file.name)}`;
+    async upload(id: string, scheduleId: string, file: File): Promise<void> {
+        const path = `/schedule-attachments/${id}${extname(file.name)}`;
 
-		const url = await this.fileStorage.save(path, file);
+        const url = await this.fileStorage.save(path, file);
 
-		const attachment = ScheduleAttachment.create(
-			id,
-			file.name,
-			scheduleId,
-			url,
-			file.size,
-			file.type,
-			path
-		);
+        const attachment = ScheduleAttachment.create(id, file.name, scheduleId, url, file.size, file.type, path);
 
-		await this.repository.save(attachment);
-		await this.eventBus.publish(attachment.pullDomainEvents());
-	}
+        await this.repository.save(attachment);
+        await this.eventBus.publish(attachment.pullDomainEvents());
+    }
 }

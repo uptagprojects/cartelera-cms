@@ -3,11 +3,11 @@ import { ScheduleAttachment } from "./ScheduleAttachment";
 import { ScheduleAttachmentId } from "./ScheduleAttachmentId";
 
 export interface ScheduleAttachmentRepository {
-	save(scheduleAttachment: ScheduleAttachment): Promise<void>;
+    save(scheduleAttachment: ScheduleAttachment): Promise<void>;
 
-	search(id: ScheduleAttachmentId): Promise<ScheduleAttachment | null>;
+    search(id: ScheduleAttachmentId): Promise<ScheduleAttachment | null>;
 
-	searchAllByScheduleId(scheduleId: ScheduleId): Promise<ScheduleAttachment[]>;
+    searchAllByScheduleId(scheduleId: ScheduleId): Promise<ScheduleAttachment[]>;
 
-	remove(scheduleAttachment: ScheduleAttachment): Promise<void>;
+    remove(scheduleAttachment: ScheduleAttachment): Promise<void>;
 }

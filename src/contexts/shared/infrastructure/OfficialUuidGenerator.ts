@@ -5,7 +5,7 @@ import { UuidGenerator } from "../domain/UuidGenerator";
 
 @Service()
 export class OfficialUuidGenerator extends UuidGenerator {
-	async generate(): Promise<string> {
-		return v4();
-	}
+    async generate(): Promise<string> {
+        return v4();
+    }
 }

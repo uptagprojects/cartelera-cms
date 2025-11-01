@@ -7,17 +7,17 @@ import { UnpublishedCourseRemover } from "./UnpublishedCourseRemover";
 
 @Service()
 export class RemoveOnCourseUnpublished implements DomainEventSubscriber<CourseDomainEvent> {
-	constructor(private readonly remover: UnpublishedCourseRemover) {}
+    constructor(private readonly remover: UnpublishedCourseRemover) {}
 
-	async on(course: CourseDomainEvent): Promise<void> {
-		await this.remover.remove(course.id);
-	}
+    async on(course: CourseDomainEvent): Promise<void> {
+        await this.remover.remove(course.id);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [];
+    }
 
-	name(): string {
-		return "pnfi.cda.remove_course_on_unpublished";
-	}
+    name(): string {
+        return "pnfi.cda.remove_course_on_unpublished";
+    }
 }

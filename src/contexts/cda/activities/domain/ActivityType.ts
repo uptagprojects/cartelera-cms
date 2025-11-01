@@ -1,6 +1,6 @@
 export enum ActivityType {
-	GUIDE = "guide",
-	COURSE = "course",
-	EVENT = "event",
-	ANNOUNCEMENT = "announcement"
+    GUIDE = "guide",
+    COURSE = "course",
+    EVENT = "event",
+    ANNOUNCEMENT = "announcement"
 }

@@ -49,7 +49,7 @@ export class MockUserRepository implements UserRepository {
 		this.mockMatching.mockReturnValueOnce(users);
 	}
 
-	shouldSave(user: User | any): void {
+	shouldSave(user: User | Record<string, unknown>): void {
 		if (user instanceof User) {
 			this.mockSave(user.toPrimitives());
 		} else {

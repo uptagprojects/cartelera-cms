@@ -4,17 +4,17 @@ import { Event } from "../../domain/Event";
 import { EventRepository } from "../../domain/EventRepository";
 
 export class EventsByCriteriaSearcher {
-	constructor(private readonly repository: EventRepository) {}
+    constructor(private readonly repository: EventRepository) {}
 
-	async search(
-		filters: FiltersPrimitives[],
-		orderBy: string | null,
-		orderType: string | null,
-		pageSize: number | null,
-		pageNumber: number | null
-	): Promise<Event[]> {
-		const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
+    async search(
+        filters: FiltersPrimitives[],
+        orderBy: string | null,
+        orderType: string | null,
+        pageSize: number | null,
+        pageNumber: number | null
+    ): Promise<Event[]> {
+        const criteria = Criteria.fromPrimitives(filters, orderBy, orderType, pageSize, pageNumber);
 
-		return this.repository.matching(criteria);
-	}
+        return this.repository.matching(criteria);
+    }
 }

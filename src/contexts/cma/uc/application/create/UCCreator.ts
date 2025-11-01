@@ -7,14 +7,14 @@ import { UCRepository } from "../../domain/UCRepository";
 
 export type UCCreatorErrors = InvalidIdentifierError | UCNameIsEmptyError | UCNameTooLongError;
 export class UCCreator {
-	constructor(
-		private readonly repository: UCRepository,
-		private readonly eventBus: EventBus
-	) {}
+    constructor(
+        private readonly repository: UCRepository,
+        private readonly eventBus: EventBus
+    ) {}
 
-	async create(id: string, name: string): Promise<void> {
-		const uc = UC.create(id, name);
-		await this.repository.save(uc);
-		await this.eventBus.publish(uc.pullDomainEvents());
-	}
+    async create(id: string, name: string): Promise<void> {
+        const uc = UC.create(id, name);
+        await this.repository.save(uc);
+        await this.eventBus.publish(uc.pullDomainEvents());
+    }
 }

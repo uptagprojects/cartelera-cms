@@ -1,20 +1,20 @@
 import { DomainEvent } from "../../../../shared/domain/event/DomainEvent";
 
 export class GuideAttachmentDomainEvent extends DomainEvent {
-	static eventName = "pnfi.cma.guide_attachment.*";
+    static eventName = "pnfi.cma.guide_attachment.*";
 
-	constructor(
-		eventName: string,
-		public readonly id: string,
-		eventId?: string,
-		occurredOn?: Date
-	) {
-		super(eventName, id, eventId, occurredOn);
-	}
+    constructor(
+        eventName: string,
+        public readonly id: string,
+        eventId?: string,
+        occurredOn?: Date
+    ) {
+        super(eventName, id, eventId, occurredOn);
+    }
 
-	toPrimitives(): Record<string, unknown> {
-		return {
-			id: this.id
-		};
-	}
+    toPrimitives(): Record<string, unknown> {
+        return {
+            id: this.id
+        };
+    }
 }

@@ -1,5 +1,5 @@
 export interface IUC {
-	id: string;
-	name: string;
-	totalGuides: number;
+    id: string;
+    name: string;
+    totalGuides: number;
 }

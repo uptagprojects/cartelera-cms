@@ -4,14 +4,14 @@ import { EventId } from "./EventId";
 import { EventRepository } from "./EventRepository";
 
 export class EventFinder {
-	constructor(private readonly repository: EventRepository) {}
+    constructor(private readonly repository: EventRepository) {}
 
-	async find(id: string): Promise<Event> {
-		const event = await this.repository.search(new EventId(id));
-		if (!event) {
-			throw new EventDoesNotExist(id);
-		}
+    async find(id: string): Promise<Event> {
+        const event = await this.repository.search(new EventId(id));
+        if (!event) {
+            throw new EventDoesNotExist(id);
+        }
 
-		return event;
-	}
+        return event;
+    }
 }

@@ -5,12 +5,10 @@ import { PostgresCdaAnnouncementRepository } from "../../../contexts/cda/announc
 import { HTTPNextResponse } from "../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../contexts/shared/infrastructure/PostgresConnection";
 
-const searcher = new AllCdaAnnouncementsSearcher(
-	new PostgresCdaAnnouncementRepository(new PostgresConnection())
-);
+const searcher = new AllCdaAnnouncementsSearcher(new PostgresCdaAnnouncementRepository(new PostgresConnection()));
 
 export async function GET(_: NextRequest): Promise<Response> {
-	const announcements = await searcher.searchAll();
+    const announcements = await searcher.searchAll();
 
-	return HTTPNextResponse.json(announcements);
+    return HTTPNextResponse.json(announcements);
 }

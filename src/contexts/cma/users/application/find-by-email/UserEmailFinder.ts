@@ -5,28 +5,25 @@ import { UserFinder } from "../../domain/UserFinder";
 import { UserIsNotActiveError } from "../../domain/UserIsNotActiveError";
 import { UserRepository } from "../../domain/UserRepository";
 
-export type UserEmailFinderErrors =
-	| UserIsNotActiveError
-	| UserEmailIsNotValidError
-	| UserDoesNotExistError;
+export type UserEmailFinderErrors = UserIsNotActiveError | UserEmailIsNotValidError | UserDoesNotExistError;
 
 export class UserEmailFinder {
-	private readonly finder: UserFinder;
-	constructor(repository: UserRepository) {
-		this.finder = new UserFinder(repository);
-	}
+    private readonly finder: UserFinder;
+    constructor(repository: UserRepository) {
+        this.finder = new UserFinder(repository);
+    }
 
-	async find(email: string): Promise<UserPrimitives> {
-		const user = await this.finder.findByEmail(email);
+    async find(email: string): Promise<UserPrimitives> {
+        const user = await this.finder.findByEmail(email);
 
-		await this.ensureIsActive(user);
+        await this.ensureIsActive(user);
 
-		return user.toPrimitives();
-	}
+        return user.toPrimitives();
+    }
 
-	private async ensureIsActive(user: User): Promise<void> {
-		if (!user.isActive()) {
-			throw new UserIsNotActiveError(user.getId());
-		}
-	}
+    private async ensureIsActive(user: User): Promise<void> {
+        if (!user.isActive()) {
+            throw new UserIsNotActiveError(user.getId());
+        }
+    }
 }

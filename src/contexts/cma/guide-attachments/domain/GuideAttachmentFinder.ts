@@ -4,14 +4,14 @@ import { GuideAttachmentId } from "./GuideAttachmentId";
 import { GuideAttachmentRepository } from "./GuideAttachmentRepository";
 
 export class GuideAttachmentFinder {
-	constructor(private readonly repository: GuideAttachmentRepository) {}
+    constructor(private readonly repository: GuideAttachmentRepository) {}
 
-	async find(id: string): Promise<GuideAttachment> {
-		const attachment = await this.repository.search(new GuideAttachmentId(id));
-		if (!attachment) {
-			throw new GuideAttachmentDoesNotExist(id);
-		}
+    async find(id: string): Promise<GuideAttachment> {
+        const attachment = await this.repository.search(new GuideAttachmentId(id));
+        if (!attachment) {
+            throw new GuideAttachmentDoesNotExist(id);
+        }
 
-		return attachment;
-	}
+        return attachment;
+    }
 }

@@ -3,11 +3,11 @@ import { Course } from "./Course";
 import { CourseId } from "./CourseId";
 
 export abstract class CourseRepository {
-	abstract save(course: Course): Promise<void>;
+    abstract save(course: Course): Promise<void>;
 
-	abstract search(id: CourseId): Promise<Course | null>;
+    abstract search(id: CourseId): Promise<Course | null>;
 
-	abstract matching(criteria: Criteria): Promise<Course[]>;
+    abstract matching(criteria: Criteria): Promise<Course[]>;
 
-	abstract remove(course: Course): Promise<void>;
+    abstract remove(course: Course): Promise<void>;
 }

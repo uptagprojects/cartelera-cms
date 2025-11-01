@@ -8,20 +8,18 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { UnpublishedAnnouncementRemover } from "./UnpublishedAnnouncementRemover";
 
 @Service()
-export class RemoveOnAnnouncementUnpublished
-	implements DomainEventSubscriber<AnnouncementDomainEvent>
-{
-	constructor(private readonly remover: UnpublishedAnnouncementRemover) {}
+export class RemoveOnAnnouncementUnpublished implements DomainEventSubscriber<AnnouncementDomainEvent> {
+    constructor(private readonly remover: UnpublishedAnnouncementRemover) {}
 
-	async on(event: AnnouncementDomainEvent): Promise<void> {
-		await this.remover.remove(event.id);
-	}
+    async on(event: AnnouncementDomainEvent): Promise<void> {
+        await this.remover.remove(event.id);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [AnnouncementRemovedDomainEvent, AnnouncementArchivedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [AnnouncementRemovedDomainEvent, AnnouncementArchivedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.remove_announcement_on_unpublished";
-	}
+    name(): string {
+        return "pnfi.cda.remove_announcement_on_unpublished";
+    }
 }

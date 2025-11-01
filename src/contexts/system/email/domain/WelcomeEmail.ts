@@ -18,7 +18,8 @@ export type WelcomeEmailPrimitives = {
 
 export class WelcomeEmail extends Email {
 	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@pnfi.uptag.net";
-	private static readonly confirmationUrl = process.env.CONFIRMATION_URL ?? "https://cartelerapnfi.uptag.net/profile";
+	private static readonly confirmationUrl =
+		process.env.CONFIRMATION_URL ?? "https://cartelerapnfi.uptag.net/profile";
 
 	private constructor(
 		id: EmailId,

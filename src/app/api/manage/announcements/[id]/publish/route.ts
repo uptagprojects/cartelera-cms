@@ -13,42 +13,34 @@ import { executeWithErrorHandling } from "../../../../../../contexts/shared/infr
 import { HTTPNextResponse } from "../../../../../../contexts/shared/infrastructure/http/HTTPNextResponse";
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
-export async function PUT(
-	_request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
-): Promise<Response> {
-	return executeWithErrorHandling(
-		async () => {
-			const { id } = await params;
-			const connection = new PostgresConnection();
+export async function PUT(_request: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> {
+    return executeWithErrorHandling(
+        async () => {
+            const { id } = await params;
+            const connection = new PostgresConnection();
 
-			await connection.transactional(async connection => {
-				await new AnnouncementPublisher(
-					new PostgresAnnouncementRepository(connection as PostgresConnection),
-					new RabbitMQEventBus(
-						new RabbitMQConnection(),
-						new DomainEventFailover(connection as PostgresConnection)
-					)
-				).publish(id);
-			});
+            await connection.transactional(async connection => {
+                await new AnnouncementPublisher(
+                    new PostgresAnnouncementRepository(connection as PostgresConnection),
+                    new RabbitMQEventBus(
+                        new RabbitMQConnection(),
+                        new DomainEventFailover(connection as PostgresConnection)
+                    )
+                ).publish(id);
+            });
 
-			return HTTPNextResponse.accepted();
-		},
-		(
-			error:
-				| InvalidIdentifierError
-				| AnnouncementDoesNotExistError
-				| AnnouncementIsArchivedError
-		) => {
-			switch (error.type) {
-				case "announcement_does_not_exist_error":
-					return HTTPNextResponse.domainError(error, 404);
-				case "invalid_identifier_error":
-				case "announcement_is_archived_error":
-					return HTTPNextResponse.domainError(error, 400);
-				default:
-					assertNever(error);
-			}
-		}
-	);
+            return HTTPNextResponse.accepted();
+        },
+        (error: InvalidIdentifierError | AnnouncementDoesNotExistError | AnnouncementIsArchivedError) => {
+            switch (error.type) {
+                case "announcement_does_not_exist_error":
+                    return HTTPNextResponse.domainError(error, 404);
+                case "invalid_identifier_error":
+                case "announcement_is_archived_error":
+                    return HTTPNextResponse.domainError(error, 400);
+                default:
+                    assertNever(error);
+            }
+        }
+    );
 }

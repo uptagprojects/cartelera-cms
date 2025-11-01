@@ -7,25 +7,23 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { RestoredEmailSender } from "./RestoredEmailSender";
 
 @Service()
-export class SendRestoredEmailOnUserRestored
-	implements DomainEventSubscriber<UserRestoredDomainEvent>
-{
-	constructor(
-		private readonly sender: RestoredEmailSender,
-		private readonly finder: UserFinder
-	) {}
+export class SendRestoredEmailOnUserRestored implements DomainEventSubscriber<UserRestoredDomainEvent> {
+    constructor(
+        private readonly sender: RestoredEmailSender,
+        private readonly finder: UserFinder
+    ) {}
 
-	async on(event: UserRestoredDomainEvent): Promise<void> {
-		const user = await this.finder.find(event.id);
-		const { name, email } = user.toPrimitives();
-		await this.sender.send(event.id, name, email);
-	}
+    async on(event: UserRestoredDomainEvent): Promise<void> {
+        const user = await this.finder.find(event.id);
+        const { name, email } = user.toPrimitives();
+        await this.sender.send(event.id, name, email);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [UserRestoredDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [UserRestoredDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.system.send_restored_email_on_user_restored";
-	}
+    name(): string {
+        return "pnfi.system.send_restored_email_on_user_restored";
+    }
 }

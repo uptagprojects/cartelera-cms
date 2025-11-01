@@ -5,12 +5,12 @@ import { CdaAnnouncementRepository } from "../../domain/CdaAnnouncementRepositor
 
 @Service()
 export class UnpublishedAnnouncementRemover {
-	constructor(private readonly repository: CdaAnnouncementRepository) {}
+    constructor(private readonly repository: CdaAnnouncementRepository) {}
 
-	async remove(id: string): Promise<void> {
-		const announcement = await this.repository.search(new CdaAnnouncementId(id));
-		if (announcement) {
-			await this.repository.remove(announcement);
-		}
-	}
+    async remove(id: string): Promise<void> {
+        const announcement = await this.repository.search(new CdaAnnouncementId(id));
+        if (announcement) {
+            await this.repository.remove(announcement);
+        }
+    }
 }

@@ -5,12 +5,12 @@ import { CourseRepository } from "../../domain/CourseRepository";
 
 @Service()
 export class UnpublishedCourseRemover {
-	constructor(private readonly repository: CourseRepository) {}
+    constructor(private readonly repository: CourseRepository) {}
 
-	async remove(id: string): Promise<void> {
-		const course = await this.repository.search(new CourseId(id));
-		if (course) {
-			await this.repository.remove(course);
-		}
-	}
+    async remove(id: string): Promise<void> {
+        const course = await this.repository.search(new CourseId(id));
+        if (course) {
+            await this.repository.remove(course);
+        }
+    }
 }

@@ -6,9 +6,9 @@ import { GuideAttachmentRepository } from "../../domain/GuideAttachmentRepositor
 
 @Service()
 export class GuideAttachmentsByGuideSearcher {
-	constructor(private readonly repository: GuideAttachmentRepository) {}
+    constructor(private readonly repository: GuideAttachmentRepository) {}
 
-	async search(guideId: string): Promise<GuideAttachment[]> {
-		return this.repository.searchAllByGuideId(new GuideId(guideId));
-	}
+    async search(guideId: string): Promise<GuideAttachment[]> {
+        return this.repository.searchAllByGuideId(new GuideId(guideId));
+    }
 }

@@ -8,17 +8,17 @@ import { UnpublishedEventRemover } from "./UnpublishedEventRemover";
 
 @Service()
 export class RemoveOnEventUnpublished implements DomainEventSubscriber<EventDomainEvent> {
-	constructor(private readonly remover: UnpublishedEventRemover) {}
+    constructor(private readonly remover: UnpublishedEventRemover) {}
 
-	async on(event: EventDomainEvent): Promise<void> {
-		await this.remover.remove(event.id);
-	}
+    async on(event: EventDomainEvent): Promise<void> {
+        await this.remover.remove(event.id);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [EventRemovedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [EventRemovedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.remove_event_on_unpublished";
-	}
+    name(): string {
+        return "pnfi.cda.remove_event_on_unpublished";
+    }
 }

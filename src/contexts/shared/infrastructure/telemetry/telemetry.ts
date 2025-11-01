@@ -7,10 +7,7 @@ import { NextAxiomLoggerWrapper } from "./NextAxiomLoggerWrapper";
 import { NextPinoLoggerWrapper } from "./NextPinoLoggerWrapper";
 import { PinoLogger } from "./PinoLogger";
 
-export const logger: Logger =
-	process.env.NODE_ENV === "production" ? new NextAxiomLogger() : new PinoLogger();
+export const logger: Logger = process.env.NODE_ENV === "production" ? new NextAxiomLogger() : new PinoLogger();
 
 export const loggerWrapper: LoggerWrapper<NextRequest> =
-	process.env.NODE_ENV === "production"
-		? new NextAxiomLoggerWrapper()
-		: new NextPinoLoggerWrapper();
+    process.env.NODE_ENV === "production" ? new NextAxiomLoggerWrapper() : new NextPinoLoggerWrapper();

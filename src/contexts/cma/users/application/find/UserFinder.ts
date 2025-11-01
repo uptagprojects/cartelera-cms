@@ -3,11 +3,11 @@ import { UserFinder as DomainUserFinder } from "../../domain/UserFinder";
 import { UserRepository } from "../../domain/UserRepository";
 
 export class UserFinder {
-	constructor(private readonly repository: UserRepository) {}
+    constructor(private readonly repository: UserRepository) {}
 
-	async find(id: string): Promise<User> {
-		const finder = new DomainUserFinder(this.repository);
+    async find(id: string): Promise<User> {
+        const finder = new DomainUserFinder(this.repository);
 
-		return finder.find(id);
-	}
+        return finder.find(id);
+    }
 }

@@ -6,18 +6,18 @@ import { CdaAnnouncementRepository } from "../../domain/CdaAnnouncementRepositor
 
 @Service()
 export class PublishedAnnouncementUpdater {
-	constructor(private readonly repository: CdaAnnouncementRepository) {}
+    constructor(private readonly repository: CdaAnnouncementRepository) {}
 
-	async update(id: string, title: string, content: string, type: string): Promise<void> {
-		let announcement = await this.repository.search(new CdaAnnouncementId(id));
+    async update(id: string, title: string, content: string, type: string): Promise<void> {
+        let announcement = await this.repository.search(new CdaAnnouncementId(id));
 
-		if (!announcement) {
-			announcement = CdaAnnouncement.create(id, title, content, type);
-		} else {
-			announcement.updateTitle(title);
-			announcement.updateContent(content);
-		}
+        if (!announcement) {
+            announcement = CdaAnnouncement.create(id, title, content, type);
+        } else {
+            announcement.updateTitle(title);
+            announcement.updateContent(content);
+        }
 
-		await this.repository.save(announcement);
-	}
+        await this.repository.save(announcement);
+    }
 }

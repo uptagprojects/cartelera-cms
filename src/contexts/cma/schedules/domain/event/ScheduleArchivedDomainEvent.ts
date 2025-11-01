@@ -2,28 +2,28 @@ import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEve
 import { ScheduleDomainEvent } from "./ScheduleDomainEvent";
 
 export class ScheduleArchivedDomainEvent extends ScheduleDomainEvent {
-	static eventName = "pnfi.cma.schedule.archived";
+    static eventName = "pnfi.cma.schedule.archived";
 
-	constructor(
-		public readonly id: string,
-		eventId?: string,
-		occurredOn?: Date
-	) {
-		super(ScheduleArchivedDomainEvent.eventName, id, eventId, occurredOn);
-	}
+    constructor(
+        public readonly id: string,
+        eventId?: string,
+        occurredOn?: Date
+    ) {
+        super(ScheduleArchivedDomainEvent.eventName, id, eventId, occurredOn);
+    }
 
-	static fromPrimitives(
-		aggregateId: string,
-		eventId: string,
-		occurredOn: Date,
-		_attributes: DomainEventAttributes
-	): ScheduleArchivedDomainEvent {
-		return new ScheduleArchivedDomainEvent(aggregateId, eventId, occurredOn);
-	}
+    static fromPrimitives(
+        aggregateId: string,
+        eventId: string,
+        occurredOn: Date,
+        _attributes: DomainEventAttributes
+    ): ScheduleArchivedDomainEvent {
+        return new ScheduleArchivedDomainEvent(aggregateId, eventId, occurredOn);
+    }
 
-	toPrimitives(): DomainEventAttributes {
-		return {
-			id: this.id
-		};
-	}
+    toPrimitives(): DomainEventAttributes {
+        return {
+            id: this.id
+        };
+    }
 }
