@@ -4,6 +4,8 @@ import { CoursePrice } from "../../../../../src/contexts/cma/courses/domain/Cour
 
 export class CoursePriceMother {
 	static create(value?: number): CoursePrice {
-		return new CoursePrice(value ?? faker.number.float({ min: 0, max: 10000, fractionDigits: 2 }));
+		return new CoursePrice(
+			value ?? faker.number.float({ min: 0, max: 10000, fractionDigits: 2 })
+		);
 	}
 }

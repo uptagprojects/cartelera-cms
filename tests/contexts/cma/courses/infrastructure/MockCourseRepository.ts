@@ -10,11 +10,11 @@ export class MockCourseRepository implements CourseRepository {
 	private readonly mockSave = jest.fn();
 	private readonly mockRemove = jest.fn();
 
-	async save(course: Course): Promise<void> {
+	async save(_course: Course): Promise<void> {
 		this.mockSave();
 	}
 
-	async search(id: CourseId): Promise<Course | null> {
+	async search(_id: CourseId): Promise<Course | null> {
 		return this.mockSearch() as Promise<Course | null>;
 	}
 
@@ -22,11 +22,11 @@ export class MockCourseRepository implements CourseRepository {
 		return this.mockSearchAll() as Promise<Course[]>;
 	}
 
-	async matching(criteria: Criteria): Promise<Course[]> {
+	async matching(_criteria: Criteria): Promise<Course[]> {
 		return this.mockMatching() as Promise<Course[]>;
 	}
 
-	async remove(course: Course): Promise<void> {
+	async remove(_course: Course): Promise<void> {
 		this.mockRemove();
 	}
 
