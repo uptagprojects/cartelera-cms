@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 
 import { PublishedActivityUpdater } from "../../../../../../src/contexts/cda/activities/application/update-on-published/PublishedActivityUpdater";
 import { Activity } from "../../../../../../src/contexts/cda/activities/domain/Activity";
+import { ActivityType } from "../../../../../../src/contexts/cda/activities/domain/ActivityType";
 import { ActivityMother } from "../../domain/ActivityMother";
 import { MockActivityRepository } from "../../infrastructure/MockActivityRepository";
 import { MockMarkdownRemover } from "../../../../shared/infrastructure/MockMarkdownRemover";
@@ -13,7 +14,7 @@ describe("PublishedActivityUpdater should", () => {
 
 	it("create a new activity when it does not exist", async () => {
 		const id = faker.string.uuid();
-		const type = "announcement";
+		const type = ActivityType.ANNOUNCEMENT;
 		const title = faker.lorem.sentence();
 		const context = faker.lorem.paragraph();
 		const contextWithoutMarkdown = faker.lorem.paragraph();

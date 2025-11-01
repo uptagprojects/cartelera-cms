@@ -8,7 +8,12 @@ export class ActivityMother {
 	static create(params?: Partial<ActivityPrimitives>): Activity {
 		const primitives: ActivityPrimitives = {
 			id: ActivityIdMother.create().value,
-			type: faker.helpers.arrayElement(["announcement", "course", "event", "guide"]) as ActivityType,
+			type: faker.helpers.arrayElement([
+				ActivityType.ANNOUNCEMENT,
+				ActivityType.COURSE,
+				ActivityType.EVENT,
+				ActivityType.GUIDE
+			]) as ActivityType,
 			title: faker.lorem.sentence(),
 			context: faker.lorem.paragraph(),
 			publishedDate: faker.date.recent().toISOString(),
