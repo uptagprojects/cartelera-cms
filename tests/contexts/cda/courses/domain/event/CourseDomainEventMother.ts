@@ -1,5 +1,5 @@
 import { CourseDomainEvent } from "../../../../../../src/contexts/cma/courses/domain/event/CourseDomainEvent";
-import { CourseIdMother } from "../../../../cma/courses/domain/CourseIdMother";
+import { CourseIdMother } from "../CourseIdMother";
 
 export class CourseDomainEventMother {
 	static create(params?: { id?: string }): CourseDomainEvent {
