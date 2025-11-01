@@ -1,4 +1,7 @@
-import { Schedule, SchedulePrimitives } from "../../../../../src/contexts/cma/schedules/domain/Schedule";
+import {
+	Schedule,
+	SchedulePrimitives
+} from "../../../../../src/contexts/cma/schedules/domain/Schedule";
 import { ScheduleStatus } from "../../../../../src/contexts/cma/schedules/domain/ScheduleStatus";
 import { ScheduleFinishDateMother } from "./ScheduleFinishDateMother";
 import { ScheduleIdMother } from "./ScheduleIdMother";
