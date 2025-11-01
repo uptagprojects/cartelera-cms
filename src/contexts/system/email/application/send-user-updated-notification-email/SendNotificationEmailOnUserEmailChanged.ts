@@ -7,25 +7,23 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { UserUpdatedNotificationEmailSender } from "./UserUpdatedNotificationEmailSender";
 
 @Service()
-export class SendNotificationEmailOnUserEmailChanged
-	implements DomainEventSubscriber<UserEmailUpdatedDomainEvent>
-{
-	constructor(
-		private readonly sender: UserUpdatedNotificationEmailSender,
-		private readonly finder: UserFinder
-	) {}
+export class SendNotificationEmailOnUserEmailChanged implements DomainEventSubscriber<UserEmailUpdatedDomainEvent> {
+    constructor(
+        private readonly sender: UserUpdatedNotificationEmailSender,
+        private readonly finder: UserFinder
+    ) {}
 
-	async on(event: UserEmailUpdatedDomainEvent): Promise<void> {
-		const user = await this.finder.find(event.id);
-		const { name } = user.toPrimitives();
-		await this.sender.send(event.id, name, "email", event.email);
-	}
+    async on(event: UserEmailUpdatedDomainEvent): Promise<void> {
+        const user = await this.finder.find(event.id);
+        const { name } = user.toPrimitives();
+        await this.sender.send(event.id, name, "email", event.email);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [UserEmailUpdatedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [UserEmailUpdatedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.system.send_notification_email_on_user_email_changed";
-	}
+    name(): string {
+        return "pnfi.system.send_notification_email_on_user_email_changed";
+    }
 }

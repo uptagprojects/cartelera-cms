@@ -7,25 +7,23 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { BlockedEmailSender } from "./BlockedEmailSender";
 
 @Service()
-export class SendBlockedEmailOnUserBlocked
-	implements DomainEventSubscriber<UserBlockedDomainEvent>
-{
-	constructor(
-		private readonly sender: BlockedEmailSender,
-		private readonly finder: UserFinder
-	) {}
+export class SendBlockedEmailOnUserBlocked implements DomainEventSubscriber<UserBlockedDomainEvent> {
+    constructor(
+        private readonly sender: BlockedEmailSender,
+        private readonly finder: UserFinder
+    ) {}
 
-	async on(event: UserBlockedDomainEvent): Promise<void> {
-		const user = await this.finder.find(event.id);
-		const { name, email } = user.toPrimitives();
-		await this.sender.send(event.id, name, email);
-	}
+    async on(event: UserBlockedDomainEvent): Promise<void> {
+        const user = await this.finder.find(event.id);
+        const { name, email } = user.toPrimitives();
+        await this.sender.send(event.id, name, email);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [UserBlockedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [UserBlockedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.system.send_blocked_email_on_user_blocked";
-	}
+    name(): string {
+        return "pnfi.system.send_blocked_email_on_user_blocked";
+    }
 }

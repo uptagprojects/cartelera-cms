@@ -5,17 +5,17 @@ import { Nav } from "../../components/nav/Nav";
 import { auth } from "../../lib/auth";
 
 export default async function PublicLayout({
-	children
+    children
 }: Readonly<{
-	children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-	const session = await auth();
+    const session = await auth();
 
-	return (
-		<>
-			<Nav session={Boolean(session)} />
-			<main>{children}</main>
-			<PageFooter />
-		</>
-	);
+    return (
+        <>
+            <Nav session={Boolean(session)} />
+            <main>{children}</main>
+            <PageFooter />
+        </>
+    );
 }

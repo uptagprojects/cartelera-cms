@@ -3,17 +3,17 @@ import { AnnouncementContentIsEmptyError } from "./AnnouncementContentIsEmptyErr
 import { AnnouncementContentTooLongError } from "./AnnouncementContentTooLongError";
 
 export class AnnouncementContent extends StringValueObject {
-	public static readonly maxLength = 320;
+    public static readonly maxLength = 320;
 
-	constructor(value: string) {
-		if (value.length === 0) {
-			throw new AnnouncementContentIsEmptyError();
-		}
+    constructor(value: string) {
+        if (value.length === 0) {
+            throw new AnnouncementContentIsEmptyError();
+        }
 
-		if (value.length > AnnouncementContent.maxLength) {
-			throw new AnnouncementContentTooLongError(value, AnnouncementContent.maxLength);
-		}
+        if (value.length > AnnouncementContent.maxLength) {
+            throw new AnnouncementContentTooLongError(value, AnnouncementContent.maxLength);
+        }
 
-		super(value);
-	}
+        super(value);
+    }
 }

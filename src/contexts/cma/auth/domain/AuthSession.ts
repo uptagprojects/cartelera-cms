@@ -1,6 +1,6 @@
 export interface AuthSession {
-	id: string;
-	expires: Date;
-	sessionToken: string;
-	userId: string;
+    id: string;
+    expires: Date;
+    sessionToken: string;
+    userId: string;
 }

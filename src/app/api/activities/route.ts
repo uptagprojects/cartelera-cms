@@ -8,29 +8,23 @@ import { PostgresConnection } from "../../../contexts/shared/infrastructure/Post
 import { logger } from "../../../contexts/shared/infrastructure/telemetry/telemetry";
 
 export async function GET(request: NextRequest): Promise<Response> {
-	const { searchParams } = new URL(request.url);
-	try {
-		const searcher = new ActivitiesByCriteriaSearcher(
-			new PostgresActivityRepository(new PostgresConnection())
-		);
-		const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
+    const { searchParams } = new URL(request.url);
+    try {
+        const searcher = new ActivitiesByCriteriaSearcher(new PostgresActivityRepository(new PostgresConnection()));
+        const filters = SearchParamsCriteriaFiltersParser.parse(searchParams);
 
-		const activities = await searcher.search(
-			filters,
-			searchParams.get("orderBy"),
-			searchParams.get("orderType"),
-			searchParams.get("pageSize")
-				? parseInt(searchParams.get("pageSize") as string, 10)
-				: null,
-			searchParams.get("pageNumber")
-				? parseInt(searchParams.get("pageNumber") as string, 10)
-				: null
-		);
+        const activities = await searcher.search(
+            filters,
+            searchParams.get("orderBy"),
+            searchParams.get("orderType"),
+            searchParams.get("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : null,
+            searchParams.get("pageNumber") ? parseInt(searchParams.get("pageNumber") as string, 10) : null
+        );
 
-		return HTTPNextResponse.json(activities);
-	} catch (error: unknown) {
-		logger.error("Error getting activities", error);
+        return HTTPNextResponse.json(activities);
+    } catch (error: unknown) {
+        logger.error("Error getting activities", error);
 
-		return HTTPNextResponse.internalServerError();
-	}
+        return HTTPNextResponse.internalServerError();
+    }
 }

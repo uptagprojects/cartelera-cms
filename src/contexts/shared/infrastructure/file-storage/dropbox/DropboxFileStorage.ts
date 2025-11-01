@@ -5,18 +5,18 @@ import { DropboxConnection } from "./DropboxConnection";
 
 @Service()
 export class DropboxFileStorage implements FileStorage {
-	constructor(private readonly connection: DropboxConnection) {}
+    constructor(private readonly connection: DropboxConnection) {}
 
-	async save(path: string, file: File): Promise<string> {
-		const content = await file.arrayBuffer();
+    async save(path: string, file: File): Promise<string> {
+        const content = await file.arrayBuffer();
 
-		await this.connection.upload(path, Buffer.from(content));
-		const url = await this.connection.share(path);
+        await this.connection.upload(path, Buffer.from(content));
+        const url = await this.connection.share(path);
 
-		return url;
-	}
+        return url;
+    }
 
-	async remove(path: string): Promise<void> {
-		await this.connection.remove(path);
-	}
+    async remove(path: string): Promise<void> {
+        await this.connection.remove(path);
+    }
 }

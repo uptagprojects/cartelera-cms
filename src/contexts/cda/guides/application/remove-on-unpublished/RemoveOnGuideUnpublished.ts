@@ -10,17 +10,17 @@ import { UnpublishedGuideRemover } from "./UnpublishedGuideRemover";
 
 @Service()
 export class RemoveOnGuideUnpublished implements DomainEventSubscriber<GuideDomainEvent> {
-	constructor(private readonly remover: UnpublishedGuideRemover) {}
+    constructor(private readonly remover: UnpublishedGuideRemover) {}
 
-	async on(event: GuideDomainEvent): Promise<void> {
-		await this.remover.remove(event.id);
-	}
+    async on(event: GuideDomainEvent): Promise<void> {
+        await this.remover.remove(event.id);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [GuideArchivedDomainEvent, GuideRemovedDomainEvent, GuideRestoredDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [GuideArchivedDomainEvent, GuideRemovedDomainEvent, GuideRestoredDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.remove_guide_on_unpublished";
-	}
+    name(): string {
+        return "pnfi.cda.remove_guide_on_unpublished";
+    }
 }

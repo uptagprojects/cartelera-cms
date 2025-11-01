@@ -3,20 +3,14 @@ import { Event } from "../../domain/Event";
 import { EventRepository } from "../../domain/EventRepository";
 
 export class EventPublisher {
-	constructor(
-		private readonly repository: EventRepository,
-		private readonly eventBus: EventBus
-	) {}
+    constructor(
+        private readonly repository: EventRepository,
+        private readonly eventBus: EventBus
+    ) {}
 
-	async publish(
-		id: string,
-		name: string,
-		location: string,
-		startDate: string,
-		endDate: string
-	): Promise<void> {
-		const event = Event.create(id, name, location, startDate, endDate);
-		await this.repository.save(event);
-		await this.eventBus.publish(event.pullDomainEvents());
-	}
+    async publish(id: string, name: string, location: string, startDate: string, endDate: string): Promise<void> {
+        const event = Event.create(id, name, location, startDate, endDate);
+        await this.repository.save(event);
+        await this.eventBus.publish(event.pullDomainEvents());
+    }
 }

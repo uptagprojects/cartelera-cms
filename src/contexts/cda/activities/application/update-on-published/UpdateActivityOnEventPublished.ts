@@ -6,26 +6,24 @@ import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEve
 import { PublishedActivityUpdater } from "./PublishedActivityUpdater";
 
 @Service()
-export class UpdateActivityOnEventPublished
-	implements DomainEventSubscriber<EventPublishedDomainEvent>
-{
-	constructor(private readonly updater: PublishedActivityUpdater) {}
+export class UpdateActivityOnEventPublished implements DomainEventSubscriber<EventPublishedDomainEvent> {
+    constructor(private readonly updater: PublishedActivityUpdater) {}
 
-	async on(event: EventPublishedDomainEvent): Promise<void> {
-		await this.updater.update(
-			event.id,
-			"event",
-			event.name,
-			`${event.startDate}/${event.endDate}`,
-			event.occurredOn
-		);
-	}
+    async on(event: EventPublishedDomainEvent): Promise<void> {
+        await this.updater.update(
+            event.id,
+            "event",
+            event.name,
+            `${event.startDate}/${event.endDate}`,
+            event.occurredOn
+        );
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [EventPublishedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [EventPublishedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.update_activity_on_event_published";
-	}
+    name(): string {
+        return "pnfi.cda.update_activity_on_event_published";
+    }
 }

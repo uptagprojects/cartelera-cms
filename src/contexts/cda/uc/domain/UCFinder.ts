@@ -7,14 +7,14 @@ import { UCRepository } from "./UCRepository";
 
 @Service()
 export class UCFinder {
-	constructor(private readonly repository: UCRepository) {}
+    constructor(private readonly repository: UCRepository) {}
 
-	async find(id: string): Promise<UC> {
-		const uc = await this.repository.search(new UCId(id));
-		if (!uc) {
-			throw new UCDoesNotExist(id);
-		}
+    async find(id: string): Promise<UC> {
+        const uc = await this.repository.search(new UCId(id));
+        if (!uc) {
+            throw new UCDoesNotExist(id);
+        }
 
-		return uc;
-	}
+        return uc;
+    }
 }

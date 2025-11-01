@@ -7,20 +7,20 @@ import { AnnouncementTitleIsEmptyError } from "../../domain/AnnouncementTitleIsE
 import { AnnouncementTitleTooLongError } from "../../domain/AnnouncementTitleTooLongError";
 
 export type AnnouncementPosterErrors =
-	| InvalidIdentifierError
-	| InvalidArgumentError
-	| AnnouncementTitleIsEmptyError
-	| AnnouncementTitleTooLongError;
+    | InvalidIdentifierError
+    | InvalidArgumentError
+    | AnnouncementTitleIsEmptyError
+    | AnnouncementTitleTooLongError;
 
 export class AnnouncementPoster {
-	constructor(
-		private readonly repository: AnnouncementRepository,
-		private readonly eventBus: EventBus
-	) {}
+    constructor(
+        private readonly repository: AnnouncementRepository,
+        private readonly eventBus: EventBus
+    ) {}
 
-	async post(id: string, title: string, type: string, content: string): Promise<void> {
-		const announcement = Announcement.create(id, title, type, content);
-		await this.repository.save(announcement);
-		await this.eventBus.publish(announcement.pullDomainEvents());
-	}
+    async post(id: string, title: string, type: string, content: string): Promise<void> {
+        const announcement = Announcement.create(id, title, type, content);
+        await this.repository.save(announcement);
+        await this.eventBus.publish(announcement.pullDomainEvents());
+    }
 }

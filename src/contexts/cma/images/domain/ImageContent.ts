@@ -1,3 +1,3 @@
 export class ImageContent {
-	constructor(readonly value: Buffer) {}
+    constructor(readonly value: Buffer) {}
 }

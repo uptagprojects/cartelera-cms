@@ -9,22 +9,22 @@ import { Sidebar } from "./_components/Sidebar";
 import styles from "./ManageLayout.module.css";
 
 export default async function CMALayout({
-	children
+    children
 }: Readonly<{
-	children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-	const session = await auth();
+    const session = await auth();
 
-	if (!session) {
-		redirect("/");
-	}
+    if (!session) {
+        redirect("/");
+    }
 
-	return (
-		<>
-			<Nav session={Boolean(session)} />
-			<Sidebar />
-			<main className={styles.mainContainer}>{children}</main>
-			<PageFooter />
-		</>
-	);
+    return (
+        <>
+            <Nav session={Boolean(session)} />
+            <Sidebar />
+            <main className={styles.mainContainer}>{children}</main>
+            <PageFooter />
+        </>
+    );
 }

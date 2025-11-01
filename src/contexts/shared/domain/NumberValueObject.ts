@@ -1,3 +1,3 @@
 export abstract class NumberValueObject {
-	constructor(public readonly value: number) {}
+    constructor(public readonly value: number) {}
 }

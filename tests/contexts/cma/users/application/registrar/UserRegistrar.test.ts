@@ -10,7 +10,7 @@ describe("UserRegistrar should", () => {
 	const userRegistrar = new UserRegistrar(repository, eventBus);
 
 	it("register a valid user", async () => {
-		const expectedUser = UserMother.create();
+		const expectedUser = UserMother.create({ status: "pending_confirmation", emailVerified: null });
 		const expectedUserPrimitives = expectedUser.toPrimitives();
 		const expectedDomainEvent = UserRegisteredDomainEventMother.create(expectedUserPrimitives);
 

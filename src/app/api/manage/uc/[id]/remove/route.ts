@@ -13,35 +13,32 @@ import { HTTPNextResponse } from "../../../../../../contexts/shared/infrastructu
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function DELETE(
-	_request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
+    _request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
-	return executeWithErrorHandling(
-		async () => {
-			const { id } = await params;
-			const connection = new PostgresConnection();
+    return executeWithErrorHandling(
+        async () => {
+            const { id } = await params;
+            const connection = new PostgresConnection();
 
-			await connection.transactional(async () => {
-				await new UCRemover(
-					new PostgresUCRepository(connection),
-					new RabbitMQEventBus(
-						new RabbitMQConnection(),
-						new DomainEventFailover(connection)
-					)
-				).remove(id);
-			});
+            await connection.transactional(async () => {
+                await new UCRemover(
+                    new PostgresUCRepository(connection),
+                    new RabbitMQEventBus(new RabbitMQConnection(), new DomainEventFailover(connection))
+                ).remove(id);
+            });
 
-			return HTTPNextResponse.deleted();
-		},
-		(error: InvalidIdentifierError | UCDoesNotExistError) => {
-			switch (error.type) {
-				case "uc_does_not_exist_error":
-					return HTTPNextResponse.domainError(error, 404);
-				case "invalid_identifier_error":
-					return HTTPNextResponse.domainError(error, 400);
-				default:
-					assertNever(error);
-			}
-		}
-	);
+            return HTTPNextResponse.deleted();
+        },
+        (error: InvalidIdentifierError | UCDoesNotExistError) => {
+            switch (error.type) {
+                case "uc_does_not_exist_error":
+                    return HTTPNextResponse.domainError(error, 404);
+                case "invalid_identifier_error":
+                    return HTTPNextResponse.domainError(error, 400);
+                default:
+                    assertNever(error);
+            }
+        }
+    );
 }

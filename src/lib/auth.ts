@@ -8,17 +8,17 @@ import { OfficialUuidGenerator } from "../contexts/shared/infrastructure/Officia
 import { PostgresConnection } from "../contexts/shared/infrastructure/PostgresConnection";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-	...authConfig,
-	providers: [
-		...authConfig.providers,
-		Google({
-			[customFetch]: fetch,
-			allowDangerousEmailAccountLinking: true
-		}),
-		Resend({
-			from: "PNFi <octagon@pnfi.pro>"
-		})
-	],
-	session: { strategy: "jwt" },
-	adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator())
+    ...authConfig,
+    providers: [
+        ...authConfig.providers,
+        Google({
+            [customFetch]: fetch,
+            allowDangerousEmailAccountLinking: true
+        }),
+        Resend({
+            from: "PNFi <octagon@pnfi.pro>"
+        })
+    ],
+    session: { strategy: "jwt" },
+    adapter: postgresAdapter(new PostgresConnection(), new OfficialUuidGenerator())
 });

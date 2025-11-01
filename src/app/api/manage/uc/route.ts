@@ -5,9 +5,9 @@ import { PostgresUCRepository } from "../../../../contexts/cma/uc/infrastructure
 import { PostgresConnection } from "../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function GET(_: NextRequest): Promise<Response> {
-	const searcher = new AllUCSearcher(new PostgresUCRepository(new PostgresConnection()));
+    const searcher = new AllUCSearcher(new PostgresUCRepository(new PostgresConnection()));
 
-	const ucs = await searcher.searchAll();
+    const ucs = await searcher.searchAll();
 
-	return NextResponse.json(ucs.map(uc => uc.toPrimitives()));
+    return NextResponse.json(ucs.map(uc => uc.toPrimitives()));
 }

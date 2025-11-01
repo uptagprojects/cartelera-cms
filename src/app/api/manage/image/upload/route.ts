@@ -5,19 +5,16 @@ import { CloudinaryImageRepository } from "../../../../../contexts/cma/images/in
 import { OfficialUuidGenerator } from "../../../../../contexts/shared/infrastructure/OfficialUuidGenerator";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-	const formData = await request.formData();
+    const formData = await request.formData();
 
-	const file = formData.get("image") as File | null;
-	if (!file) {
-		return NextResponse.json({ error: "No files received." }, { status: 400 });
-	}
+    const file = formData.get("image") as File | null;
+    if (!file) {
+        return NextResponse.json({ error: "No files received." }, { status: 400 });
+    }
 
-	const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
 
-	const image = await new ImageUploader(
-		new OfficialUuidGenerator(),
-		new CloudinaryImageRepository()
-	).upload(buffer);
+    const image = await new ImageUploader(new OfficialUuidGenerator(), new CloudinaryImageRepository()).upload(buffer);
 
-	return NextResponse.json(image.toPrimitives(), { status: 201 });
+    return NextResponse.json(image.toPrimitives(), { status: 201 });
 }

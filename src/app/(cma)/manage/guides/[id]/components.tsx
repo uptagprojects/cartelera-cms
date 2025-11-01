@@ -50,86 +50,74 @@ export const GuideAttachmentForm = ({ guideId }: { guideId: string }) => {
 	);
 };*/
 
-export const GuideForm = ({
-	id,
-	ucs,
-	initGuide
-}: {
-	id: string;
-	ucs: IManageUC[];
-	initGuide: IManageGuide | null;
-}) => {
-	const [errors, saveFormAction, isPending] = useActionState(saveGuide, { initGuide });
-	const [title, setTitle] = useState(initGuide?.title ?? "");
-	const [content, setContent] = useState(initGuide?.content ?? "");
-	const [ucId, setUcId] = useState(initGuide?.ucId ?? "");
-	const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+export const GuideForm = ({ id, ucs, initGuide }: { id: string; ucs: IManageUC[]; initGuide: IManageGuide | null }) => {
+    const [errors, saveFormAction, isPending] = useActionState(saveGuide, { initGuide });
+    const [title, setTitle] = useState(initGuide?.title ?? "");
+    const [content, setContent] = useState(initGuide?.content ?? "");
+    const [ucId, setUcId] = useState(initGuide?.ucId ?? "");
+    const [imageUploadError, setImageUploadError] = useState<string | null>(null);
 
-	const handleImageUpload = useCallback(async (image: File, blobUrl: string): Promise<void> => {
-		const formData = new FormData();
-		formData.append("image", image);
-		try {
-			const res = await customFetch(`/api/manage/image/upload`, {
-				method: "POST",
-				body: formData
-			});
-			const { url } = await res.json();
+    const handleImageUpload = useCallback(async (image: File, blobUrl: string): Promise<void> => {
+        const formData = new FormData();
+        formData.append("image", image);
+        try {
+            const res = await customFetch(`/api/manage/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+            const { url } = await res.json();
 
-			setContent(c => c.replace(blobUrl, url));
-		} catch {
-			setImageUploadError("error subiendo imagen");
-		}
-	}, []);
+            setContent(c => c.replace(blobUrl, url));
+        } catch {
+            setImageUploadError("error subiendo imagen");
+        }
+    }, []);
 
-	return (
-		<>
-			{imageUploadError && (
-				<Alert
-					title="Ocurrió un error subiendo la imagen"
-					message={imageUploadError}
-					onClose={() => {
-						setImageUploadError(null);
-					}}
-				/>
-			)}
-			<form action={saveFormAction}>
-				<input type="hidden" name="id" value={id} />
-				<input type="hidden" name="content" value={content} />
-				<header>
-					<TextInput
-						size="medium"
-						label="titulo"
-						name="title"
-						value={title}
-						disabled={isPending}
-						errorMessage={errors?.title}
-						onChange={e => setTitle(e.target.value)}
-					/>
-					<Select
-						label="Unidad Curricular"
-						name="ucId"
-						value={ucId}
-						disabled={isPending}
-						errorMessage={errors.ucId}
-						onChange={e => setUcId(e.target.value)}
-					>
-						{ucs.map(uc => (
-							<option key={uc.id} value={uc.id}>
-								{uc.name}
-							</option>
-						))}
-					</Select>
-				</header>
+    return (
+        <>
+            {imageUploadError && (
+                <Alert
+                    title="Ocurrió un error subiendo la imagen"
+                    message={imageUploadError}
+                    onClose={() => {
+                        setImageUploadError(null);
+                    }}
+                />
+            )}
+            <form action={saveFormAction}>
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="content" value={content} />
+                <header>
+                    <TextInput
+                        size="medium"
+                        label="titulo"
+                        name="title"
+                        value={title}
+                        disabled={isPending}
+                        errorMessage={errors?.title}
+                        onChange={e => setTitle(e.target.value)}
+                    />
+                    <Select
+                        label="Unidad Curricular"
+                        name="ucId"
+                        value={ucId}
+                        disabled={isPending}
+                        errorMessage={errors.ucId}
+                        onChange={e => setUcId(e.target.value)}
+                    >
+                        {ucs.map(uc => (
+                            <option key={uc.id} value={uc.id}>
+                                {uc.name}
+                            </option>
+                        ))}
+                    </Select>
+                </header>
 
-				<TextEditor
-					value={content}
-					onChange={setContent}
-					uploadRequest={handleImageUpload}
-				/>
+                <TextEditor value={content} onChange={setContent} uploadRequest={handleImageUpload} />
 
-				<Button type="submit" disabled={isPending} label="Guardar" />
-			</form>
-			{/*<GuideAttachmentForm guideId={id} />*/}
-		</>
-	);
+                <Button type="submit" disabled={isPending} label="Guardar" />
+            </form>
+            {/*<GuideAttachmentForm guideId={id} />*/}
+        </>
+    );
 };

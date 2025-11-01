@@ -19,7 +19,7 @@ describe("UserAvatarUpdater should", () => {
 		updatedUser.updateAvatar(newAvatar);
 
 		repository.shouldSearch(user);
-		repository.shouldSave(user);
+		repository.shouldSave(updatedUser);
 		eventBus.shouldPublish(updatedUser.pullDomainEvents());
 
 		await userAvatarUpdater.update(user.getId(), newAvatar);

@@ -19,7 +19,7 @@ describe("UserEmailUpdater should", () => {
 		updatedUser.updateEmail(newEmail);
 
 		repository.shouldSearch(user);
-		repository.shouldSave(user);
+		repository.shouldSave(updatedUser);
 		eventBus.shouldPublish(updatedUser.pullDomainEvents());
 
 		await userEmailUpdater.update(user.getId(), newEmail);

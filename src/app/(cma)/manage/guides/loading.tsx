@@ -2,5 +2,5 @@
 import { GuideLoader } from "./components";
 
 export default function LoadingGuide() {
-	return <GuideLoader />;
+    return <GuideLoader />;
 }

@@ -8,19 +8,19 @@ import { UCTotalGuidesDecreaser } from "./UCTotalGuidesDecreaser";
 
 @Service()
 export class DecreaseTotalGuidesOnGuideUnpublished
-	implements DomainEventSubscriber<GuideArchivedDomainEvent | GuideRemovedDomainEvent>
+    implements DomainEventSubscriber<GuideArchivedDomainEvent | GuideRemovedDomainEvent>
 {
-	constructor(private readonly decreaser: UCTotalGuidesDecreaser) {}
+    constructor(private readonly decreaser: UCTotalGuidesDecreaser) {}
 
-	async on(event: GuideArchivedDomainEvent | GuideRemovedDomainEvent): Promise<void> {
-		await this.decreaser.decrement(event.ucId);
-	}
+    async on(event: GuideArchivedDomainEvent | GuideRemovedDomainEvent): Promise<void> {
+        await this.decreaser.decrement(event.ucId);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [GuideArchivedDomainEvent, GuideRemovedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [GuideArchivedDomainEvent, GuideRemovedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.decrease_uc_total_guides_on_guide_unpublished";
-	}
+    name(): string {
+        return "pnfi.cda.decrease_uc_total_guides_on_guide_unpublished";
+    }
 }

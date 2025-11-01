@@ -10,29 +10,29 @@ import { DropboxFileStorage } from "../../../../../../../contexts/shared/infrast
 import { PostgresConnection } from "../../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function PUT(
-	request: NextRequest,
-	{ params }: { params: Promise<{ id: string; attachmentId: string }> }
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string; attachmentId: string }> }
 ): Promise<NextResponse> {
-	const { id: scheduleId, attachmentId } = await params;
-	const formData = await request.formData();
-	const file = formData.get("file") as File | null;
+    const { id: scheduleId, attachmentId } = await params;
+    const formData = await request.formData();
+    const file = formData.get("file") as File | null;
 
-	if (!scheduleId) {
-		return NextResponse.json({ error: "No schedule received." }, { status: 400 });
-	}
+    if (!scheduleId) {
+        return NextResponse.json({ error: "No schedule received." }, { status: 400 });
+    }
 
-	if (!file) {
-		return NextResponse.json({ error: "No files received." }, { status: 400 });
-	}
+    if (!file) {
+        return NextResponse.json({ error: "No files received." }, { status: 400 });
+    }
 
-	const postgresConnection = new PostgresConnection();
-	const uploader = new ScheduleAttachmentUploader(
-		new PostgresScheduleAttachmentRepository(postgresConnection),
-		new DropboxFileStorage(new DropboxConnection()),
-		new RabbitMQEventBus(new RabbitMQConnection(), new DomainEventFailover(postgresConnection))
-	);
+    const postgresConnection = new PostgresConnection();
+    const uploader = new ScheduleAttachmentUploader(
+        new PostgresScheduleAttachmentRepository(postgresConnection),
+        new DropboxFileStorage(new DropboxConnection()),
+        new RabbitMQEventBus(new RabbitMQConnection(), new DomainEventFailover(postgresConnection))
+    );
 
-	await uploader.upload(attachmentId, scheduleId, file);
+    await uploader.upload(attachmentId, scheduleId, file);
 
-	return NextResponse.json({}, { status: 202 });
+    return NextResponse.json({}, { status: 202 });
 }

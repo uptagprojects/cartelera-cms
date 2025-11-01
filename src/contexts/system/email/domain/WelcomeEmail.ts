@@ -17,8 +17,9 @@ export type WelcomeEmailPrimitives = {
 };
 
 export class WelcomeEmail extends Email {
-	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "PNFi <octagon@pnfi.pro>";
-	private static readonly confirmationUrl = process.env.CONFIRMATION_URL ?? "https://pnfi.pro/";
+	private static readonly from = process.env.SYSTEM_EMAIL_SENDER ?? "noreply@pnfi.uptag.net";
+	private static readonly confirmationUrl =
+		process.env.CONFIRMATION_URL ?? "https://cartelerapnfi.uptag.net/profile";
 
 	private constructor(
 		id: EmailId,
@@ -80,7 +81,7 @@ export class WelcomeEmail extends Email {
 
 	private static generateBody(id: string, userName: string): EmailBody {
 		return new EmailBody(
-			`Bienvenido a la cartelera del PNFi, ${userName} 🎉\nAntes de proseguir, debes confirmar tu correo electrónico iniciando sesión en:\n${this.confirmationUrl}`
+			`Bienvenido a la cartelera del PNFi, ${userName}! Completa tu perfil en ${this.confirmationUrl}`
 		);
 	}
 

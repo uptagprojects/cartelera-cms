@@ -8,28 +8,28 @@ import { CourseRepository } from "../../domain/CourseRepository";
 
 @Service()
 export class PublishedCourseUpdater {
-	constructor(private readonly repository: CourseRepository) {}
+    constructor(private readonly repository: CourseRepository) {}
 
-	async update(
-		id: string,
-		name: string,
-		abstract: string,
-		price: number,
-		duration: CourseDurationPrimitives,
-		instructor: CourseInstructorPrimitives
-	): Promise<void> {
-		let course = await this.repository.search(new CourseId(id));
+    async update(
+        id: string,
+        name: string,
+        abstract: string,
+        price: number,
+        duration: CourseDurationPrimitives,
+        instructor: CourseInstructorPrimitives
+    ): Promise<void> {
+        let course = await this.repository.search(new CourseId(id));
 
-		if (!course) {
-			course = Course.create(id, name, abstract, instructor, duration, price);
-		} else {
-			course.updateName(name);
-			course.updateAbstract(abstract);
-			course.updatePrice(price);
-			course.updateDuration(duration);
-			course.updateInstructor(instructor);
-		}
+        if (!course) {
+            course = Course.create(id, name, abstract, instructor, duration, price);
+        } else {
+            course.updateName(name);
+            course.updateAbstract(abstract);
+            course.updatePrice(price);
+            course.updateDuration(duration);
+            course.updateInstructor(instructor);
+        }
 
-		await this.repository.save(course);
-	}
+        await this.repository.save(course);
+    }
 }

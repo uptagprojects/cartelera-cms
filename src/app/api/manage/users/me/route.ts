@@ -8,22 +8,22 @@ import { PostgresConnection } from "../../../../../contexts/shared/infrastructur
 import { auth } from "../../../../../lib/auth";
 
 export async function GET(_: NextRequest): Promise<Response> {
-	const session = await auth();
-	if (!session?.user?.email) {
-		return HTTPNextResponse.unauthorizedError();
-	}
-	const postgresConnection = new PostgresConnection();
-	try {
-		const userRepository = new PostgresUserRepository(postgresConnection);
-		const userFinder = new UserEmailFinder(userRepository);
-		const user = await userFinder.find(session.user.email);
+    const session = await auth();
+    if (!session?.user?.email) {
+        return HTTPNextResponse.unauthorizedError();
+    }
+    const postgresConnection = new PostgresConnection();
+    try {
+        const userRepository = new PostgresUserRepository(postgresConnection);
+        const userFinder = new UserEmailFinder(userRepository);
+        const user = await userFinder.find(session.user.email);
 
-		return HTTPNextResponse.json(user);
-	} catch (error) {
-		if (error instanceof UserDoesNotExistError) {
-			return HTTPNextResponse.domainError(error, 403);
-		}
+        return HTTPNextResponse.json(user);
+    } catch (error) {
+        if (error instanceof UserDoesNotExistError) {
+            return HTTPNextResponse.domainError(error, 403);
+        }
 
-		return HTTPNextResponse.internalServerError();
-	}
+        return HTTPNextResponse.internalServerError();
+    }
 }

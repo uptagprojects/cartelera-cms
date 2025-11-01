@@ -1,3 +1,3 @@
 export abstract class UrlValueObject {
-	constructor(public readonly value: URL) {}
+    constructor(public readonly value: URL) {}
 }

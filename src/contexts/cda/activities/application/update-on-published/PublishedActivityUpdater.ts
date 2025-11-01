@@ -7,33 +7,21 @@ import { ActivityRepository } from "../../domain/ActivityRepository";
 
 @Service()
 export class PublishedActivityUpdater {
-	constructor(
-		private readonly repository: ActivityRepository,
-		private readonly mdRemover: MarkdownRemover
-	) {}
+    constructor(
+        private readonly repository: ActivityRepository,
+        private readonly mdRemover: MarkdownRemover
+    ) {}
 
-	async update(
-		id: string,
-		type: string,
-		title: string,
-		context: string,
-		occurredOn: Date
-	): Promise<void> {
-		let activity = await this.repository.search(new ActivityId(id));
+    async update(id: string, type: string, title: string, context: string, occurredOn: Date): Promise<void> {
+        let activity = await this.repository.search(new ActivityId(id));
 
-		if (!activity) {
-			activity = Activity.create(
-				id,
-				type,
-				title,
-				await this.mdRemover.remove(context),
-				occurredOn
-			);
-		} else {
-			activity.updateTitle(title);
-			activity.updateContext(context);
-		}
+        if (!activity) {
+            activity = Activity.create(id, type, title, await this.mdRemover.remove(context), occurredOn);
+        } else {
+            activity.updateTitle(title);
+            activity.updateContext(context);
+        }
 
-		await this.repository.save(activity);
-	}
+        await this.repository.save(activity);
+    }
 }

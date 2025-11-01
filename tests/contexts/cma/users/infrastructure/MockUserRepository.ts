@@ -15,13 +15,13 @@ export class MockUserRepository implements UserRepository {
 	}
 
 	async searchByEmail(email: UserEmail): Promise<User | null> {
-		expect(this.mockSearchByEmail).toHaveBeenCalledWith(email);
+		expect(this.mockSearchByEmail).toHaveBeenCalledWith(email.value);
 
 		return this.mockSearchByEmail() as Promise<User | null>;
 	}
 
 	async search(id: UserId): Promise<User | null> {
-		expect(this.mockSearch).toHaveBeenCalledWith(id);
+		expect(this.mockSearch).toHaveBeenCalledWith(id.value);
 
 		return this.mockSearch() as Promise<User | null>;
 	}
@@ -39,7 +39,8 @@ export class MockUserRepository implements UserRepository {
 	}
 
 	shouldSearch(user: User): void {
-		this.mockSearch(user.getId());
+		const { id } = user.toPrimitives();
+		this.mockSearch(id);
 		this.mockSearch.mockReturnValueOnce(user);
 	}
 
@@ -48,7 +49,11 @@ export class MockUserRepository implements UserRepository {
 		this.mockMatching.mockReturnValueOnce(users);
 	}
 
-	shouldSave(user: User): void {
-		this.mockSave(user.toPrimitives());
+	shouldSave(user: User | Record<string, unknown>): void {
+		if (user instanceof User) {
+			this.mockSave(user.toPrimitives());
+		} else {
+			this.mockSave(user);
+		}
 	}
 }

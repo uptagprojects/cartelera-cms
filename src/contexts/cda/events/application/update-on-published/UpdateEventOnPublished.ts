@@ -7,23 +7,17 @@ import { PublishedEventUpdater } from "./PublishedEventUpdater";
 
 @Service()
 export class UpdateEventOnPublished implements DomainEventSubscriber<EventPublishedDomainEvent> {
-	constructor(private readonly updater: PublishedEventUpdater) {}
+    constructor(private readonly updater: PublishedEventUpdater) {}
 
-	async on(event: EventPublishedDomainEvent): Promise<void> {
-		await this.updater.update(
-			event.id,
-			event.name,
-			event.location,
-			event.startDate,
-			event.endDate
-		);
-	}
+    async on(event: EventPublishedDomainEvent): Promise<void> {
+        await this.updater.update(event.id, event.name, event.location, event.startDate, event.endDate);
+    }
 
-	subscribedTo(): DomainEventClass[] {
-		return [EventPublishedDomainEvent];
-	}
+    subscribedTo(): DomainEventClass[] {
+        return [EventPublishedDomainEvent];
+    }
 
-	name(): string {
-		return "pnfi.cda.update_event_on_published";
-	}
+    name(): string {
+        return "pnfi.cda.update_event_on_published";
+    }
 }

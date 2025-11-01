@@ -8,48 +8,41 @@ import { RabbitMQConnection } from "./RabbitMQConnection";
 
 @Service()
 export class RabbitMQEventBus implements EventBus {
-	constructor(
-		private readonly connection: RabbitMQConnection,
-		private readonly failover: DomainEventFailover
-	) {}
+    constructor(
+        private readonly connection: RabbitMQConnection,
+        private readonly failover: DomainEventFailover
+    ) {}
 
-	async publish(events: DomainEvent[]): Promise<void> {
-		await this.connection.connect();
+    async publish(events: DomainEvent[]): Promise<void> {
+        await this.connection.connect();
 
-		const promises = events.map(async event => {
-			const serializedEvent = DomainEventJSONSerializer.serialize(event);
+        const promises = events.map(async event => {
+            const serializedEvent = DomainEventJSONSerializer.serialize(event);
 
-			await this.publishRaw(event.eventId, event.eventName, serializedEvent);
-		});
+            await this.publishRaw(event.eventId, event.eventName, serializedEvent);
+        });
 
-		await Promise.all(promises);
-	}
+        await Promise.all(promises);
+    }
 
-	async publishFromFailover(): Promise<void> {
-		await this.connection.connect();
-		const events = await this.failover.consume(10);
+    async publishFromFailover(): Promise<void> {
+        await this.connection.connect();
+        const events = await this.failover.consume(10);
 
-		await Promise.all(
-			events.map(event => this.publishRaw(event.eventId, event.eventName, event.body))
-		);
-	}
+        await Promise.all(events.map(event => this.publishRaw(event.eventId, event.eventName, event.body)));
+    }
 
-	private async publishRaw(eventId: string, eventName: string, serializedEvent: string) {
-		try {
-			await this.connection.publish(
-				"domain_events",
-				eventName,
-				Buffer.from(serializedEvent),
-				{
-					messageId: eventId,
-					contentType: "application/json",
-					contentEncoding: "utf-8"
-				}
-			);
+    private async publishRaw(eventId: string, eventName: string, serializedEvent: string) {
+        try {
+            await this.connection.publish("domain_events", eventName, Buffer.from(serializedEvent), {
+                messageId: eventId,
+                contentType: "application/json",
+                contentEncoding: "utf-8"
+            });
 
-			return;
-		} catch (error: unknown) {
-			await this.failover.publish(eventId, eventName, serializedEvent);
-		}
-	}
+            return;
+        } catch (error: unknown) {
+            await this.failover.publish(eventId, eventName, serializedEvent);
+        }
+    }
 }

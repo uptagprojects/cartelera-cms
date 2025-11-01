@@ -3,13 +3,13 @@ import { Announcement } from "./Announcement";
 import { AnnouncementId } from "./AnnouncementId";
 
 export interface AnnouncementRepository {
-	save(announcement: Announcement): Promise<void>;
+    save(announcement: Announcement): Promise<void>;
 
-	search(id: AnnouncementId): Promise<Announcement | null>;
+    search(id: AnnouncementId): Promise<Announcement | null>;
 
-	searchAll(): Promise<Announcement[]>;
+    searchAll(): Promise<Announcement[]>;
 
-	matching(criteria: Criteria): Promise<Announcement[]>;
+    matching(criteria: Criteria): Promise<Announcement[]>;
 
-	remove(announcement: Announcement): Promise<void>;
+    remove(announcement: Announcement): Promise<void>;
 }

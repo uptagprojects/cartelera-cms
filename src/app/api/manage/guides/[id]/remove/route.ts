@@ -10,55 +10,43 @@ import { RabbitMQEventBus } from "../../../../../../contexts/shared/infrastructu
 import { PostgresConnection } from "../../../../../../contexts/shared/infrastructure/PostgresConnection";
 
 export async function DELETE(
-	_request: NextRequest,
-	{ params }: { params: Promise<{ id: string }> }
+    _request: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
-	const { id } = await params;
-	const postgresConnection = new PostgresConnection();
+    const { id } = await params;
+    const postgresConnection = new PostgresConnection();
 
-	try {
-		await new GuideRemover(
-			new PostgresGuideRepository(postgresConnection),
-			new RabbitMQEventBus(
-				new RabbitMQConnection(),
-				new DomainEventFailover(postgresConnection)
-			)
-		).remove(id);
-	} catch (error) {
-		if (error instanceof GuideDoesNotExist) {
-			return new Response(
-				JSON.stringify({ code: "guide_not_found", message: error.message }),
-				{
-					status: 404,
-					headers: {
-						"Content-Type": "application/json"
-					}
-				}
-			);
-		}
+    try {
+        await new GuideRemover(
+            new PostgresGuideRepository(postgresConnection),
+            new RabbitMQEventBus(new RabbitMQConnection(), new DomainEventFailover(postgresConnection))
+        ).remove(id);
+    } catch (error) {
+        if (error instanceof GuideDoesNotExist) {
+            return new Response(JSON.stringify({ code: "guide_not_found", message: error.message }), {
+                status: 404,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }
 
-		if (error instanceof InvalidArgumentError) {
-			return new Response(
-				JSON.stringify({ code: "invalid_argument", message: error.message }),
-				{
-					status: 422,
-					headers: {
-						"Content-Type": "application/json"
-					}
-				}
-			);
-		}
+        if (error instanceof InvalidArgumentError) {
+            return new Response(JSON.stringify({ code: "invalid_argument", message: error.message }), {
+                status: 422,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }
 
-		return new Response(
-			JSON.stringify({ code: "unexpected_error", message: "Something happened" }),
-			{
-				status: 503,
-				headers: {
-					"Content-Type": "application/json"
-				}
-			}
-		);
-	}
+        return new Response(JSON.stringify({ code: "unexpected_error", message: "Something happened" }), {
+            status: 503,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+    }
 
-	return new Response("", { status: 202 });
+    return new Response("", { status: 202 });
 }
