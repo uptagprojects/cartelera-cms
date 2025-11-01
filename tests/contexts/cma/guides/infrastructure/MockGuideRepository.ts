@@ -38,7 +38,7 @@ export class MockGuideRepository implements GuideRepository {
 		this.mockSearchAll.mockReturnValueOnce(guides);
 	}
 
-	shouldMatch(criteria: Criteria, guides: Guide[]): void {
+	shouldMatch(_criteria: Criteria, guides: Guide[]): void {
 		this.mockMatching.mockReturnValueOnce(guides);
 	}
 

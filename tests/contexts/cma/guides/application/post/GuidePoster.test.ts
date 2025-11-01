@@ -17,6 +17,10 @@ describe("GuidePoster should", () => {
 	const ucFinder = new MockUCFinder();
 	const guidePoster = new GuidePoster(repository, userFinder, ucFinder, eventBus);
 
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
 	it("post a valid guide", async () => {
 		const id = GuideIdMother.create().value;
 		const title = GuideTitleMother.create().value;
@@ -38,8 +42,5 @@ describe("GuidePoster should", () => {
 		eventBus.shouldPublish([expectedEvent]);
 
 		await guidePoster.post(id, title, content, uc.toPrimitives().id, user.getId());
-
-		// Restore Date
-		jest.restoreAllMocks();
 	});
 });
