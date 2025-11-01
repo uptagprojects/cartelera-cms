@@ -1,4 +1,5 @@
 import { AnnouncementPoster } from "../../../../../../src/contexts/cma/announcements/application/post/AnnouncementPoster";
+import { Announcement } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { AnnouncementIdMother } from "../../domain/AnnouncementIdMother";
 import { AnnouncementTitleMother } from "../../domain/AnnouncementTitleMother";
@@ -17,9 +18,20 @@ describe("AnnouncementPoster should", () => {
 		const type = AnnouncementTypeMother.create();
 		const content = AnnouncementContentMother.create().value;
 
+		// Mock Date to ensure consistent timestamps
+		const fixedDate = new Date("2025-11-01T12:00:00.000Z");
+		jest.spyOn(global, 'Date').mockImplementation(() => fixedDate as any);
+
+		// Create a dummy announcement to get the event with the right structure
+		const dummyAnnouncement = Announcement.create(id, title, type, content);
+		const expectedEvent = dummyAnnouncement.pullDomainEvents()[0];
+
 		repository.shouldSave();
-		eventBus.shouldPublish([]);
+		eventBus.shouldPublish([expectedEvent]);
 
 		await announcementPoster.post(id, title, type, content);
+
+		// Restore Date
+		jest.restoreAllMocks();
 	});
 });

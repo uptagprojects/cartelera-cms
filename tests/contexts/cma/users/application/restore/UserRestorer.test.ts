@@ -18,7 +18,7 @@ describe("UserRestorer should", () => {
 		restoredUser.restore();
 
 		repository.shouldSearch(user);
-		repository.shouldSave(user);
+		repository.shouldSave(restoredUser);
 		eventBus.shouldPublish(restoredUser.pullDomainEvents());
 
 		await userRestorer.restore(user.getId());

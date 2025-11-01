@@ -13,6 +13,6 @@ describe("UserEmailFinder should", () => {
 
 		const user = await userEmailFinder.find(expectedUser.toPrimitives().email);
 
-		expect(user).toEqual(expectedUser);
+		expect(user).toEqual(expectedUser.toPrimitives());
 	});
 });

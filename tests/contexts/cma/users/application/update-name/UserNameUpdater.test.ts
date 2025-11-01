@@ -19,7 +19,7 @@ describe("UserNameUpdater should", () => {
 		updatedUser.updateName(newName);
 
 		repository.shouldSearch(user);
-		repository.shouldSave(user);
+		repository.shouldSave(updatedUser);
 		eventBus.shouldPublish(updatedUser.pullDomainEvents());
 
 		await userNameUpdater.update(user.getId(), newName);

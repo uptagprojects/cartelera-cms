@@ -8,7 +8,7 @@ describe("UsersByCriteriaSearcher should", () => {
 	const usersSearcher = new UsersByCriteriaSearcher(repository);
 
 	it("search users by criteria", async () => {
-		const criteria = CriteriaMother.create();
+		const criteria = CriteriaMother.empty();
 		const expectedUsers = [
 			UserMother.create(),
 			UserMother.create()
