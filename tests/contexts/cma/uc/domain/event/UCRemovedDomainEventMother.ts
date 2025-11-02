@@ -1,15 +1,15 @@
-import { UCCreatedDomainEvent } from "../../../../../../src/contexts/cma/uc/domain/event/UCCreatedDomainEvent";
+import { UCRemovedDomainEvent } from "../../../../../../src/contexts/cma/uc/domain/event/UCRemovedDomainEvent";
 import { UCPrimitives } from "../../../../../../src/contexts/cma/uc/domain/UC";
 import { UCIdMother } from "../UCIdMother";
 import { UCNameMother } from "../UCNameMother";
 
-export class UCCreatedDomainEventMother {
-	static create(params?: Partial<UCPrimitives>): UCCreatedDomainEvent {
+export class UCRemovedDomainEventMother {
+	static create(params?: Partial<UCPrimitives>): UCRemovedDomainEvent {
 		const primitives: UCPrimitives = {
 			id: UCIdMother.create(params?.id).value,
 			name: UCNameMother.create(params?.name).value
 		};
 
-		return new UCCreatedDomainEvent(primitives.id, primitives.name);
+		return new UCRemovedDomainEvent(primitives.id);
 	}
 }

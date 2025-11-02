@@ -5,6 +5,7 @@ import { UserEmailMother } from "./UserEmailMother";
 import { UserEmailVerifiedMother } from "./UserEmailVerifiedMother";
 import { UserIdMother } from "./UserIdMother";
 import { UserNameMother } from "./UserNameMother";
+import { UserStatusMother } from "./UserStatusMother";
 
 export class UserMother {
 	static create(params?: Partial<UserPrimitives>): User {
@@ -14,10 +15,16 @@ export class UserMother {
 			email: UserEmailMother.create().value,
 			emailVerified: UserEmailVerifiedMother.create().value,
 			avatar: UserAvatarMother.create().value.toString(),
-			status: UserStatus.ACTIVE,
+			status: UserStatusMother.create(),
 			...params
 		};
 
 		return User.fromPrimitives(primitives);
+	}
+
+	static active(): User {
+		return UserMother.create({
+			status: UserStatus.ACTIVE
+		});
 	}
 }

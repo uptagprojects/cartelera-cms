@@ -1,26 +1,26 @@
 import { UserArchiver } from "../../../../../../src/contexts/cma/users/application/archive/UserArchiver";
+import { User } from "../../../../../../src/contexts/cma/users/domain/User";
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { UserMother } from "../../domain/UserMother";
-import { UserStatus } from "../../../../../../src/contexts/cma/users/domain/UserStatus";
 import { MockUserRepository } from "../../infrastructure/MockUserRepository";
-import { User } from "../../../../../../src/contexts/cma/users/domain/User";
 
 describe("UserArchiver should", () => {
 	const repository = new MockUserRepository();
 	const eventBus = new MockEventBus();
 	const userArchiver = new UserArchiver(repository, eventBus);
 
-	it("archive an existing user", async () => {
-		const user = UserMother.create();
-		const archivedUser = User.fromPrimitives({
-			...user.toPrimitives()
-		});
-		archivedUser.archive();
+	it("archive an existing active user", async () => {
+		const expectedActiveUser = UserMother.active();
+		const expectedActiveUserPrimitives = expectedActiveUser.toPrimitives();
 
-		repository.shouldSearch(user);
-		repository.shouldSave(archivedUser);
-		eventBus.shouldPublish(archivedUser.pullDomainEvents());
+		const expectedArchivedUser = User.fromPrimitives(expectedActiveUserPrimitives);
 
-		await userArchiver.archive(user.getId());
+		expectedArchivedUser.archive();
+
+		repository.shouldSearch(expectedActiveUser);
+		repository.shouldSave(expectedArchivedUser);
+		eventBus.shouldPublish(expectedArchivedUser.pullDomainEvents());
+
+		await userArchiver.archive(expectedActiveUser.getId());
 	});
 });
