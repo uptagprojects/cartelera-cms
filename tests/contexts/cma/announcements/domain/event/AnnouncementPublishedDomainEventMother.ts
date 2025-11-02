@@ -1,23 +1,19 @@
-import { faker } from "@faker-js/faker";
-
+import { AnnouncementPrimitives } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
 import { AnnouncementPublishedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementPublishedDomainEvent";
-
-interface AnnouncementPublishedParams {
-	id?: string;
-	title?: string;
-	content?: string;
-	publishDate?: string;
-	type?: string;
-}
+import { AnnouncementContentMother } from "../AnnouncementContentMother";
+import { AnnouncementIdMother } from "../AnnouncementIdMother";
+import { AnnouncementPublishDateMother } from "../AnnouncementPublishDateMother";
+import { AnnouncementTitleMother } from "../AnnouncementTitleMother";
+import { AnnouncementTypeMother } from "../AnnouncementTypeMother";
 
 export class AnnouncementPublishedDomainEventMother {
-	static create(params?: AnnouncementPublishedParams): AnnouncementPublishedDomainEvent {
+	static create(params?: Partial<AnnouncementPrimitives>): AnnouncementPublishedDomainEvent {
 		return new AnnouncementPublishedDomainEvent(
-			params?.id ?? faker.string.uuid(),
-			params?.title ?? faker.lorem.sentence(),
-			params?.content ?? faker.lorem.paragraph(),
-			params?.publishDate ?? faker.date.recent().toISOString(),
-			params?.type ?? faker.helpers.arrayElement(["info", "warning", "urgent"])
+			AnnouncementIdMother.create(params?.id).value,
+			AnnouncementTitleMother.create(params?.title).value,
+			AnnouncementContentMother.create(params?.content).value,
+			params?.publishDate ?? AnnouncementPublishDateMother.create().value.toISOString(),
+			params?.type ?? AnnouncementTypeMother.create()
 		);
 	}
 }

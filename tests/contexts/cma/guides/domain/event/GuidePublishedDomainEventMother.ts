@@ -1,23 +1,19 @@
-import { faker } from "@faker-js/faker";
-
 import { GuidePublishedDomainEvent } from "../../../../../../src/contexts/cma/guides/domain/event/GuidePublishedDomainEvent";
-
-interface GuidePublishedParams {
-	id?: string;
-	title?: string;
-	content?: string;
-	ucId?: string;
-	authorId?: string;
-}
+import { GuidePrimitives } from "../../../../../../src/contexts/cma/guides/domain/Guide";
+import { UCIdMother } from "../../../uc/domain/UCIdMother";
+import { UserIdMother } from "../../../users/domain/UserIdMother";
+import { GuideContentMother } from "../GuideContentMother";
+import { GuideIdMother } from "../GuideIdMother";
+import { GuideTitleMother } from "../GuideTitleMother";
 
 export class GuidePublishedDomainEventMother {
-	static create(params?: GuidePublishedParams): GuidePublishedDomainEvent {
+	static create(params?: Partial<GuidePrimitives>): GuidePublishedDomainEvent {
 		return new GuidePublishedDomainEvent(
-			params?.id ?? faker.string.uuid(),
-			params?.title ?? faker.lorem.sentence(),
-			params?.content ?? faker.lorem.paragraph(),
-			params?.ucId ?? faker.string.uuid(),
-			params?.authorId ?? faker.string.uuid()
+			GuideIdMother.create(params?.id).value,
+			GuideTitleMother.create(params?.title).value,
+			GuideContentMother.create(params?.content).value,
+			UCIdMother.create(params?.authorId).value,
+			UserIdMother.create(params?.authorId).value
 		);
 	}
 }
