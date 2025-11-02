@@ -8,21 +8,12 @@ import { EventStartDateMother } from "../EventStartDateMother";
 
 export class EventPublishedDomainEventMother {
 	static create(params?: Partial<EventPrimitives>): EventPublishedDomainEvent {
-		const primitives: EventPrimitives = {
-			id: EventIdMother.create().value,
-			name: EventNameMother.create().value,
-			location: EventLocationMother.create().value,
-			startDate: EventStartDateMother.create().value.toISOString(),
-			endDate: EventEndDateMother.create().value.toISOString(),
-			...params
-		};
-
 		return new EventPublishedDomainEvent(
-			primitives.id,
-			primitives.name,
-			primitives.location,
-			primitives.startDate,
-			primitives.endDate
+			EventIdMother.create(params?.id).value,
+			EventNameMother.create(params?.name).value,
+			EventLocationMother.create(params?.location).value,
+			params?.startDate ?? EventStartDateMother.create().value.toISOString(),
+			params?.endDate ?? EventEndDateMother.create().value.toISOString()
 		);
 	}
 }
