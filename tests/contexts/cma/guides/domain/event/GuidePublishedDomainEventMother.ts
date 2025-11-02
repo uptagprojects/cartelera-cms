@@ -8,22 +8,12 @@ import { GuideTitleMother } from "../GuideTitleMother";
 
 export class GuidePublishedDomainEventMother {
 	static create(params?: Partial<GuidePrimitives>): GuidePublishedDomainEvent {
-		const primitives: GuidePrimitives = {
-			id: GuideIdMother.create().value,
-			title: GuideTitleMother.create().value,
-			content: GuideContentMother.create().value,
-			ucId: UCIdMother.create().value,
-			authorId: UserIdMother.create().value,
-			status: params?.status ?? "PUBLISHED",
-			...params
-		};
-
 		return new GuidePublishedDomainEvent(
-			primitives.id,
-			primitives.title,
-			primitives.content,
-			primitives.ucId,
-			primitives.authorId
+			GuideIdMother.create(params?.id).value,
+			GuideTitleMother.create(params?.title).value,
+			GuideContentMother.create(params?.content).value,
+			UCIdMother.create(params?.authorId).value,
+			UserIdMother.create(params?.authorId).value
 		);
 	}
 }

@@ -1,8 +1,8 @@
 import { AnnouncementArchiver } from "../../../../../../src/contexts/cma/announcements/application/archive/AnnouncementArchiver";
+import { Announcement } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { AnnouncementMother } from "../../domain/AnnouncementMother";
 import { MockAnnouncementRepository } from "../../infrastructure/MockAnnouncementRepository";
-import { Announcement } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
 
 describe("AnnouncementArchiver should", () => {
 	const repository = new MockAnnouncementRepository();
