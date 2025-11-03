@@ -1,15 +1,15 @@
-import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
+import { DomainEventAttributes } from "../../../../shared/domain/events/DomainEvent";
 import { AnnouncementDomainEvent } from "./AnnouncementDomainEvent";
 
-export class AnnouncementArchivedDomainEvent extends AnnouncementDomainEvent {
-    static eventName: string = "pnfi.cma.announcement.archived";
+export class AnnouncementRestoredDomainEvent extends AnnouncementDomainEvent {
+    static eventName: string = "pnfi.cma.announcement.restored";
 
     constructor(
         public readonly id: string,
         eventId?: string,
         occurredOn?: Date
     ) {
-        super(AnnouncementArchivedDomainEvent.eventName, id, eventId, occurredOn);
+        super(AnnouncementRestoredDomainEvent.eventName, id, eventId, occurredOn);
     }
 
     static fromPrimitives(
@@ -17,8 +17,8 @@ export class AnnouncementArchivedDomainEvent extends AnnouncementDomainEvent {
         eventId: string,
         occurredOn: Date,
         _: DomainEventAttributes
-    ): AnnouncementArchivedDomainEvent {
-        return new AnnouncementArchivedDomainEvent(aggregateId, eventId, occurredOn);
+    ): AnnouncementRestoredDomainEvent {
+        return new AnnouncementRestoredDomainEvent(aggregateId, eventId, occurredOn);
     }
 
     toPrimitives(): DomainEventAttributes {

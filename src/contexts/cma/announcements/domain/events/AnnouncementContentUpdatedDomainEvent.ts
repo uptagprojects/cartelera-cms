@@ -1,4 +1,4 @@
-import { DomainEventAttributes } from "../../../../shared/domain/event/DomainEvent";
+import { DomainEventAttributes } from "../../../../shared/domain/events/DomainEvent";
 import { AnnouncementDomainEvent } from "./AnnouncementDomainEvent";
 
 export class AnnouncementContentUpdatedDomainEvent extends AnnouncementDomainEvent {

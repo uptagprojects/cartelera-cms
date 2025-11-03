@@ -1,6 +1,6 @@
-import { AnnouncementPostedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementPostedDomainEvent";
 import { AnnouncementPrimitives } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
 import { AnnouncementStatus } from "../../../../../../src/contexts/cma/announcements/domain/AnnouncementStatus";
+import { AnnouncementPostedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementPostedDomainEvent";
 import { AnnouncementContentMother } from "../AnnouncementContentMother";
 import { AnnouncementIdMother } from "../AnnouncementIdMother";
 import { AnnouncementPublishDateMother } from "../AnnouncementPublishDateMother";

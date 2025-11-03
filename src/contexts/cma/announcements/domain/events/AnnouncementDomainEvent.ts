@@ -1,4 +1,4 @@
-import { DomainEvent } from "../../../../shared/domain/event/DomainEvent";
+import { DomainEvent } from "../../../../shared/domain/events/DomainEvent";
 
 export class AnnouncementDomainEvent extends DomainEvent {
     static eventName = "pnfi.cma.announcement.*";

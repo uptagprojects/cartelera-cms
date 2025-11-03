@@ -1,5 +1,5 @@
 import { AnnouncementPrimitives } from "../../../../../../src/contexts/cma/announcements/domain/Announcement";
-import { AnnouncementTitleUpdatedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementTitleUpdatedDomainEvent";
+import { AnnouncementTitleUpdatedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementTitleUpdatedDomainEvent";
 import { AnnouncementIdMother } from "../AnnouncementIdMother";
 import { AnnouncementTitleMother } from "../AnnouncementTitleMother";
 
