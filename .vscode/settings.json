@@ -9,7 +9,7 @@
         "tests/features/step_definitions/*.steps.ts",
         "tests/features/**/*.steps.ts"
     ],
-    "prettier.configPath": ".prettierrc",
+//    "prettier.configPath": ".prettierrc",
     "eslint.format.enable": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
