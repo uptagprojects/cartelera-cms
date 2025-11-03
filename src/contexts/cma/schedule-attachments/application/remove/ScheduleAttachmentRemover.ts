@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { FileStorage } from "../../../../shared/domain/FileStorage";
 import { ScheduleAttachment } from "../../domain/ScheduleAttachment";
 import { ScheduleAttachmentFinder } from "../../domain/ScheduleAttachmentFinder";

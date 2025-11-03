@@ -1,6 +1,6 @@
 import { UserRegistrar } from "../../../../../../src/contexts/cma/users/application/registrar/UserRegistrar";
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
-import { UserRegisteredDomainEventMother } from "../../domain/event/UserRegisteredDomainEventMother";
+import { UserRegisteredDomainEventMother } from "../../domain/events/UserRegisteredDomainEventMother";
 import { UserMother } from "../../domain/UserMother";
 import { MockUserRepository } from "../../infrastructure/MockUserRepository";
 

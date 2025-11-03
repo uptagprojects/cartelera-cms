@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { InvalidIdentifierError } from "../../../../shared/domain/InvalidIdentifierError";
 import { UC } from "../../domain/UC";
 import { UCNameIsEmptyError } from "../../domain/UCNameIsEmptyError";

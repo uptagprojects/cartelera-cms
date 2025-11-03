@@ -1,4 +1,4 @@
-import { ScheduleFinishDateUpdatedDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/event/ScheduleFinishDateUpdatedDomainEvent";
+import { ScheduleFinishDateUpdatedDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/events/ScheduleFinishDateUpdatedDomainEvent";
 import { SchedulePrimitives } from "../../../../../../src/contexts/cma/schedules/domain/Schedule";
 import { ScheduleFinishDateMother } from "../ScheduleFinishDateMother";
 import { ScheduleIdMother } from "../ScheduleIdMother";

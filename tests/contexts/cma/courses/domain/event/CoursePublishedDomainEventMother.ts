@@ -1,5 +1,5 @@
 import { CoursePrimitives } from "../../../../../../src/contexts/cma/courses/domain/Course";
-import { CoursePublishedDomainEvent } from "../../../../../../src/contexts/cma/courses/domain/event/CoursePublishedDomainEvent";
+import { CoursePublishedDomainEvent } from "../../../../../../src/contexts/cma/courses/domain/events/CoursePublishedDomainEvent";
 import { CourseAbstractMother } from "../CourseAbstractMother";
 import { CourseDurationMother } from "../CourseDurationMother";
 import { CourseIdMother } from "../CourseIdMother";

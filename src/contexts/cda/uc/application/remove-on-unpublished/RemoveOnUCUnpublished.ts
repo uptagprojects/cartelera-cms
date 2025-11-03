@@ -1,8 +1,8 @@
 import { Service } from "diod";
 
-import { UCRemovedDomainEvent } from "../../../../cma/uc/domain/event/UCRemovedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { UCRemovedDomainEvent } from "../../../../cma/uc/domain/events/UCRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UnpublishedUCRemover } from "./UnpublishedUCRemover";
 
 @Service()

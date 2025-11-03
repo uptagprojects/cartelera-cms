@@ -1,4 +1,4 @@
-import { AnnouncementRemovedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementRemovedDomainEvent";
+import { AnnouncementRemovedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementRemovedDomainEvent";
 import { CdaAnnouncementIdMother } from "../CdaAnnouncementIdMother";
 
 export class AnnouncementRemovedDomainEventMother {

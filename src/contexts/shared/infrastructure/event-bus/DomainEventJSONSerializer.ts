@@ -1,4 +1,4 @@
-import { DomainEvent } from "../../domain/event/DomainEvent";
+import { DomainEvent } from "../../domain/events/DomainEvent";
 
 export class DomainEventJSONSerializer {
     static serialize(event: DomainEvent): string {

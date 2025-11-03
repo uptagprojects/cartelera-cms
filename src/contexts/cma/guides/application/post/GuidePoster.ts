@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { InvalidArgumentError } from "../../../../shared/domain/InvalidArgumentError";
 import { InvalidIdentifierError } from "../../../../shared/domain/InvalidIdentifierError";
 import { UCFinder } from "../../../uc/application/find/UCFinder";

@@ -1,6 +1,6 @@
 import { Service } from "diod";
 
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { UuidGenerator } from "../../../../shared/domain/UuidGenerator";
 import { ArchivedEmail } from "../../domain/ArchivedEmail";
 import { EmailSender } from "../../domain/EmailSender";

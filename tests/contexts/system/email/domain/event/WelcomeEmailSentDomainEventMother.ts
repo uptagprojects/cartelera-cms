@@ -1,4 +1,4 @@
-import { WelcomeEmailSentDomainEvent } from "../../../../../../src/contexts/system/email/domain/event/WelcomeEmailSentDomainEvent";
+import { WelcomeEmailSentDomainEvent } from "../../../../../../src/contexts/system/email/domain/events/WelcomeEmailSentDomainEvent";
 import { WelcomeEmailPrimitives } from "../../../../../../src/contexts/system/email/domain/WelcomeEmail";
 import { UserIdMother } from "../../../../cma/users/domain/UserIdMother";
 import { UserNameMother } from "../../../../cma/users/domain/UserNameMother";

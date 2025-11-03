@@ -1,11 +1,11 @@
 import { Service } from "diod";
 
-import { GuideArchivedDomainEvent } from "../../../../cma/guides/domain/event/GuideArchivedDomainEvent";
-import { GuideDomainEvent } from "../../../../cma/guides/domain/event/GuideDomainEvent";
-import { GuideRemovedDomainEvent } from "../../../../cma/guides/domain/event/GuideRemovedDomainEvent";
-import { GuideRestoredDomainEvent } from "../../../../cma/guides/domain/event/GuideRestoredDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { GuideArchivedDomainEvent } from "../../../../cma/guides/domain/events/GuideArchivedDomainEvent";
+import { GuideDomainEvent } from "../../../../cma/guides/domain/events/GuideDomainEvent";
+import { GuideRemovedDomainEvent } from "../../../../cma/guides/domain/events/GuideRemovedDomainEvent";
+import { GuideRestoredDomainEvent } from "../../../../cma/guides/domain/events/GuideRestoredDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UnpublishedGuideRemover } from "./UnpublishedGuideRemover";
 
 @Service()

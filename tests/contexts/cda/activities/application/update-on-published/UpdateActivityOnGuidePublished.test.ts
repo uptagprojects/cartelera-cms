@@ -1,6 +1,6 @@
 import { PublishedActivityUpdater } from "../../../../../../src/contexts/cda/activities/application/update-on-published/PublishedActivityUpdater";
 import { UpdateActivityOnGuidePublished } from "../../../../../../src/contexts/cda/activities/application/update-on-published/UpdateActivityOnGuidePublished";
-import { GuidePublishedDomainEventMother } from "../../../../cma/guides/domain/event/GuidePublishedDomainEventMother";
+import { GuidePublishedDomainEventMother } from "../../../../cma/guides/domain/events/GuidePublishedDomainEventMother";
 import { MockMarkdownRemover } from "../../../../shared/infrastructure/MockMarkdownRemover";
 import { MockActivityRepository } from "../../infrastructure/MockActivityRepository";
 

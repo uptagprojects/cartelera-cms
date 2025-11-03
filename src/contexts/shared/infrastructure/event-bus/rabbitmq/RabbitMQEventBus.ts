@@ -1,7 +1,7 @@
 import { Service } from "diod";
 
-import { DomainEvent } from "../../../domain/event/DomainEvent";
-import { EventBus } from "../../../domain/event/EventBus";
+import { DomainEvent } from "../../../domain/events/DomainEvent";
+import { EventBus } from "../../../domain/events/EventBus";
 import { DomainEventJSONSerializer } from "../DomainEventJSONSerializer";
 import { DomainEventFailover } from "../failover/DomainEventFailover";
 import { RabbitMQConnection } from "./RabbitMQConnection";

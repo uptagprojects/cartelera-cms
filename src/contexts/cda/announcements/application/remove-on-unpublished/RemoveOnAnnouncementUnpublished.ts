@@ -1,10 +1,10 @@
 import { Service } from "diod";
 
-import { AnnouncementArchivedDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementArchivedDomainEvent";
-import { AnnouncementDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementDomainEvent";
-import { AnnouncementRemovedDomainEvent } from "../../../../cma/announcements/domain/event/AnnouncementRemovedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { AnnouncementArchivedDomainEvent } from "../../../../cma/announcements/domain/events/AnnouncementArchivedDomainEvent";
+import { AnnouncementDomainEvent } from "../../../../cma/announcements/domain/events/AnnouncementDomainEvent";
+import { AnnouncementRemovedDomainEvent } from "../../../../cma/announcements/domain/events/AnnouncementRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UnpublishedAnnouncementRemover } from "./UnpublishedAnnouncementRemover";
 
 @Service()

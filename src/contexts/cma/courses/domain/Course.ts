@@ -9,12 +9,12 @@ import { CourseName } from "./CourseName";
 import { CoursePicture } from "./CoursePicture";
 import { CoursePrice } from "./CoursePrice";
 import { CourseUpdate } from "./CourseUpdate";
-import { CourseAbstractUpdatedDomainEvent } from "./event/CourseAbstractUpdatedDomainEvent";
-import { CourseLocationUpdatedDomainEvent } from "./event/CourseLocationUpdatedDomainEvent";
-import { CourseNameUpdatedDomainEvent } from "./event/CourseNameUpdatedDomainEvent";
-import { CoursePictureUpdatedDomainEvent } from "./event/CoursePictureUpdatedDomainEvent";
-import { CoursePriceUpdatedDomainEvent } from "./event/CoursePriceUpdatedDomainEvent";
-import { CoursePublishedDomainEvent } from "./event/CoursePublishedDomainEvent";
+import { CourseAbstractUpdatedDomainEvent } from "./events/CourseAbstractUpdatedDomainEvent";
+import { CourseLocationUpdatedDomainEvent } from "./events/CourseLocationUpdatedDomainEvent";
+import { CourseNameUpdatedDomainEvent } from "./events/CourseNameUpdatedDomainEvent";
+import { CoursePictureUpdatedDomainEvent } from "./events/CoursePictureUpdatedDomainEvent";
+import { CoursePriceUpdatedDomainEvent } from "./events/CoursePriceUpdatedDomainEvent";
+import { CoursePublishedDomainEvent } from "./events/CoursePublishedDomainEvent";
 
 export type CoursePrimitives = {
     id: string;

@@ -1,9 +1,9 @@
 import { Service } from "diod";
 
-import { UCCreatedDomainEvent } from "../../../../cma/uc/domain/event/UCCreatedDomainEvent";
-import { UCRenamedDomainEvent } from "../../../../cma/uc/domain/event/UCRenamedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { UCCreatedDomainEvent } from "../../../../cma/uc/domain/events/UCCreatedDomainEvent";
+import { UCRenamedDomainEvent } from "../../../../cma/uc/domain/events/UCRenamedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { PublishedUCUpdater } from "./PublishedUCUpdater";
 
 @Service()

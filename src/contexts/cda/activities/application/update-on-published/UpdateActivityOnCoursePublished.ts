@@ -1,8 +1,8 @@
 import { Service } from "diod";
 
-import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/event/CoursePublishedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { CoursePublishedDomainEvent } from "../../../../cma/courses/domain/events/CoursePublishedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { PublishedActivityUpdater } from "./PublishedActivityUpdater";
 
 @Service()

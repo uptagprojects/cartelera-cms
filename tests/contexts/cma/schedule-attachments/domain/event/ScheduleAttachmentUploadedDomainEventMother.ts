@@ -1,4 +1,4 @@
-import { ScheduleAttachmentUploadedDomainEvent } from "../../../../../../src/contexts/cma/schedule-attachments/domain/event/ScheduleAttachmentUploadedDomainEvent";
+import { ScheduleAttachmentUploadedDomainEvent } from "../../../../../../src/contexts/cma/schedule-attachments/domain/events/ScheduleAttachmentUploadedDomainEvent";
 import { ScheduleIdMother } from "../../../schedules/domain/ScheduleIdMother";
 import { ScheduleAttachmentIdMother } from "../ScheduleAttachmentIdMother";
 import { ScheduleAttachmentMIMETypeMother } from "../ScheduleAttachmentMIMETypeMother";

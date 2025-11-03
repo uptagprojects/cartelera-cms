@@ -1,4 +1,4 @@
-import { ScheduleRestoredDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/event/ScheduleRestoredDomainEvent";
+import { ScheduleRestoredDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/events/ScheduleRestoredDomainEvent";
 import { SchedulePrimitives } from "../../../../../../src/contexts/cma/schedules/domain/Schedule";
 import { ScheduleIdMother } from "../ScheduleIdMother";
 

@@ -1,7 +1,7 @@
 import { UpdateAnnouncementOnPublished } from "../../../../../../src/contexts/cda/announcements/application/update-on-published/UpdateAnnouncementOnPublished";
 import { PublishedAnnouncementUpdater } from "../../../../../../src/contexts/cda/announcements/application/update-on-published/PublishedAnnouncementUpdater";
-import { AnnouncementPublishedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementPublishedDomainEvent";
-import { AnnouncementPublishedDomainEventMother } from "../../domain/event/AnnouncementPublishedDomainEventMother";
+import { AnnouncementPublishedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementPublishedDomainEvent";
+import { AnnouncementPublishedDomainEventMother } from "../../domain/events/AnnouncementPublishedDomainEventMother";
 import { MockCdaAnnouncementRepository } from "../../infrastructure/MockCdaAnnouncementRepository";
 
 describe("UpdateAnnouncementOnPublished should", () => {

@@ -1,9 +1,9 @@
 import { RemoveOnAnnouncementUnpublished } from "../../../../../../src/contexts/cda/announcements/application/remove-on-unpublished/RemoveOnAnnouncementUnpublished";
 import { UnpublishedAnnouncementRemover } from "../../../../../../src/contexts/cda/announcements/application/remove-on-unpublished/UnpublishedAnnouncementRemover";
-import { AnnouncementArchivedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementArchivedDomainEvent";
-import { AnnouncementRemovedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementRemovedDomainEvent";
-import { AnnouncementArchivedDomainEventMother } from "../../domain/event/AnnouncementArchivedDomainEventMother";
-import { AnnouncementRemovedDomainEventMother } from "../../domain/event/AnnouncementRemovedDomainEventMother";
+import { AnnouncementArchivedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementArchivedDomainEvent";
+import { AnnouncementRemovedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementRemovedDomainEvent";
+import { AnnouncementArchivedDomainEventMother } from "../../domain/events/AnnouncementArchivedDomainEventMother";
+import { AnnouncementRemovedDomainEventMother } from "../../domain/events/AnnouncementRemovedDomainEventMother";
 import { MockCdaAnnouncementRepository } from "../../infrastructure/MockCdaAnnouncementRepository";
 
 describe("RemoveOnAnnouncementUnpublished should", () => {

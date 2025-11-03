@@ -1,4 +1,4 @@
-import { CourseDomainEvent } from "../../../../../../src/contexts/cma/courses/domain/event/CourseDomainEvent";
+import { CourseDomainEvent } from "../../../../../../src/contexts/cma/courses/domain/events/CourseDomainEvent";
 import { CourseIdMother } from "../CourseIdMother";
 
 export class CourseDomainEventMother {
