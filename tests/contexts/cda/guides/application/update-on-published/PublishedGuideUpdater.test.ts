@@ -5,8 +5,8 @@ import { MockUserFinder } from "../../../../cma/users/infrastructure/MockUserFin
 import { MockMarkdownRemover } from "../../../../shared/infrastructure/MockMarkdownRemover";
 import { GuideMother } from "../../domain/GuideMother";
 import { UCMother } from "../../domain/UCMother";
-import { MockGuideRepository } from "../../infrastructure/MockGuideRepository";
 import { MockGuideAttachmentsByGuideSearcher } from "../../infrastructure/MockGuideAttachmentsByGuideSearcher";
+import { MockGuideRepository } from "../../infrastructure/MockGuideRepository";
 import { MockUCFinder } from "../../infrastructure/MockUCFinder";
 
 describe("PublishedGuideUpdater should", () => {
@@ -15,7 +15,13 @@ describe("PublishedGuideUpdater should", () => {
 	const attachmentSearcher = new MockGuideAttachmentsByGuideSearcher();
 	const userFinder = new MockUserFinder();
 	const mdRemover = new MockMarkdownRemover();
-	const updater = new PublishedGuideUpdater(repository, ucFinder, attachmentSearcher, userFinder, mdRemover);
+	const updater = new PublishedGuideUpdater(
+		repository,
+		ucFinder,
+		attachmentSearcher,
+		userFinder,
+		mdRemover
+	);
 
 	it("create a new guide when it does not exist", async () => {
 		const uc = UCMother.create();
@@ -32,13 +38,22 @@ describe("PublishedGuideUpdater should", () => {
 		mdRemover.shouldRemove(content, contentWrapped);
 		repository.shouldSave();
 
-		await updater.update(guide.toPrimitives().id, title, content, uc.toPrimitives().id, user.toPrimitives().id, new Date());
+		await updater.update(
+			guide.toPrimitives().id,
+			title,
+			content,
+			uc.toPrimitives().id,
+			user.toPrimitives().id,
+			new Date()
+		);
 	});
 
 	it("update an existing guide", async () => {
 		const existingGuide = GuideMother.create();
 		const uc = UCMother.create();
-		const attachment = GuideAttachmentMother.create({ guideId: existingGuide.toPrimitives().id });
+		const attachment = GuideAttachmentMother.create({
+			guideId: existingGuide.toPrimitives().id
+		});
 		const newTitle = "Updated Title";
 		const newContent = "# Updated Content";
 		const contentWrapped = "Updated Content";

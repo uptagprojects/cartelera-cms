@@ -6,8 +6,8 @@ import { MockUserFinder } from "../../../../cma/users/infrastructure/MockUserFin
 import { MockMarkdownRemover } from "../../../../shared/infrastructure/MockMarkdownRemover";
 import { GuidePublishedDomainEventMother } from "../../domain/event/GuidePublishedDomainEventMother";
 import { UCMother } from "../../domain/UCMother";
-import { MockGuideRepository } from "../../infrastructure/MockGuideRepository";
 import { MockGuideAttachmentsByGuideSearcher } from "../../infrastructure/MockGuideAttachmentsByGuideSearcher";
+import { MockGuideRepository } from "../../infrastructure/MockGuideRepository";
 import { MockUCFinder } from "../../infrastructure/MockUCFinder";
 
 describe("UpdateGuideOnPublished should", () => {
@@ -16,7 +16,13 @@ describe("UpdateGuideOnPublished should", () => {
 	const attachmentSearcher = new MockGuideAttachmentsByGuideSearcher();
 	const userFinder = new MockUserFinder();
 	const mdRemover = new MockMarkdownRemover();
-	const updater = new PublishedGuideUpdater(repository, ucFinder, attachmentSearcher, userFinder, mdRemover);
+	const updater = new PublishedGuideUpdater(
+		repository,
+		ucFinder,
+		attachmentSearcher,
+		userFinder,
+		mdRemover
+	);
 	const subscriber = new UpdateGuideOnPublished(updater);
 
 	it("be subscribed to GuidePublishedDomainEvent", () => {
