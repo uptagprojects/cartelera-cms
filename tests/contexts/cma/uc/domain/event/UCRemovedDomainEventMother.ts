@@ -1,4 +1,4 @@
-import { UCRemovedDomainEvent } from "../../../../../../src/contexts/cma/uc/domain/event/UCRemovedDomainEvent";
+import { UCRemovedDomainEvent } from "../../../../../../src/contexts/cma/uc/domain/events/UCRemovedDomainEvent";
 import { UCPrimitives } from "../../../../../../src/contexts/cma/uc/domain/UC";
 import { UCIdMother } from "../UCIdMother";
 import { UCNameMother } from "../UCNameMother";

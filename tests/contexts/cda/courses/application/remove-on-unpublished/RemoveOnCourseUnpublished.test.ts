@@ -1,7 +1,7 @@
 import { RemoveOnCourseUnpublished } from "../../../../../../src/contexts/cda/courses/application/remove-on-unpublished/RemoveOnCourseUnpublished";
 import { UnpublishedCourseRemover } from "../../../../../../src/contexts/cda/courses/application/remove-on-unpublished/UnpublishedCourseRemover";
 import { CourseMother } from "../../domain/CourseMother";
-import { CourseDomainEventMother } from "../../domain/event/CourseDomainEventMother";
+import { CourseDomainEventMother } from "../../domain/events/CourseDomainEventMother";
 import { MockCourseRepository } from "../../infrastructure/MockCourseRepository";
 
 describe("RemoveOnCourseUnpublished should", () => {

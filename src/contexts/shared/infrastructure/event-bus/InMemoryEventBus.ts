@@ -1,6 +1,6 @@
-import { DomainEvent } from "../../domain/event/DomainEvent";
-import { DomainEventSubscriber } from "../../domain/event/DomainEventSubscriber";
-import { EventBus } from "../../domain/event/EventBus";
+import { DomainEvent } from "../../domain/events/DomainEvent";
+import { DomainEventSubscriber } from "../../domain/events/DomainEventSubscriber";
+import { EventBus } from "../../domain/events/EventBus";
 import { logger } from "../telemetry/telemetry";
 
 export class InMemoryEventBus implements EventBus {

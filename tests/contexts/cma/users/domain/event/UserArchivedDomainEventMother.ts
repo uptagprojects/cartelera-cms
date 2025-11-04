@@ -1,4 +1,4 @@
-import { UserArchivedDomainEvent } from "../../../../../../src/contexts/cma/users/domain/event/UserArchivedDomainEvent";
+import { UserArchivedDomainEvent } from "../../../../../../src/contexts/cma/users/domain/events/UserArchivedDomainEvent";
 import { UserPrimitives } from "../../../../../../src/contexts/cma/users/domain/User";
 import { UserStatus } from "../../../../../../src/contexts/cma/users/domain/UserStatus";
 import { UserAvatarMother } from "../UserAvatarMother";

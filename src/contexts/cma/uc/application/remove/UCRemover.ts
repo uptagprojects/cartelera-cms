@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { DomainUCFinder } from "../../domain/DomainUCFinder";
 import { UCRepository } from "../../domain/UCRepository";
 

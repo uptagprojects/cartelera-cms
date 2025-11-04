@@ -1,5 +1,5 @@
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { UCRemovedDomainEvent } from "../domain/event/UCRemovedDomainEvent";
+import { UCRemovedDomainEvent } from "../domain/events/UCRemovedDomainEvent";
 import { UC } from "../domain/UC";
 import { UCId } from "../domain/UCId";
 import { UCRepository } from "../domain/UCRepository";

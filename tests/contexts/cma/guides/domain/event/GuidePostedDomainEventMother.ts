@@ -1,4 +1,4 @@
-import { GuidePostedDomainEvent } from "../../../../../../src/contexts/cma/guides/domain/event/GuidePostedDomainEvent";
+import { GuidePostedDomainEvent } from "../../../../../../src/contexts/cma/guides/domain/events/GuidePostedDomainEvent";
 import { GuidePrimitives } from "../../../../../../src/contexts/cma/guides/domain/Guide";
 import { UCIdMother } from "../../../uc/domain/UCIdMother";
 import { UserIdMother } from "../../../users/domain/UserIdMother";

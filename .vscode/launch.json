@@ -5,8 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "command": "npm run test:jest ${file}",
+            "name": "Run test file",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
             "command": "npm run test:features",
             "name": "Run feature tests",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "npm run test:unit",
+            "name": "Run unit tests",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "npm run test:integration",
+            "name": "Run integration tests",
             "request": "launch",
             "type": "node-terminal"
         }

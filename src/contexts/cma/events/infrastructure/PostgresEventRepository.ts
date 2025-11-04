@@ -2,7 +2,7 @@ import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
 import { Event } from "../domain/Event";
-import { EventRemovedDomainEvent } from "../domain/event/EventRemovedDomainEvent";
+import { EventRemovedDomainEvent } from "../domain/events/EventRemovedDomainEvent";
 import { EventId } from "../domain/EventId";
 import { EventRepository } from "../domain/EventRepository";
 

@@ -1,5 +1,5 @@
 import { EventPrimitives } from "../../../../../../src/contexts/cma/events/domain/Event";
-import { EventLocationUpdatedDomainEvent } from "../../../../../../src/contexts/cma/events/domain/event/EventLocationUpdatedDomainEvent";
+import { EventLocationUpdatedDomainEvent } from "../../../../../../src/contexts/cma/events/domain/events/EventLocationUpdatedDomainEvent";
 import { EventIdMother } from "../EventIdMother";
 import { EventLocationMother } from "../EventLocationMother";
 

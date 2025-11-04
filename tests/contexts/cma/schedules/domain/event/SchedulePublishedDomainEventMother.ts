@@ -1,5 +1,5 @@
 import { SchedulePrimitives } from "../../../../../../src/contexts/cma/schedules/domain/Schedule";
-import { SchedulePublishedDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/event/SchedulePublishedDomainEvent";
+import { SchedulePublishedDomainEvent } from "../../../../../../src/contexts/cma/schedules/domain/events/SchedulePublishedDomainEvent";
 import { ScheduleFinishDateMother } from "../ScheduleFinishDateMother";
 import { ScheduleIdMother } from "../ScheduleIdMother";
 import { ScheduleNameMother } from "../ScheduleNameMother";

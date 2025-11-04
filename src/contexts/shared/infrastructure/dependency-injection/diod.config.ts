@@ -60,7 +60,7 @@ import { SendWelcomeEmailOnUserRegistered } from "../../../system/email/applicat
 import { WelcomeEmailSender } from "../../../system/email/application/send-welcome-email/WelcomeEmailSender";
 import { EmailSender } from "../../../system/email/domain/EmailSender";
 import { ResendEmailSender } from "../../../system/email/infrastructure/ResendEmailSender";
-import { EventBus } from "../../domain/event/EventBus";
+import { EventBus } from "../../domain/events/EventBus";
 import { FileStorage } from "../../domain/FileStorage";
 import { MarkdownRemover } from "../../domain/MarkdownRemover";
 import { UuidGenerator } from "../../domain/UuidGenerator";

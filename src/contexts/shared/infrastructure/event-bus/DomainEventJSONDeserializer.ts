@@ -1,5 +1,5 @@
-import { DomainEvent, DomainEventAttributes } from "../../domain/event/DomainEvent";
-import { DomainEventClass } from "../../domain/event/DomainEventClass";
+import { DomainEvent, DomainEventAttributes } from "../../domain/events/DomainEvent";
+import { DomainEventClass } from "../../domain/events/DomainEventClass";
 
 export interface DomainEventJSON {
     id: string;

@@ -2,9 +2,9 @@ import "reflect-metadata";
 
 import { ConsumeMessage } from "amqplib";
 
-import { DomainEvent } from "../contexts/shared/domain/event/DomainEvent";
-import { DomainEventClass } from "../contexts/shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../contexts/shared/domain/event/DomainEventSubscriber";
+import { DomainEvent } from "../contexts/shared/domain/events/DomainEvent";
+import { DomainEventClass } from "../contexts/shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../contexts/shared/domain/events/DomainEventSubscriber";
 import { container } from "../contexts/shared/infrastructure/dependency-injection/diod.config";
 import { DomainEventJSONDeserializer } from "../contexts/shared/infrastructure/event-bus/DomainEventJSONDeserializer";
 import { RabbitMQConnection } from "../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";

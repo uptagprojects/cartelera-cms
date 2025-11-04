@@ -1,6 +1,6 @@
 import { extname } from "path";
 
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { FileStorage } from "../../../../shared/domain/FileStorage";
 import { GuideAttachment } from "../../domain/GuideAttachment";
 import { GuideAttachmentRepository } from "../../domain/GuideAttachmentRepository";

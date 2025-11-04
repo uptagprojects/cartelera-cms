@@ -1,6 +1,6 @@
 import { UpdateCourseOnPublished } from "../../../../../../src/contexts/cda/courses/application/update-on-published/UpdateCourseOnPublished";
 import { PublishedCourseUpdater } from "../../../../../../src/contexts/cda/courses/application/update-on-published/PublishedCourseUpdater";
-import { CoursePublishedDomainEventMother } from "../../../../cma/courses/domain/event/CoursePublishedDomainEventMother";
+import { CoursePublishedDomainEventMother } from "../../../../cma/courses/domain/events/CoursePublishedDomainEventMother";
 import { MockCourseRepository } from "../../infrastructure/MockCourseRepository";
 
 describe("UpdateCourseOnPublished should", () => {

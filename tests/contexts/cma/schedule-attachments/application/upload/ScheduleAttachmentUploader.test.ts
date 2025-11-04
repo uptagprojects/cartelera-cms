@@ -2,7 +2,7 @@ import { ScheduleAttachmentUploader } from "../../../../../../src/contexts/cma/s
 import { MockEventBus } from "../../../../shared/infrastructure/MockEventBus";
 import { MockFileStorage } from "../../../../shared/infrastructure/MockFileStorage";
 import { ScheduleIdMother } from "../../../schedules/domain/ScheduleIdMother";
-import { ScheduleAttachmentUploadedDomainEventMother } from "../../domain/event/ScheduleAttachmentUploadedDomainEventMother";
+import { ScheduleAttachmentUploadedDomainEventMother } from "../../domain/events/ScheduleAttachmentUploadedDomainEventMother";
 import { ScheduleAttachmentIdMother } from "../../domain/ScheduleAttachmentIdMother";
 import { ScheduleAttachmentURLMother } from "../../domain/ScheduleAttachmentURLMother";
 import { MockScheduleAttachmentRepository } from "../../infrastructure/MockScheduleAttachmentRepository";

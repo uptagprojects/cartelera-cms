@@ -3,13 +3,13 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "test:contexts",
+			"script": "test:unit",
 			"group": {
 				"kind": "test",
 				"isDefault": false
 			},
 			"problemMatcher": [],
-			"label": "npm: test:contexts",
+			"label": "npm: test:unit",
 			"detail": "test context units"
 		},
 		{

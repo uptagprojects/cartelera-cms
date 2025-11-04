@@ -1,7 +1,7 @@
 import { Criteria } from "../../../shared/domain/criteria/Criteria";
 import { CriteriaToPostgresSqlConverter } from "../../../shared/infrastructure/criteria/CriteriaToPostgresSqlConverter";
 import { PostgresConnection } from "../../../shared/infrastructure/PostgresConnection";
-import { GuideRemovedDomainEvent } from "../domain/event/GuideRemovedDomainEvent";
+import { GuideRemovedDomainEvent } from "../domain/events/GuideRemovedDomainEvent";
 import { Guide } from "../domain/Guide";
 import { GuideId } from "../domain/GuideId";
 import { GuideRepository } from "../domain/GuideRepository";

@@ -1,9 +1,9 @@
 import { Service } from "diod";
 
-import { UserEmailUpdatedDomainEvent } from "../../../../cma/users/domain/event/UserEmailUpdatedDomainEvent";
+import { UserEmailUpdatedDomainEvent } from "../../../../cma/users/domain/events/UserEmailUpdatedDomainEvent";
 import { UserFinder } from "../../../../cma/users/domain/UserFinder";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UserUpdatedNotificationEmailSender } from "./UserUpdatedNotificationEmailSender";
 
 @Service()

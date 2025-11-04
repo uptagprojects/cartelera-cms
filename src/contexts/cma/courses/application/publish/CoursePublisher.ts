@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { Course } from "../../domain/Course";
 import { CourseDurationPrimitives } from "../../domain/CourseDuration/CourseDuration";
 import { CourseInstructorPrimitives } from "../../domain/CourseInstructor/CourseInstructor";

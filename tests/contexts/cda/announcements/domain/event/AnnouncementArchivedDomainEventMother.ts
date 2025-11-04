@@ -1,4 +1,4 @@
-import { AnnouncementArchivedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementArchivedDomainEvent";
+import { AnnouncementArchivedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementArchivedDomainEvent";
 import { CdaAnnouncementIdMother } from "../CdaAnnouncementIdMother";
 
 export class AnnouncementArchivedDomainEventMother {

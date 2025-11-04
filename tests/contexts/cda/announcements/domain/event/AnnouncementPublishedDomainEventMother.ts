@@ -1,4 +1,4 @@
-import { AnnouncementPublishedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/event/AnnouncementPublishedDomainEvent";
+import { AnnouncementPublishedDomainEvent } from "../../../../../../src/contexts/cma/announcements/domain/events/AnnouncementPublishedDomainEvent";
 import { CdaAnnouncementIdMother } from "../CdaAnnouncementIdMother";
 import { CdaAnnouncementTitleMother } from "../CdaAnnouncementTitleMother";
 import { CdaAnnouncementContentMother } from "../CdaAnnouncementContentMother";

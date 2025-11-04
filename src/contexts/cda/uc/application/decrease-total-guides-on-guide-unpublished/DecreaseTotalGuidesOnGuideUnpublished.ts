@@ -1,9 +1,9 @@
 import { Service } from "diod";
 
-import { GuideArchivedDomainEvent } from "../../../../cma/guides/domain/event/GuideArchivedDomainEvent";
-import { GuideRemovedDomainEvent } from "../../../../cma/guides/domain/event/GuideRemovedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { GuideArchivedDomainEvent } from "../../../../cma/guides/domain/events/GuideArchivedDomainEvent";
+import { GuideRemovedDomainEvent } from "../../../../cma/guides/domain/events/GuideRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UCTotalGuidesDecreaser } from "./UCTotalGuidesDecreaser";
 
 @Service()

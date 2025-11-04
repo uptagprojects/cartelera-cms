@@ -1,4 +1,4 @@
-import { EventBus } from "../../../../shared/domain/event/EventBus";
+import { EventBus } from "../../../../shared/domain/events/EventBus";
 import { Announcement } from "../../domain/Announcement";
 import { AnnouncementIsNotArchivedError } from "../../domain/AnnouncementIsNotArchivedError";
 import { AnnouncementRepository } from "../../domain/AnnouncementRepository";

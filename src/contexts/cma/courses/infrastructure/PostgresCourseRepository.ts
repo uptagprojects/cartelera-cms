@@ -6,7 +6,7 @@ import { CourseDurationPrimitives } from "../domain/CourseDuration/CourseDuratio
 import { CourseId } from "../domain/CourseId";
 import { CourseInstructorPrimitives } from "../domain/CourseInstructor/CourseInstructor";
 import { CourseRepository } from "../domain/CourseRepository";
-import { CourseRemovedDomainEvent } from "../domain/event/CourseRemovedDomainEvent";
+import { CourseRemovedDomainEvent } from "../domain/events/CourseRemovedDomainEvent";
 
 interface DatabaseCourse {
     id: string;

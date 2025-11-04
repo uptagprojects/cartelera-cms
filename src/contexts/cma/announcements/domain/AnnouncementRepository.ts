@@ -11,5 +11,5 @@ export interface AnnouncementRepository {
 
     matching(criteria: Criteria): Promise<Announcement[]>;
 
-    remove(announcement: Announcement): Promise<void>;
+    remove(id: AnnouncementId): Promise<void>;
 }

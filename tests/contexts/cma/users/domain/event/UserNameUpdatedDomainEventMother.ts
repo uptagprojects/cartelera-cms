@@ -1,4 +1,4 @@
-import { UserNameUpdatedDomainEvent } from "../../../../../../src/contexts/cma/users/domain/event/UserNameUpdatedDomainEvent";
+import { UserNameUpdatedDomainEvent } from "../../../../../../src/contexts/cma/users/domain/events/UserNameUpdatedDomainEvent";
 import { UserPrimitives } from "../../../../../../src/contexts/cma/users/domain/User";
 import { UserAvatarMother } from "../UserAvatarMother";
 import { UserEmailMother } from "../UserEmailMother";

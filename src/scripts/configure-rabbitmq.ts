@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
-import { DomainEvent } from "../contexts/shared/domain/event/DomainEvent";
-import { DomainEventSubscriber } from "../contexts/shared/domain/event/DomainEventSubscriber";
+import { DomainEvent } from "../contexts/shared/domain/events/DomainEvent";
+import { DomainEventSubscriber } from "../contexts/shared/domain/events/DomainEventSubscriber";
 import { container } from "../contexts/shared/infrastructure/dependency-injection/diod.config";
 import { RabbitMQConnection } from "../contexts/shared/infrastructure/event-bus/rabbitmq/RabbitMQConnection";
 import { logger } from "../contexts/shared/infrastructure/telemetry/telemetry";

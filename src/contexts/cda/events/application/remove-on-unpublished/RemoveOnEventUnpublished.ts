@@ -1,9 +1,9 @@
 import { Service } from "diod";
 
-import { EventDomainEvent } from "../../../../cma/events/domain/event/EventDomainEvent";
-import { EventRemovedDomainEvent } from "../../../../cma/events/domain/event/EventRemovedDomainEvent";
-import { DomainEventClass } from "../../../../shared/domain/event/DomainEventClass";
-import { DomainEventSubscriber } from "../../../../shared/domain/event/DomainEventSubscriber";
+import { EventDomainEvent } from "../../../../cma/events/domain/events/EventDomainEvent";
+import { EventRemovedDomainEvent } from "../../../../cma/events/domain/events/EventRemovedDomainEvent";
+import { DomainEventClass } from "../../../../shared/domain/events/DomainEventClass";
+import { DomainEventSubscriber } from "../../../../shared/domain/events/DomainEventSubscriber";
 import { UnpublishedEventRemover } from "./UnpublishedEventRemover";
 
 @Service()
