@@ -1,3 +1,5 @@
+import { faker } from "@faker-js/faker";
+
 import { GuidePublishedDomainEvent } from "../../../../../../src/contexts/cma/guides/domain/event/GuidePublishedDomainEvent";
 import { GuideContentMother } from "../GuideContentMother";
 import { GuideIdMother } from "../GuideIdMother";
@@ -15,8 +17,8 @@ export class GuidePublishedDomainEventMother {
 			params?.id ?? GuideIdMother.create().value,
 			params?.title ?? GuideTitleMother.create().value,
 			params?.content ?? GuideContentMother.create().value,
-			params?.ucId ?? GuideIdMother.create().value,
-			params?.authorId ?? GuideIdMother.create().value
+			params?.ucId ?? faker.string.uuid(),
+			params?.authorId ?? faker.string.uuid()
 		);
 	}
 }
