@@ -4,16 +4,39 @@ This is a [Next.js](https://nextjs.org/) project for PNFi department with [`crea
 
 ## Getting Started
 
-First, run the development server:
+### 1. Containers
+First, run the containers with docker (or podman):
+```bash
+docker compose up
+```
 
+Then connect to the database through the terminal and run the migrations:
+```
+docker exec -it cms_db bash
+```
+
+There you can create the tables with:
+```
+cd /docker-entrypoint-initdb.d/ && ls | awk '/\.sql$/ {print "cat " $1}' | bash | psql -U $POSTGRES_USER $POSTGRES_DB
+```
+
+### 2. Event Bus
+
+In another terminal, onfigure the event bus with:
+```bash
+npm run configure-rabbitmq
+```
+
+And then, to handle each new message from the message queue:
+```bash
+npm run consume-rabbitmq
+```
+
+### 3. Development server
+
+You can run the server by following this comand
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
