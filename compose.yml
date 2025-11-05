@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     container_name: cms_db
-    image: cgr.dev/chainguard/postgres:latest
+    image: docker.io/postgres:18.0
     ports:
       - 5432:5432
     volumes:
@@ -13,8 +13,10 @@ services:
       - POSTGRES_PASSWORD=password$
       - POSTGRES_USER=user
       - POSTGRES_DB=cartelera
+      - PGDATA=/var/lib/postgresql/data
     networks:
       - default
+    shm_size: 128mb
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -h localhost -U user -d cartelera" ]
       interval: 5s
@@ -38,7 +40,7 @@ services:
       - default
   rabbitmq:
     container_name: cms_rabbitmq
-    image: docker.io/rabbitmq:latest
+    image: docker.io/rabbitmq:4.2.0
     restart: unless-stopped
     networks:
       - default
