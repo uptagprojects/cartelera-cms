@@ -176,7 +176,7 @@ export const AnnouncementList = () => {
     if (!loading && announcements.length === 0) {
         return (
             <ManageEmpty
-                message="Puedes crear un nuevo anuncio con el boton de arriba o"
+                message="Puedes crear un nuevo anuncio con el botón de arriba o"
                 url={`/manage/announcements/${globalThis.crypto.randomUUID()}`}
             />
         );

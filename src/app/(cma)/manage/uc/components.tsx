@@ -81,7 +81,7 @@ const UCListItem = ({ id, name, onDelete }: IManageUC & { onDelete: (id: string)
 
 const EmptyUC = memo(() => (
     <ManageEmpty
-        message="Puedes crear una nueva unidad curricular con el boton de arriba o"
+        message="Puedes crear una nueva unidad curricular con el botón de arriba o"
         url={`/manage/uc/${globalThis.crypto.randomUUID()}`}
     />
 ));

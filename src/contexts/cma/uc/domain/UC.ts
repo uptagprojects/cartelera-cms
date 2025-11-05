@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { UCCreatedDomainEvent } from "./event/UCCreatedDomainEvent";
-import { UCRenamedDomainEvent } from "./event/UCRenamedDomainEvent";
+import { UCCreatedDomainEvent } from "./events/UCCreatedDomainEvent";
+import { UCRenamedDomainEvent } from "./events/UCRenamedDomainEvent";
 import { UCId } from "./UCId";
 import { UCName } from "./UCName";
 

@@ -10,7 +10,7 @@ export default async function GuideEditorPage({ params }: { params: Promise<{ id
 
     return (
         <section>
-            <ManageReturnHeader title="Editar guia" />
+            <ManageReturnHeader title="Editar guía" />
             <GuideForm id={id} ucs={ucs} initGuide={data} />
         </section>
     );

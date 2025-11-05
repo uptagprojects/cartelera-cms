@@ -21,7 +21,7 @@ export const GuideHeader = () => {
     return (
         <ManageHeader
             title="Guías"
-            label="crear guia"
+            label="crear guía"
             onClick={() => {
                 const id = globalThis.crypto.randomUUID();
                 router.push(`/manage/guides/${id}`);
@@ -38,7 +38,7 @@ export const GuideLoader = () => (
 
 const EmptyGuide = memo(() => (
     <ManageEmpty
-        message="Puedes crear una nueva guia con el boton de arriba o"
+        message="Puedes crear una nueva guía con el botón de arriba o"
         url={`/manage/guides/${globalThis.crypto.randomUUID()}`}
     />
 ));
