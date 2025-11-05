@@ -2,11 +2,7 @@ import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
-// Make the createClient function ASYNC
-export async function createClient(): Promise<SupabaseClient> {
-	// Await cookies() ONCE at the top
-	const cookieStore = await cookies();
-
+export function createClient(): SupabaseClient {
 	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 	const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -14,25 +10,26 @@ export async function createClient(): Promise<SupabaseClient> {
 		throw new Error("Missing Supabase environment variables. Check .env.local");
 	}
 
-	// The cookie handlers are now sync, operating on the awaited cookieStore
 	const cookieHandlers = {
-		get(name: string): string | undefined {
+		async get(name: string): Promise<string | undefined> {
+			const cookieStore = await cookies();
+
 			return cookieStore.get(name)?.value;
 		},
-		set(name: string, value: string, options: CookieOptions): void {
+		async set(name: string, value: string, options: CookieOptions): Promise<void> {
 			try {
+				const cookieStore = await cookies();
 				cookieStore.set({ name, value, ...options });
 			} catch (error) {
-				// The `set` method was called from a Server Component or Server Action.
-				// This can be ignored if you're not in a Server Action.
+				// TO DO : catch error
 			}
 		},
-		remove(name: string, options: CookieOptions): void {
+		async remove(name: string, options: CookieOptions): Promise<void> {
 			try {
+				const cookieStore = await cookies();
 				cookieStore.set({ name, value: "", ...options });
 			} catch (error) {
-				// The `remove` method was called from a Server Component or Server Action.
-				// This can be ignored if you're not in a Server Action.
+				// TO DO : catch error
 			}
 		}
 	};
@@ -40,6 +37,6 @@ export async function createClient(): Promise<SupabaseClient> {
 	return createServerClient(
 		supabaseUrl,
 		supabaseAnonKey,
-		{ cookies: cookieHandlers } // This now matches the expected type
+		{ cookies: cookieHandlers } // Pass the async handlers
 	);
 }
