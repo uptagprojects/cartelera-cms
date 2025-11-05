@@ -4,27 +4,32 @@ import { redirect } from "next/navigation";
 
 import { PageFooter } from "../../components/footer/PageFooter";
 import { Nav } from "../../components/nav/Nav";
-import { auth } from "../../lib/auth";
+import { createClient } from "../../lib/supabase/server";
 import { Sidebar } from "./_components/Sidebar";
 import styles from "./ManageLayout.module.css";
 
 export default async function CMALayout({
-    children
+	children
 }: Readonly<{
-    children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-    const session = await auth();
+	//Get the user from Supabase
+	const supabase = createClient();
+	const {
+		data: { user }
+	} = await supabase.auth.getUser();
 
-    if (!session) {
-        redirect("/");
-    }
+	//Protect the route. If no user, redirect to home.
+	if (!user) {
+		redirect("/");
+	}
 
-    return (
-        <>
-            <Nav session={Boolean(session)} />
-            <Sidebar />
-            <main className={styles.mainContainer}>{children}</main>
-            <PageFooter />
-        </>
-    );
+	return (
+		<>
+			<Nav user={user} />
+			<Sidebar />
+			<main className={styles.mainContainer}>{children}</main>
+			<PageFooter />
+		</>
+	);
 }
