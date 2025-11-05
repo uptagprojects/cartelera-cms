@@ -2,20 +2,24 @@ import "octagon-ui/dist/index.css";
 
 import { PageFooter } from "../../components/footer/PageFooter";
 import { Nav } from "../../components/nav/Nav";
-import { auth } from "../../lib/auth";
+import { createClient } from "../../lib/supabase/server";
 
 export default async function PublicLayout({
-    children
+	children
 }: Readonly<{
-    children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-    const session = await auth();
+	// Get the user from Supabase
+	const supabase = createClient();
+	const {
+		data: { user }
+	} = await supabase.auth.getUser();
 
-    return (
-        <>
-            <Nav session={Boolean(session)} />
-            <main>{children}</main>
-            <PageFooter />
-        </>
-    );
+	return (
+		<>
+			<Nav user={user} />
+			<main>{children}</main>
+			<PageFooter />
+		</>
+	);
 }

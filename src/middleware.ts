@@ -1,16 +1,58 @@
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { type CookieOptions, createServerClient } from "@supabase/ssr"; // No 'Cookies' import
+import { type NextRequest, NextResponse } from "next/server";
 
-import { loggerWrapper } from "./contexts/shared/infrastructure/telemetry/telemetry";
+export async function middleware(request: NextRequest): Promise<NextResponse> {
+	let response = NextResponse.next({
+		request: {
+			headers: request.headers
+		}
+	});
 
-export async function middleware(request: NextRequest, event: NextFetchEvent): Promise<NextResponse> {
-    // you can use getToken() to get the current user
+	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+	const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    event.waitUntil(loggerWrapper.middleware(request));
+	if (!supabaseUrl || !supabaseAnonKey) {
+		console.error("Missing Supabase environment variables in middleware");
 
-    return NextResponse.next();
+		return response;
+	}
+
+	// Define cookie handlers
+	const cookieHandlers = {
+		get(name: string): string | undefined {
+			return request.cookies.get(name)?.value;
+		},
+		set(name: string, value: string, options: CookieOptions): void {
+			request.cookies.set({ name, value, ...options });
+			response = NextResponse.next({
+				request: {
+					headers: request.headers
+				}
+			});
+			response.cookies.set({ name, value, ...options });
+		},
+		remove(name: string, options: CookieOptions): void {
+			request.cookies.set({ name, value: "", ...options });
+			response = NextResponse.next({
+				request: {
+					headers: request.headers
+				}
+			});
+			response.cookies.set({ name, value: "", ...options });
+		}
+	};
+
+	const supabase = createServerClient(
+		supabaseUrl,
+		supabaseAnonKey,
+		{ cookies: cookieHandlers } // Pass the handlers
+	);
+
+	await supabase.auth.getSession();
+
+	return response;
 }
 
 export const config = {
-    // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-    matcher: ["/((?!_next/static|_next/image|.*\\.png$).*)"]
+	matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"]
 };
