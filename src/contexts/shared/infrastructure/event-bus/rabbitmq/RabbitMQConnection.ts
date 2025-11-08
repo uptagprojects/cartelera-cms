@@ -100,7 +100,7 @@ export class RabbitMQConnection {
     }
 
     private async amqpConnect(): Promise<amqplib.Connection> {
-        const connection = await amqplib.connect(process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost?frameMax=8192//");
+        const connection = await amqplib.connect(process.env.RABBITMQ_URL ?? "amqp://cartelera:cartelera@localhost?frameMax=8192");
 
         connection.on("error", (error: unknown) => {
             logger.error("RabbitMQ connection error", error);
