@@ -22,7 +22,7 @@ cd /docker-entrypoint-initdb.d/ && ls | awk '/\.sql$/ {print "cat " $1}' | bash 
 
 ### 2. Event Bus
 
-In another terminal, onfigure the event bus with:
+In another terminal, configure the event bus with:
 ```bash
 npm run configure-rabbitmq
 ```
