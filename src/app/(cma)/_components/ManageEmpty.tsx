@@ -14,7 +14,7 @@ export const ManageEmpty = ({ title = "No encontramos nada", message, url }: Man
         <DotLottieReact src="/animations/blinking.lottie" loop autoplay />
         <h4>{title}</h4>
         <p>
-            {message} <Link href={url}>click aqui</Link>.
+            {message} <Link href={url}>click aquí</Link>.
         </p>
     </Container>
 );

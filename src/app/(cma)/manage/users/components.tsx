@@ -184,7 +184,7 @@ const UserListItem = ({ id, name, email, avatar, status }: IManageUser) => {
 
 const EmptyUsers = memo(() => (
     <ManageEmpty
-        message="Puedes crear un nuevo usuario con el boton de arriba o"
+        message="Puedes crear un nuevo usuario con el botón de arriba o"
         url={`/manage/users/${globalThis.crypto.randomUUID()}`}
     />
 ));

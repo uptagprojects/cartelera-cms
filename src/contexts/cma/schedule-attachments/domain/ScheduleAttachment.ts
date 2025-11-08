@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { ScheduleId } from "../../schedules/domain/ScheduleId";
-import { ScheduleAttachmentUploadedDomainEvent } from "./event/ScheduleAttachmentUploadedDomainEvent";
+import { ScheduleAttachmentUploadedDomainEvent } from "./events/ScheduleAttachmentUploadedDomainEvent";
 import { ScheduleAttachmentId } from "./ScheduleAttachmentId";
 import { ScheduleAttachmentMIMEType } from "./ScheduleAttachmentMIMEType";
 import { ScheduleAttachmentName } from "./ScheduleAttachmentName";

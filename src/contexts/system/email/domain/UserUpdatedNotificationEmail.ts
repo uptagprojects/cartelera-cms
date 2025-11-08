@@ -4,7 +4,7 @@ import { Email } from "./Email";
 import { EmailBody } from "./EmailBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
-import { UserUpdatedNotificationEmailSentDomainEvent } from "./event/UserUpdatedNotificationEmailSentDomainEvent";
+import { UserUpdatedNotificationEmailSentDomainEvent } from "./events/UserUpdatedNotificationEmailSentDomainEvent";
 
 export type UserUpdatedNotificationEmailPrimitives = {
     id: string;

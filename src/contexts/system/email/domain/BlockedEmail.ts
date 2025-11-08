@@ -4,7 +4,7 @@ import { Email } from "./Email";
 import { EmailBody } from "./EmailBody";
 import { EmailId } from "./EmailId";
 import { EmailSubject } from "./EmailSubject";
-import { WelcomeEmailSentDomainEvent } from "./event/WelcomeEmailSentDomainEvent";
+import { WelcomeEmailSentDomainEvent } from "./events/WelcomeEmailSentDomainEvent";
 
 export type BlockedEmailPrimitives = {
     id: string;

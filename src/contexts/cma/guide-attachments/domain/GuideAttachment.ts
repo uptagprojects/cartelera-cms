@@ -1,6 +1,6 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
 import { GuideId } from "../../guides/domain/GuideId";
-import { GuideAttachmentUploadedDomainEvent } from "./event/GuideAttachmentUploadedDomainEvent";
+import { GuideAttachmentUploadedDomainEvent } from "./events/GuideAttachmentUploadedDomainEvent";
 import { GuideAttachmentId } from "./GuideAttachmentId";
 import { GuideAttachmentMIMEType } from "./GuideAttachmentMIMEType";
 import { GuideAttachmentName } from "./GuideAttachmentName";

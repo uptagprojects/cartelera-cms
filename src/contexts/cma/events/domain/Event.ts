@@ -1,9 +1,9 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { EventEndDateUpdatedDomainEvent } from "./event/EventEndDateUpdatedDomainEvent";
-import { EventLocationUpdatedDomainEvent } from "./event/EventLocationUpdatedDomainEvent";
-import { EventNameUpdatedDomainEvent } from "./event/EventNameUpdatedDomainEvent";
-import { EventPublishedDomainEvent } from "./event/EventPublishedDomainEvent";
-import { EventStartDateUpdatedDomainEvent } from "./event/EventStartDateUpdatedDomainEvent";
+import { EventEndDateUpdatedDomainEvent } from "./events/EventEndDateUpdatedDomainEvent";
+import { EventLocationUpdatedDomainEvent } from "./events/EventLocationUpdatedDomainEvent";
+import { EventNameUpdatedDomainEvent } from "./events/EventNameUpdatedDomainEvent";
+import { EventPublishedDomainEvent } from "./events/EventPublishedDomainEvent";
+import { EventStartDateUpdatedDomainEvent } from "./events/EventStartDateUpdatedDomainEvent";
 import { EventEndDate } from "./EventEndDate";
 import { EventId } from "./EventId";
 import { EventLocation } from "./EventLocation";

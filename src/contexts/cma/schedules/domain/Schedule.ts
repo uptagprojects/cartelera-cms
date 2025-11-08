@@ -1,7 +1,7 @@
 import { AggregateRoot } from "../../../shared/domain/AggregateRoot";
-import { ScheduleArchivedDomainEvent } from "./event/ScheduleArchivedDomainEvent";
-import { SchedulePostedDomainEvent } from "./event/ScheduledPostedDomainEvent";
-import { ScheduleRestoredDomainEvent } from "./event/ScheduleRestoredDomainEvent";
+import { ScheduleArchivedDomainEvent } from "./events/ScheduleArchivedDomainEvent";
+import { SchedulePostedDomainEvent } from "./events/ScheduledPostedDomainEvent";
+import { ScheduleRestoredDomainEvent } from "./events/ScheduleRestoredDomainEvent";
 import { ScheduleFinishDate } from "./ScheduleFinishDate";
 import { ScheduleId } from "./ScheduleId";
 import { ScheduleName } from "./ScheduleName";

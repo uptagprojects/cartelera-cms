@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS cma__uc (
     update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     stored_update_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);

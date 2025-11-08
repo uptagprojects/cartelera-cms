@@ -8,7 +8,7 @@ interface GuidePageProps {
 }
 
 export const metadata: Metadata = {
-    title: "PNFi | Leer Guia",
+    title: "PNFi | Leer Guía",
     description: "Programa Nacional de Formacion en Informatica"
 };
 
