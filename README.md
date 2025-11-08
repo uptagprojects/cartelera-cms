@@ -34,7 +34,7 @@ npm run consume-rabbitmq
 
 ### 3. Development server
 
-You can run the server by following this comand
+You can run the server by following this command
 ```bash
 npm run dev
 ```
