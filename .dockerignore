@@ -1,0 +1,13 @@
+.dockerignore
+.git
+compose.yml
+node_modules
+dist
+data
+docs
+.vscode
+*.log
+.tmp
+coverage
+.husky
+.github
